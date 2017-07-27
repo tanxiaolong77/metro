@@ -1,0 +1,7 @@
+com\metro\model\Feedback.class
+com\metro\vo\WxUser.class
+com\metro\constant\RedisKey.class
+com\metro\model\User.class
+com\metro\model\TextMessage.class
+com\metro\model\Friend.class
+com\metro\vo\UserShow.class
