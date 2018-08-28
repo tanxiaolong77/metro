@@ -10,12 +10,6 @@
         <dependent-module archiveName="metro-util-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/metro-util/metro-util">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="metro-service-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/metro-service/metro-service">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="metro-model-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/metro-model/metro-model">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="java-output-path" value="/metro-api/target/classes"/>
         <property name="context-root" value="metro"/>
     </wb-module>

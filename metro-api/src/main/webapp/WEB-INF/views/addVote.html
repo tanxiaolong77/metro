@@ -1,0 +1,613 @@
+﻿<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>--</title>
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<link href="css/style_rw.css" rel="stylesheet" type="text/css">
+<base target="_self">
+<script>
+var itemRowNumber = 1;//记录当前还剩多少动态行)
+
+//子项移出
+function removeChdCell(key,index,obj){
+			var htmlObj = obj.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+		    htmlObj.parentNode.removeChild(htmlObj);
+			alert("删除成功。");
+}
+
+	
+
+//删除子项试题
+function removeCell(key,flag){
+	if(document.getElementById(key).rows.length > 3){
+		document.getElementById(key).deleteRow(document.getElementById(key).rows.length-1);
+	}
+}
+
+//添加试题子项
+function addRow_withInsert2(key){
+	var row = document.getElementById(key).insertRow(document.getElementById(key).rows.length);
+	var rowCount =document.getElementById(key).rows.length;
+	var countCell=document.getElementById(key).rows.item(0).cells.length; 
+	for(var i=0;i<countCell;i++){
+		var cell=row.insertCell(i);
+  		cell.innerHTML = '<tr><td  style="padding-top:10px;"><table align="center" width="100%" border="0"  cellspacing="0" cellpadding="0" ><tr><td  width="70"></td><td width="60%" height="30" class=" indt5"><span id="s4"><input id="'+key+'_voteItemText" name="'+key+'_voteItemText" belong="voteTypeOne'+(itemRowNumber-1)+'" type="text" class="inputbox3" id="text" style=" width:330px" />&nbsp;&nbsp;<input type="radio" name="'+key+'_radio"><input style="display:none" type="checkbox" name="'+key+'_checkbox"></span></td><td width="300"  id="rwjia4"  class="font5 indt5" ><table border="0" cellspacing="0" cellpadding="0"><tr><td width="20"></td><td id="td012"></td></tr></table></td></tr></table></td></tr>';
+  	}
+}
+
+//添加试题项
+function addRow_withInsert(){
+ 
+	var row = document.getElementById("table").insertRow();
+	row.id = "tp"+itemRowNumber;
+	var cell = row.insertCell();
+	var innerHTML = "";
+  	innerHTML+=' <table style="border-bottom:#000000 solid 1px" width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">';
+  	innerHTML+=' <tr><td  class="indt10 indt-10" style="padding-top:15px; "><table width="100%"  align="center"  border="0" cellspacing="0"cellpadding="0">';	
+  	innerHTML+='<tr><td width="6"  height="6" class="biaodan_table01"></td><td  class="biaodan_table02"></td><td width="8" height="6" class="biaodan_table03"></td></tr>';
+  	innerHTML+=' <tr> <td  class="biaodan_table04"></td>  <td  style="padding:5px; background-color:#f9f9f9" >';			
+  	innerHTML+=' <table id="voteItemtable'+itemRowNumber+'" width="100%" align="center" border="0" cellspacing="0" cellpadding="0">';
+  	innerHTML+='<tr style="padding-bottom:10px">';
+  	innerHTML+='<td  ><table align="center" width="100%" border="0"  cellspacing="0" cellpadding="0" >';
+  	innerHTML+=' <tr><td   height="30" class=" font"  width="80">试题'+itemRowNumber+'：</td>';
+  	innerHTML+=' <td ><textarea name="voteContext" type="test"  class="inputbox3" value=""  style="width:420px;height:140px" id="voteContext'+itemRowNumber+'"  ></textarea>  <span class="fontd">*</span></td>';
+  	innerHTML +='  <td width="300"><input type="button" onClick="removeChdCell('+"'"+'table'+"'"+','+"'"+itemRowNumber+"'"+',this)" style="cursor:pointer"   class="buttona1" value="单项删除"  /></td> </tr> </table></td></tr><tr id="noTemplet'+itemRowNumber+'_1">';
+  	innerHTML+='<td  ><table align="center" width="100%" border="0"  cellspacing="0" cellpadding="0" ><tr>';
+  	innerHTML+=' <td   height="30" class=" font"  valign="top" style="padding-top:15px;">答案选项（填写完成后请勾选出正确答案）：   </td>';
+  	innerHTML+=' <td width="80"></td>';
+  	innerHTML+=' <td width="174">';
+  	innerHTML+=' </td> </tr></table></td></tr>';
+  	innerHTML+=' <tr id="noTemplet'+itemRowNumber+'_2"  >';
+  	innerHTML+='<td  style="padding-top:10px;"><table align="center" width="100%" border="0"  cellspacing="0" cellpadding="0" >';
+  	innerHTML+='<tr>';
+  	innerHTML+='<td  width="70"></td><td width="60%" height="30"   class=" indt5"><span id="s4"><input type="text" class="inputbox3"  belong="voteTypeOne'+itemRowNumber+'"    name="voteItemtable'+itemRowNumber+'_voteItemText" style=" width:330px" />&nbsp;&nbsp;<input type="radio" name="voteItemtable'+itemRowNumber+'_radio"><input style="display:none" type="checkbox" name="voteItemtable'+itemRowNumber+'_checkbox"></span></td>';
+  	innerHTML+=' <td width="300"  id="rwjia4"  class="font5 indt5" >';
+  	innerHTML+='<table border="0" cellspacing="0" cellpadding="0">';
+  	innerHTML+='<tr>';
+	innerHTML+='<td width="20" onClick="addRow_withInsert2('+"'"+'voteItemtable'+itemRowNumber+"'"+')"><img src="images/rw_add.gif" style="cursor:pointer" align="absmiddle"></td>';
+  	innerHTML+='<td id="td012" width="20"  onClick="removeCell('+"'"+'voteItemtable'+itemRowNumber+"'"+',4)"><img src="images/rw_min.gif" align="absmiddle" style="cursor:pointer"><input id="voteItemtable'+itemRowNumber+'_vote" name="voteItemText" type="hidden" value=""></td>';
+  	innerHTML+='</tr></table></td></tr></table></td></tr></table>';
+  	innerHTML+='<td class="biaodan_table05"></td></tr>';
+  	innerHTML+='<tr><td width="6" height="8" class="biaodan_table06"></td><td  class="biaodan_table07"></td><td width="8" height="8" class="biaodan_table08"></td></tr>';
+  	innerHTML+='</table></td></tr>';
+  	innerHTML+=' <tr id="tpdx'+itemRowNumber+'"><td  class="indt10 indt-10"  style="padding-top:20px; "><table width="100%"  align="center"  border="0" cellspacing="0" cellpadding="0">';
+  	innerHTML+=' <tr><td width="6"  height="6" class="biaodan_table01"></td><td  class="biaodan_table02"></td><td width="8" height="6" class="biaodan_table03"></td></tr>';
+  	innerHTML+='<tr><td  class="biaodan_table04"></td>';
+  	innerHTML+=' <td  style="padding:5px; background-color:#f9f9f9" >';
+  	innerHTML+=' <table width="100%" align="center" border="0" cellspacing="0" cellpadding="0">';
+  	innerHTML+='<tr><td  >';
+  	innerHTML+=' <table align="center" width="100%" border="0"  cellspacing="0" cellpadding="0" >';
+  	innerHTML+=' <tr>';
+  	innerHTML+=' <td width="10" height="61">试题类型：</td>';
+  	innerHTML+='<td width="100"><select name = "voteTypeOne" class="select" id="voteTypeOne'+itemRowNumber+'" onChange="voteTypeToOne(this.value,'+itemRowNumber+')">';
+	innerHTML+='<option value="单选"  selected="selected" >单选</option><option value="多选">多选</option></select></td>';
+	innerHTML+='<td width="100" ></td>';
+  	innerHTML+='  </tr> </table></td></tr>';
+  	innerHTML+='</table>';
+  	innerHTML+=' <td class="biaodan_table05"></td>';
+  	innerHTML+=' </tr><tr>';
+  	innerHTML+=' <td width="6" height="8" class="biaodan_table06"></td>';
+  	innerHTML+=' <td  class="biaodan_table07"></td>';
+  	innerHTML+=' <td width="8" height="8" class="biaodan_table08"></td>';
+  	innerHTML+=' </tr>';
+  	innerHTML+='  </table>';
+  	innerHTML+='  </td></tr>';
+  	innerHTML+=' </table>';
+  	cell.innerHTML = innerHTML;
+	document.getElementById("voteContext"+itemRowNumber).focus();
+	itemRowNumber++; 
+}
+
+
+
+function voteTypeToOne(val,i){
+
+	var  objs = null;
+	var radios = document.getElementsByName("voteItemtable"+i+"_radio");
+	var checkbox = document.getElementsByName("voteItemtable"+i+"_checkbox");
+	if(val == "单选"){
+		for(var i=0;i<radios.length;i++){
+			radios[i].style.display = '';
+			checkbox[i].style.display = 'none';
+		}
+	}else if(val == "多选"){
+		for(var i=0;i<radios.length;i++){
+			radios[i].style.display = 'none';
+			checkbox[i].style.display = '';
+		}
+	}
+	
+	
+}
+
+
+//保存
+function save(flag){
+		debugger;
+		/***
+		*试题信息验证
+		*/
+
+		for(var z = 1;z<=(itemRowNumber-1);z++){
+			if(document.getElementById("voteContext"+z) != null && document.getElementById("voteContext"+z).value.replace(/\s/g,'')==''){
+				alert("试题不能为空。");
+				document.getElementById("voteContext"+z).focus();
+				return;	
+			}
+			
+		}
+		/**
+		*算数每个试题子项的项数
+		*/	
+		var i = 1;
+		while(true){
+				if(i > (itemRowNumber-1)){
+					break;
+				}
+				if(document.getElementsByName("voteItemtable"+i+"_voteItemText") != null && document.getElementsByName("voteItemtable"+i+"_voteItemText").length > 0){
+					
+	
+					var voteItemtable_voteItemText = document.getElementsByName("voteItemtable"+i+"_voteItemText");
+					//alert("第"+i+"遍--"+voteItemtable_voteItemText[0].belong+"---------------------有"+voteItemtable_voteItemText.length);
+					for(var j = 0;j<voteItemtable_voteItemText.length;j++){
+						if(voteItemtable_voteItemText[j].value.replace(/\s/g,'')==''){
+							alert("答案选项不能为空。");
+							voteItemtable_voteItemText[j].focus();
+							return;
+						}
+					}
+					
+					var type = document.getElementById("voteTypeOne"+i).value;
+					var rightKey = new Array();
+					var keyIndex = 0;
+					
+					var objs = null;
+					if(type == "单选"){
+						//正确答案封装(单选)
+						objs = document.getElementsByName("voteItemtable"+i+"_radio");
+					}else if(type == "多选"){
+						objs = document.getElementsByName("voteItemtable"+i+"_checkbox");
+					}
+					for(var j = 0;j<objs.length;j++){
+						if(objs[j].checked){
+							rightKey[keyIndex++] = voteItemtable_voteItemText[j].value;
+						}
+					}
+					if(rightKey.length == 0){
+						alert("试题"+i+"必须勾选正确答案！");
+						return;
+					}
+					
+					for(var k = 0;k<voteItemtable_voteItemText.length;k++){
+							var itemText = voteItemtable_voteItemText[k].value;
+							var isRightKey = isInArray(rightKey,itemText);
+							if(isRightKey){
+								//为正确答案
+								itemText += "[rightKey]" 
+							}
+							if(k == 0){
+									document.getElementById("voteItemtable"+i+"_vote").value += itemText;
+							}else{
+									document.getElementById("voteItemtable"+i+"_vote").value += "###" + itemText;
+							}
+					}
+				}
+			i++;	
+		}
+		document.myForm.action = "voteAction!saveVote.action";
+		document.myForm.submit();
+		alert("发布成功!");
+		if(flag == 1){
+			window.close();
+		}
+}
+
+function isInArray(arr,value){
+    for(var i = 0; i < arr.length; i++){
+        if(value == arr[i]){
+            return true;
+        }
+    }
+    return false;
+}
+
+//初始化
+function ini(){
+}
+
+
+
+</script>
+<style type="text/css">
+<!--
+body {
+	margin:0px;
+
+	
+}
+.STYLE1 {
+	color: #FFFFFF;
+	font-weight: bold;
+}
+-->
+</style></head>
+
+<script type="text/javascript">
+function changesc(sid,dsid)
+{
+	if(document.getElementById(sid).value=='0')
+	{
+		ndis(dsid);
+	}
+	else if(document.getElementById(sid).value=='1')
+	{
+		dis(dsid);
+	}
+	else
+	{
+		ndis(dsid);
+	}
+}
+
+/**
+function nfid(id)
+{
+	if(document.getElementById(id).style.display=="none")
+	{
+		document.getElementById(id).style.display="";	
+	}
+	else
+	{
+		document.getElementById(id).style.display="none";	
+	}
+}
+*/
+function select_mb()
+{
+	/*
+		if(document.getElementById('mb').value=='0')
+		{
+			
+			document.getElementById('s4').innerHTML='<input name="text" type="text" class="inputbox3" id="text" style=" width:330px" />';
+			document.getElementById('s5').innerHTML='<input name="text" type="text" class="inputbox3" id="text" style=" width:330px" />';
+			document.getElementById('s6').innerHTML='<input name="text" type="text" class="inputbox3" id="text" style=" width:330px" />';
+			document.getElementById('rwjia4').style.display='';
+			document.getElementById('rwjia5').style.display='';
+			document.getElementById('rwjia6').style.display='';
+			document.getElementById('yw_tr022').style.display='none';
+			document.getElementById('yw_tr032').style.display='none';
+		}
+		else if(document.getElementById('mb').value=='1')
+		{
+			document.getElementById('s4').innerHTML='ͬ';
+			document.getElementById('s5').innerHTML='ͬ';
+			document.getElementById('s6').innerHTML='Ȩ';
+			document.getElementById('rwjia4').style.display='none';
+			document.getElementById('rwjia5').style.display='none';
+			document.getElementById('rwjia6').style.display='none';
+			document.getElementById('yw_tr022').style.display='';
+			document.getElementById('yw_tr032').style.display='';
+		}
+		else
+		{
+			document.getElementById('s4').innerHTML='';
+			document.getElementById('s5').innerHTML='';
+			document.getElementById('rwjia4').style.display='none';
+			document.getElementById('rwjia5').style.display='none';
+			document.getElementById('rwjia6').style.display='none';
+			document.getElementById('yw_tr022').style.display='';
+			document.getElementById('yw_tr032').style.display='none';
+		}
+		*/
+}
+function menu_ytxz(){ 
+		dWin=showModalDialog("rw_hyrw_ytxz.html",window,"dialogWidth:810px;dialogHeight:585px;status:yes;resizable:yes;scroll:no;help:no;");
+}
+function menu_rwxr(){ 
+		dWin=showModalDialog("txl_rw07.html",window,"dialogWidth:810px;dialogHeight:585px;status:yes;resizable:yes;scroll:no;help:no;");
+}
+function menumb()
+{
+	dWin=showModalDialog("bcmb.html",window,"dialogWidth:440px;dialogHeight:255px;status:yes;resizable:yes;scroll:no;help:no;");
+}
+function dis(id)
+{
+	document.getElementById(id).style.display="";
+}
+function ndis(id)
+{
+	document.getElementById(id).style.display="none";
+}
+function fid(id)
+{
+	if(document.getElementById(id).style.display=="none")
+	return false;
+	else
+	return true;
+}
+function menu(){
+var d=document.getElementById;
+if(frames['first2'].d("radio01").checked){
+menu02();
+}
+else{
+menu03();
+}
+}
+
+function menu02(){ 
+	dWin=showModalDialog("rw_liebiao01dt01.html",window,"dialogWidth:710px;dialogHeight:577px;status:yes;resizable:yes;scroll:no;help:no;");
+
+}	
+function menu03(){ 
+	dWin=showModalDialog("rw_liebiao01dt02.html",window,"dialogWidth:710px;dialogHeight:577px;status:yes;resizable:yes;scroll:no;help:no;");
+
+}
+function tpmd(){ 
+	dWin=showModalDialog("txlc_rw_hui.html",window,"dialogWidth:710px;dialogHeight:577px;status:yes;resizable:yes;scroll:no;help:no;");
+
+}
+
+function menu01(){ 
+	dWin=showModalDialog("txlc.html",window,"dialogWidth:710px;dialogHeight:577px;dialogTop:"+(this.screen.height-330)/2+";dialogLeft:"+(this.screen.width-150)/2+";status:yes;resizable:yes;scroll:no;help:no;");
+
+}
+function selectjm()
+{
+	if(document.getElementById('jm').value=="0" && document.getElementById('xs').value=="0" )
+	{
+		dis('tp000');
+		ndis('tp002');
+	}
+	else if(document.getElementById('jm').value=="0" && document.getElementById('xs').value=="1" ){
+		ndis('tp000');
+		ndis('tp002');
+		
+	}
+	else if(document.getElementById('jm').value=="1" && document.getElementById('xs').value=="0" ){
+		dis('tp002');
+		ndis('tp000');
+	}
+	else if(document.getElementById('jm').value=="1" && document.getElementById('xs').value=="1" ){
+		ndis('tp000');
+		ndis('tp002');
+		
+	}
+}
+function selectxs()
+{
+	if(document.getElementById('jm').value=="0" && document.getElementById('xs').value=="0" )
+	{
+		dis('tp000');
+		ndis('tp002');
+	}
+	else if(document.getElementById('jm').value=="0" && document.getElementById('xs').value=="1" ){
+		ndis('tp000');
+		ndis('tp002');
+	}
+	else if(document.getElementById('jm').value=="1" && document.getElementById('xs').value=="0" ){
+		dis('tp002');
+		ndis('tp000');
+	}
+	else if(document.getElementById('jm').value=="1" && document.getElementById('xs').value=="1" ){
+		dis('tp001');
+		ndis('tp000');
+		ndis('tp002');
+	}
+}
+function tpmd1()
+{
+	document.getElementById('xrtp1').InnerHTML=11;
+}
+function tpmd2()
+{
+	document.getElementById('xrtp2').InnerHTML=13;
+}
+function tpmd3()
+{
+	document.getElementById('xrtp3').InnerHTML=8;
+}
+
+
+function changeModule(val){
+	if(val == "1"){
+		//技能鉴定
+		document.getElementById("levelTable").style.display = '';
+	}else if(val == "2"){
+		//鉴定大赛
+		document.getElementById("levelTable").style.display = 'none';
+	}
+}
+
+</script>
+
+
+
+<body scroll=no>
+<form name="myForm" method="post">
+     <input id="hiddenUserId" type="hidden"  value="" class="inputbox3" name="hiddenUserId">
+     <input id="hiddenUserName" type="hidden"  value="" class="inputbox3" name="hiddenUserName">
+     <input id="companyId" type="hidden"  value="${(companyId)?if_exists}" class="inputbox3" name="companyId">
+                                                                                                            
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+    
+    <td width="498" height="36" background="images/bj.gif" class="font3 indt10"><img src="images/b03.gif" width="21" height="16" align="absmiddle">新增考题</td>
+    <td  width="845" align="right" background="images/bj.gif"><div style="left:800px;  cursor:pointer; Z-INDEX:98; top: 30px; width: 73px;">
+      <input type="button" onClick="addRow_withInsert()" name="Submit32422224" style="cursor:pointer" class="buttona1" onMouseOver="className='buttonb1'" onMouseOut="className='buttona1'" value="添加试题"  />
+    </div></td>
+	<td width="225"  align="right" background="images/bj.gif" style="padding-right:10px">&nbsp;</td>
+  </tr>
+ <tr >
+    <td height="100%" valign="top"  colspan="3">
+	  <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0" class="line_right2 line_left2">
+
+  <tr>
+    <td  valign="top"  height="100%"  colspan="2"  >
+	<div style="width:100%; height:100%; overflow:auto; overflow-x:hidden;" class="rw_scroll">
+	<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td  align="left" style="padding-left:10px; padding-top:10px; padding-bottom:10px"><table width="96%" height="100%"  id="table" align="center" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td  class="indt10 indt-10" style="padding-top:15px; "><table width="100%"  align="center"  border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="6"  height="6" class="biaodan_table01"></td>
+            <td  class="biaodan_table02"></td>
+            <td width="8" height="6" class="biaodan_table03"></td>
+          </tr>
+          <tr>
+            <td  class="biaodan_table04"></td>
+            <td  style="padding:5px; background-color:#f9f9f9"  ><table width="100%" align="center" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td  ><table align="center" width="100%" border="0"  cellspacing="0" cellpadding="0" >
+                  <tr>
+                    <td height="30"  width="80">模块：</td>
+                    <td>
+						<select id="module" name="module" class="inputbox3" onChange="changeModule(this.value)" style="width:150px;">
+							<option value="1">技能鉴定</option>
+							<option value="2">技能大赛</option>
+						</select>
+                      <span class="fontd">*</span></td>
+                    
+                  </tr>
+                </table></td>
+              </tr>
+              <tr>
+                <td  ><table align="center" width="100%" border="0"  cellspacing="0" cellpadding="0" >
+                  <tr>
+                    <td width="80">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td >&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td width="80">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td >&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                </table></td>
+              </tr>
+              
+              <tr>
+                <td  ><table align="center" width="100%" border="0"  cellspacing="0" cellpadding="0" >
+                  <tr>
+                    <td width="80">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td >&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td width="80">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td >&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                </table></td>
+              </tr>
+              <tr>
+                <td  ><table align="center" width="100%" border="0"  cellspacing="0" cellpadding="0" >
+                  <tr>
+                    <td width="80" height="30">岗位：</td>
+					 <td>
+						<select id="post" name="post" class="inputbox3" style="width:150px;">
+							<option>岗位1</option>
+							<option>岗位2</option>
+							<option>岗位3</option>
+							<option>岗位4</option>
+							<option>岗位5</option>
+							<option>岗位6</option>
+						</select>
+                      <span class="fontd">*</span></td>
+                    <td width="100">&nbsp;</td>
+                </table></td>
+              </tr>
+			  <tr>
+                <td  ><table align="center" width="100%" border="0"  cellspacing="0" cellpadding="0" >
+                  <tr>
+                    <td width="80">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td >&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td width="80">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td >&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                </table></td>
+              </tr>
+              <tr>
+                <td  ><table align="center" width="100%" border="0"  cellspacing="0" cellpadding="0" >
+                  <tr>
+                    <td width="80">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td >&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td width="80">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td >&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                </table></td>
+              </tr>
+			  <tr>
+                <td  ><table id="levelTable" align="center" width="100%" border="0"  cellspacing="0" cellpadding="0" >
+                  <tr>
+                    <td width="80" height="30">等级：</td>
+					 <td>
+						<select id="level" name="level" class="inputbox3" style="width:150px;">
+							<option value="1">1级</option>
+							<option value="2">2级</option>
+							<option value="3">3级</option>
+							<option value="4">4级</option>
+							<option value="5">5级</option>
+						</select>
+                      <span class="fontd">*</span></td>
+                    <td width="100">&nbsp;</td>
+                </table>&nbsp;</td>
+              </tr>
+			  
+              <tr>
+                <td  ><table align="center" width="100%" border="0"  cellspacing="0" cellpadding="0" >
+                  <tr>
+                    <td width="80">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td >&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td width="80">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td >&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                </table></td>
+              </tr>
+              <tr>
+                <td  ><table align="center" width="100%" border="0"  cellspacing="0" cellpadding="0" >
+                  <tr>
+                    <td width="80">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td >&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td width="80">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td >&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                </table></td>
+              </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+</div>	</td>
+  </tr>
+</table></td>
+  </tr>
+  <tr >
+    <td colspan="3"  height="36" width="100%" background="images/bj.gif" align="center">
+	<input name="Submit3242222" style="cursor:pointer" type="button" class="buttona1" onMouseOver="className='buttonb1'" onMouseOut="className='buttona1'" value="发布" onClick="save(1)"  />
+    <input name="Submit324222" style="cursor:pointer" type="reset" class="buttona1" onMouseOver="className='buttonb1'" onMouseOut="className='buttona1'" value="取消"  onClick="window.close()" /></td>
+  </tr>
+</table>
+
+<span id="testContext" style="width:600px"></span>
+</form>
+</body>
+</html>

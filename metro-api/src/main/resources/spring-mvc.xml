@@ -135,8 +135,10 @@
 	
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/**/*.user"/>
-			<mvc:mapping path="/upload/**"/>
+			<mvc:mapping path="/sys/*"/>
+			<mvc:exclude-mapping path="/sys/login" />
+			<mvc:exclude-mapping path="/sys/sysLogin" />
+			<mvc:exclude-mapping path="/sys/logout" />
 			<bean class="com.metro.web.interceptor.UserInterceptor" />
 		</mvc:interceptor>
 		
