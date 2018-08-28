@@ -1,4 +1,4 @@
-package com.quanjing.common.captcha;
+package com.metro.common.captcha;
 
 import java.awt.Color;
 import java.awt.Font;

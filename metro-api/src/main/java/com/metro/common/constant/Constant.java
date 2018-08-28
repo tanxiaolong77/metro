@@ -1,4 +1,4 @@
-package com.quanjing.common.constant;
+package com.metro.common.constant;
 
 import java.util.List;
 

@@ -12,8 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.metro.util.Constant;
 import com.metro.util.CookieUtil;
-import com.quanjing.util.EmailUtil;
-import com.quanjing.util.IPUtil;
 
 public class GlobalExceptionHandler implements HandlerExceptionResolver {
 
@@ -59,8 +57,8 @@ public class GlobalExceptionHandler implements HandlerExceptionResolver {
 				String headerKey=headers.nextElement();
 				sb.append(headerKey + "=" + request.getHeader(headerKey) + "</br>");
 			}
-			EmailUtil.getInstance().send(IPUtil.getLocalIp4()+"-地铁系统错误"+request.getServletPath(),
-					"url=" +request.getServletPath()+"<br/>参数:<br/>ticket=" + ticket + "<br/>"+ sb.toString() + "<br/><hr/>" + info, receive);
+//			EmailUtil.getInstance().send(IPUtil.getLocalIp4()+"-地铁系统错误"+request.getServletPath(),
+//					"url=" +request.getServletPath()+"<br/>参数:<br/>ticket=" + ticket + "<br/>"+ sb.toString() + "<br/><hr/>" + info, receive);
 		}
 
 		return null;

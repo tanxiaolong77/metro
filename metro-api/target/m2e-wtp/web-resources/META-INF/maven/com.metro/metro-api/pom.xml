@@ -3,10 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.metro</groupId>
-		<artifactId>all</artifactId>
+		<artifactId>parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-
+	
+	<groupId>com.metro</groupId>
 	<artifactId>metro-api</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
@@ -66,11 +67,7 @@
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
 		</dependency>
-   		<dependency>
-			<groupId>com.metro</groupId>
-			<artifactId>metro-sms-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+
 	    <dependency>
 	      <groupId>com.metro</groupId>
 	      <artifactId>metro-service</artifactId>
@@ -137,4 +134,5 @@
 			<url>file://${basedir}/src/main/webapp/WEB-INF/lib</url>
 		</repository>
 	</repositories>
+
 </project>

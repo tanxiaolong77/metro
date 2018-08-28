@@ -139,7 +139,7 @@
 			<mvc:exclude-mapping path="/sys/login" />
 			<mvc:exclude-mapping path="/sys/sysLogin" />
 			<mvc:exclude-mapping path="/sys/logout" />
-			<bean class="com.metro.web.interceptor.UserInterceptor" />
+			<bean class="com.metro.common.interceptor.AuthInterceptor" />
 		</mvc:interceptor>
 		
 	</mvc:interceptors>

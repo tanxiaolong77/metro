@@ -6,9 +6,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import com.pdg.model.SysUser;
-import com.quanjing.common.constant.Constant;
+import com.metro.model.SysUser;
+import com.metro.common.constant.Constant;
 
 public class SysUserUtils {
 	

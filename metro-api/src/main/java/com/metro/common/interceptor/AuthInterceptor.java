@@ -1,4 +1,4 @@
-package com.quanjing.common.interceptor;
+package com.metro.common.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.pdg.model.SysUser;
-import com.quanjing.web.sys.utils.SysUserUtils;
+import com.metro.model.SysUser;
+import com.metro.util.SysUserUtils;
 
 public class AuthInterceptor implements HandlerInterceptor {
 

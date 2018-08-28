@@ -1,4 +1,4 @@
-package com.quanjing.common.beetl.utils;
+package com.metro.common.beetl.utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 import org.beetl.core.GroupTemplate;
 import org.beetl.ext.spring.BeetlGroupUtilConfiguration;
 
-import com.quanjing.common.spring.utils.SpringContextHolder;
+import com.metro.common.spring.utils.SpringContextHolder;
 
 
 public class BeetlUtils {

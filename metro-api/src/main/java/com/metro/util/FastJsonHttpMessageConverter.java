@@ -15,10 +15,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.AbstractHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.quanjing.util.StringUtils;
+
 
 public class FastJsonHttpMessageConverter extends AbstractHttpMessageConverter<Object> {
 	public final static Charset UTF8     = Charset.forName("UTF-8");

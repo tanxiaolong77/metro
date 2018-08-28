@@ -1,11 +1,11 @@
 package com.metro.util;
 
-import com.metro.vo.UserShow;
+import com.metro.model.SysUser;
 
 public class ThreadLocalManage {
 
 	/** 线程内共享 ThreadLocal通常是全局的，支持泛型 */  
-    private static ThreadLocal<UserShow> threadUser = new ThreadLocal<UserShow>();  
+    private static ThreadLocal<SysUser> threadUser = new ThreadLocal<SysUser>();  
     
     private static ThreadLocal<String> threadUrl = new ThreadLocal<String>();  
     
@@ -31,11 +31,11 @@ public class ThreadLocalManage {
 		ThreadLocalManage.threadUrl.set(threadUrl);
 	}
 
-	public static void setUser(UserShow u){
+	public static void setUser(SysUser u){
     	threadUser.set(u);
     }
     
-    public static UserShow getUser(){
+    public static SysUser getUser(){
     	return threadUser.get();
     }
     

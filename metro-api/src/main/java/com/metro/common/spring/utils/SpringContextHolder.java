@@ -1,4 +1,4 @@
-package com.quanjing.common.spring.utils;
+package com.metro.common.spring.utils;
 
 import java.io.IOException;
 
