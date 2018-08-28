@@ -17,7 +17,6 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-		</profile>
 		<profile>
 			<!-- 测试环境 -->
 			<id>test</id>
