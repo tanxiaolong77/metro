@@ -2,6 +2,7 @@ package com.metro.basic;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,5 +39,13 @@ public abstract class BaseService<T,PK> {
     
     public int countByExample(BaseExample example) throws DataAccessException {
     	return getEntityDao().countByExample(example);
+    }
+    
+    public int deleteById(PK id) throws DataAccessException {
+    	return getEntityDao().deleteByPrimaryKey(id);
+    }
+    
+    public int updateByExample(T entity , BaseExample example) {
+    	return getEntityDao().updateByExampleSelective(entity,example);
     }
 }

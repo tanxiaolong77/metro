@@ -2,15 +2,17 @@ package com.metro.basic;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.dao.DataAccessException;
 
 import com.metro.model.BaseExample;
 
 /***
- * ClassName:EntityDao.java
- * @author Sam Tan
- * @Description TODO
- * @date 2018年1月30日
+ * mnt-service加强版
+ * @author dell
+ *
+ * @param <T>
+ * @param <PK>
  */
 public interface EntityDao<T , PK> {
 
@@ -20,9 +22,12 @@ public interface EntityDao<T , PK> {
 
 	public int updateByPrimaryKeySelective(T entity) throws DataAccessException;
 	
+	int updateByExampleSelective(@Param("record") T entity , @Param("example") BaseExample example);
+	
     public List<T> selectByExample(BaseExample example) throws DataAccessException;
     
     public int countByExample(BaseExample example) throws DataAccessException;
     
+    public int deleteByPrimaryKey(PK id) throws DataAccessException;
  
 }
