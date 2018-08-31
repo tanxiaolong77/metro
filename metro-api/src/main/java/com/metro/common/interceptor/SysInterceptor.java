@@ -6,10 +6,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.metro.model.SysUser;
-import com.metro.util.SysUserUtils;
+import com.metro.model.User;
+import com.metro.util.SessionUtils;
 
-public class AuthInterceptor implements HandlerInterceptor {
+public class SysInterceptor implements HandlerInterceptor {
 
 	/*
 	 * private Set<String> ignorePath = new HashSet<String>
@@ -24,10 +24,10 @@ public class AuthInterceptor implements HandlerInterceptor {
 		String ctx = request.getContextPath();
 		String path = uri.replace(ctx, "");
 
-		SysUser sessionUser = SysUserUtils.getLoginUser();
+		User sessionUser = SessionUtils.getLoginManager();
 
 		if (sessionUser == null) { // 转到登陆页面
-			response.sendRedirect(ctx + "/sys/login");
+			response.sendRedirect(ctx + "/syslogin");
 			return false;
 		} else {
 			return true;

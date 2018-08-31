@@ -20,7 +20,8 @@ public class Constant {
 	public static final String RESOURCE_COMMON = "1"; // 公共资源
 
 	// 用户
-	public static final String SESSION_LOGIN_USER = "loginUser"; // session中的用户key
+	public static final String SESSION_LOGIN_USER = "loginUser";
+	public static final String SESSION_LOGIN_MANAGER = "managerUser";
 	public static final String SUPER_ADMIN = "1"; // 超级管理员
 
 	// 缓存key

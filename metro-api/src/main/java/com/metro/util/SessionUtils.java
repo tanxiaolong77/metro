@@ -6,10 +6,12 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import com.metro.model.SysUser;
-import com.metro.common.constant.Constant;
 
-public class SysUserUtils {
+import com.metro.common.constant.Constant;
+import com.metro.model.Employee;
+import com.metro.model.User;
+
+public class SessionUtils {
 	
 	/**
 	 *  得到当前session
@@ -22,8 +24,15 @@ public class SysUserUtils {
 	/**
 	 * session中的用户
 	 */
-	public static SysUser getLoginUser(){
-		return (SysUser) getSession().getAttribute(Constant.SESSION_LOGIN_USER);
+	public static Employee getLoginUser(){
+		return (Employee) getSession().getAttribute(Constant.SESSION_LOGIN_USER);
+	}
+	
+	/**
+	 * session中的管理员
+	 */
+	public static User getLoginManager(){
+		return (User) getSession().getAttribute(Constant.SESSION_LOGIN_MANAGER);
 	}
 	
 	/**
