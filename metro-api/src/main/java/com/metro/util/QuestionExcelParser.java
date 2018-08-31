@@ -30,16 +30,25 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.metro.model.Answer;
+import com.metro.request.QuestionUploadRequest;
+import com.metro.service.QuestionService;
 
+@Component
 public class QuestionExcelParser {
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 	private static Logger logger = LoggerFactory.getLogger(QuestionExcelParser.class);
+	
+	@Autowired
+	private QuestionService questionService;
+	
 
-	public static void parse(File file) throws Exception {
+	public static void parse(File file,QuestionUploadRequest req) throws Exception {
 
 		InputStream inp = new FileInputStream(file);
 		HSSFWorkbook workbook = (HSSFWorkbook) WorkbookFactory.create(inp);
@@ -61,13 +70,17 @@ public class QuestionExcelParser {
 					map.put(row + ":" + col, picData);
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				logger.error(e.getMessage(),e);
 			}
-
 		}
 
 		// 循环行Row
+		List<QuestionUploadRequest> requests = new ArrayList<>();
+		
 		for (int rowNum = 2; rowNum <= sheet.getLastRowNum(); rowNum++) {
+			
+			QuestionUploadRequest request = BeanUtils.transferB(req, QuestionUploadRequest.class);
+			
 			HSSFRow hssfRow = sheet.getRow(rowNum);
 			int index = 0;
 			try {
@@ -77,45 +90,49 @@ public class QuestionExcelParser {
 				String knowledgePoint = getCellValue(hssfRow.getCell(index++), workbook);//知识点
 				String qestionType = getCellValue(hssfRow.getCell(index++), workbook);//单选&多选&判断
 				String serialNo = getCellValue(hssfRow.getCell(index++), workbook);//序号
-
-				String qestion = getPicAndTextCellValue(questionId, 
+				
+				Map<String,String> qestion = getPicAndTextCellValue(questionId, 
 						map.get(rowNum+":"+index), getCellValue(hssfRow.getCell(index++), workbook));//题目中含有图片	
-
-				String A = getPicAndTextCellValue(questionId+"-A", 
+				Map<String,String> A = getPicAndTextCellValue(questionId+"-A", 
 						map.get(rowNum+":"+index), getCellValue(hssfRow.getCell(index++), workbook));//选项A
 				Answer anwer = new Answer();
 				anwer.setId(BaseUtil.getUUID());
-				anwer.setAnswerDesc(A);
+				anwer.setAnswerDesc(A.get("desc"));
+				anwer.setAnswerDesc(A.get("img"));
+				
 				anwer.setTmp("A");
 				anwer.setCreateTime(new Date());
 				anwer.setQuestionId(questionId);
 				answers.add(anwer);
 				
-				String B = getPicAndTextCellValue(questionId+"-B", 
+				Map<String,String> B = getPicAndTextCellValue(questionId+"-B", 
 						map.get(rowNum+":"+index), getCellValue(hssfRow.getCell(index++), workbook));//选项B
 				anwer = new Answer();
 				anwer.setId(BaseUtil.getUUID());
-				anwer.setAnswerDesc(B);
+				anwer.setAnswerDesc(B.get("desc"));
+				anwer.setAnswerImage(B.get("img"));
 				anwer.setTmp("B");
 				anwer.setCreateTime(new Date());
 				anwer.setQuestionId(questionId);
 				answers.add(anwer);
 				
-				String C = getPicAndTextCellValue(questionId+"-C", 
+				Map<String,String> C = getPicAndTextCellValue(questionId+"-C", 
 						map.get(rowNum+":"+index), getCellValue(hssfRow.getCell(index++), workbook));//选项C
 				anwer = new Answer();
 				anwer.setId(BaseUtil.getUUID());
-				anwer.setAnswerDesc(C);
+				anwer.setAnswerDesc(C.get("desc"));
+				anwer.setAnswerDesc(C.get("img"));
 				anwer.setTmp("C");
 				anwer.setCreateTime(new Date());
 				anwer.setQuestionId(questionId);
 				answers.add(anwer);
 				
-				String D = getPicAndTextCellValue(questionId+"-D", 
+				Map<String,String> D = getPicAndTextCellValue(questionId+"-D", 
 						map.get(rowNum+":"+index), getCellValue(hssfRow.getCell(index++), workbook));//选项D
 				anwer = new Answer();
 				anwer.setId(BaseUtil.getUUID());
-				anwer.setAnswerDesc(D);
+				anwer.setAnswerDesc(D.get("desc"));
+				anwer.setAnswerDesc(D.get("img"));
 				anwer.setTmp("D");
 				anwer.setCreateTime(new Date());
 				anwer.setQuestionId(questionId);
@@ -132,7 +149,7 @@ public class QuestionExcelParser {
 					char[] answerChars = answer.toCharArray();
 					for (int i = 0; i < answerChars.length; i++) {
 						for (int j = 0; j < answers.size(); j++) {
-							if(answers.get(j).equals(answerChars[i]+"")){
+							if(answers.get(j).getTmp().equals(answerChars[i]+"")){
 								rightAnswerIds = StringUtils.isNotBlank(rightAnswerIds) ? 
 										rightAnswerIds + "," + answers.get(j).getId()
 										: answers.get(j).getId();
@@ -141,24 +158,48 @@ public class QuestionExcelParser {
 					}
 				}
 				
+				//封装题目实体
+				request.setId(questionId);
+				request.setQuestionDesc(qestion.get("desc"));
+				request.setQuestionImage(qestion.get("img"));
+				request.setScore("1");//###当前版本写死1分，因为excel中没有分数记录
+				request.setAnswerId(rightAnswerIds);//正确答案
+				request.setContentType(knowledgePoint);//知识点
+				if(qestionType.contains("单选")){
+					request.setQuestionType("1");
+				}else if(qestionType.contains("多选")){
+					request.setQuestionType("2");
+				}else if(qestionType.contains("判断")){
+					request.setQuestionType("3");
+				}
+				request.setCreateTime(new Date());//创建时间
+				request.setOperater(SessionUtils.getLoginManager().getId());//创建人
+				request.setAnswers(answers);//选项
 			} catch (Exception e) {
-				// TODO: handle exception
+				logger.error(e.getMessage(),e);
 			}
 
 		}
 	}
 	
 	
-	public static String getPicAndTextCellValue(String picName,HSSFPictureData data,String cellValue){
+	public static Map<String,String> getPicAndTextCellValue(String picName,HSSFPictureData data,String cellValue){
 		String img = "";
 		if(data != null){
 			//图片，生成名称并保存
 			img = savePic(picName, data);
-			if(StringUtils.isNotBlank(img)){
-				img = "&nbsp;<img src=\"www.xxx.com/pic/"+img+"\"/>&nbsp;";
+			if(StringUtils.isBlank(img)){
+				img = "";
+			}
+			
+			if(StringUtils.isBlank(cellValue)){
+				cellValue = "";
 			}
 		}
-		return StringUtils.isBlank(cellValue) ? "" : cellValue + img;
+		Map result = new HashMap();
+		result.put("desc", cellValue);
+		result.put("img", img);
+		return result;
 	}
 
 	public static String savePic(String picName, PictureData pic) {

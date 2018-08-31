@@ -21,6 +21,10 @@ import com.metro.model.User;
 import com.metro.model.UserExample;
 import com.metro.service.EmployeeService;
 import com.metro.service.UserService;
+import com.metro.util.BeanUtils;
+import com.metro.vo.DataTransObj;
+import com.metro.vo.EmployeeVO;
+import com.metro.vo.UserVO;
 
 
 @Controller
@@ -75,10 +79,9 @@ public class LoginController  extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value = "sysLogin", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> sysLogin(String username,
+	public @ResponseBody DataTransObj sysLogin(String username,
 			String password, HttpServletRequest request) {
 
-		Map<String, Object> msg = new HashMap<String, Object>();
 		HttpSession session = request.getSession();
 		username = StringUtils.trim(username);
 		password = StringUtils.trim(password);
@@ -91,9 +94,10 @@ public class LoginController  extends BaseController{
 		if (user != null && user.size() > 0) {
 			session.setAttribute(Constant.SESSION_LOGIN_MANAGER, user);
 		} else {
-			msg.put("error", "用户名或密码错误");
+			return DataTransObj.onFailure(null, "用户名或密码错误");
 		}
-		return msg;
+		UserVO userVO = BeanUtils.transferB(user.get(0),UserVO.class);
+		return DataTransObj.onSuccess(userVO, "登录成功");
 	}
 
 	/**
@@ -105,7 +109,7 @@ public class LoginController  extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value = "login", method = RequestMethod.POST)
-	public @ResponseBody Map<String, Object> login(String realName,
+	public @ResponseBody DataTransObj login(String realName,
 			String usercard, HttpServletRequest request) {
 
 		Map<String, Object> msg = new HashMap<String, Object>();
@@ -121,9 +125,10 @@ public class LoginController  extends BaseController{
 		if (user != null && user.size() > 0) {
 			session.setAttribute(Constant.SESSION_LOGIN_USER, user);
 		} else {
-			msg.put("error", "姓名和身份证信息不匹配");
+			return DataTransObj.onFailure(null, "姓名和身份证不匹配");
 		}
-		return msg;
+		EmployeeVO employeeVO = BeanUtils.transferB(user.get(0),EmployeeVO.class);
+		return DataTransObj.onSuccess(employeeVO, "登录成功");
 	}
 	
 	

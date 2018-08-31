@@ -89,7 +89,7 @@
 					class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 					<property name="viewClass"
 						value="org.springframework.web.servlet.view.JstlView" />
-					<property name="prefix" value="/WEB-INF/views/" />
+					<property name="prefix" value="/views/" />
 					<property name="suffix" value=".html">
 					</property>
 				</bean>
@@ -123,7 +123,7 @@
 					class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 					<property name="viewClass"
 						value="org.springframework.web.servlet.view.JstlView" />
-					<property name="prefix" value="/WEB-INF/views/" />
+					<property name="prefix" value="/views/" />
 					<property name="suffix" value=".html">
 					</property>
 				</bean>
@@ -135,11 +135,13 @@
 	
 	<mvc:interceptors>
 		<mvc:interceptor>
+			<mvc:mapping path="/*.u" />  
 			<mvc:mapping path="/**/*.u"/>
 			<bean class="com.metro.common.interceptor.UserInterceptor" />
 		</mvc:interceptor>
 	
 		<mvc:interceptor>
+			<mvc:mapping path="/*.m" />  
 			<mvc:mapping path="/**/*.m"/>
 			<bean class="com.metro.common.interceptor.SysInterceptor" />
 		</mvc:interceptor>
