@@ -7,9 +7,10 @@ import com.metro.basic.BaseService;
 import com.metro.basic.EntityDao;
 import com.metro.dao.UserMapper;
 import com.metro.model.User;
+import com.metro.service.UserService;
 
 @Service("userService")
-public class UserServiceImpl  extends BaseService<User,String>  {
+public class UserServiceImpl  extends BaseService<User,String> implements UserService  {
  
 	
 	@Autowired

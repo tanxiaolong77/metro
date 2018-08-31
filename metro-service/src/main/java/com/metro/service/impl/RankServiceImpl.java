@@ -7,9 +7,10 @@ import com.metro.basic.BaseService;
 import com.metro.basic.EntityDao;
 import com.metro.dao.RankMapper;
 import com.metro.model.Rank;
+import com.metro.service.RankService;
 
 @Service("rankService")
-public class RankServiceImpl extends BaseService<Rank,String>{
+public class RankServiceImpl extends BaseService<Rank,String> implements RankService{
     
 	
 	@Autowired

@@ -1,13 +1,6 @@
 package com.metro.web.controller;
 
-import java.io.File;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,15 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.metro.model.Jobs;
 import com.metro.model.JobsExample;
-import com.metro.request.QuestionUploadRequest;
 import com.metro.service.JobsService;
-import com.metro.util.DateUtil;
-import com.metro.util.QuestionExcelParser;
-import com.metro.util.ResourceUtil;
 import com.metro.vo.DataTransObj;
 
 /***
@@ -61,22 +49,15 @@ public class JobsController  extends BaseController{
 	 * 
 	 */
 	@RequestMapping(value = "jobSet.m", method = RequestMethod.POST)
-	public @ResponseBody DataTransObj jobSetInit(
+	public @ResponseBody DataTransObj jobSet(
 			@RequestParam(value="jobId", required = true) List<String> jobIds
 			) {
 		
-		//全部更改为不显示
-		Jobs job = new Jobs();
-		job.setIsShow("1");//不显示
-		JobsExample example = new JobsExample();
-		jobsService.updateByExample(job,example);
-		
-		if(jobIds != null && jobIds.size() > 0){
-			//将选择显示的部分修改
-			job.setIsShow("0");//显示
-			JobsExample.Criteria c = example.createCriteria();
-			c.andIdIn(jobIds);
-			jobsService.updateByExample(job,example);
+		try {
+			jobsService.jobSet(jobIds);
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return DataTransObj.onFailure(null,"更新失败");
 		}
 		return DataTransObj.onSuccess(null,"更新成功");
 	}

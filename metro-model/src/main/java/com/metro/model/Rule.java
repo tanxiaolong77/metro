@@ -9,7 +9,7 @@ public class Rule {
 
     private String questionType;
 
-    private String jobType;
+    private String jobId;
 
     private String matchLevel;
 
@@ -65,12 +65,12 @@ public class Rule {
         this.questionType = questionType == null ? null : questionType.trim();
     }
 
-    public String getJobType() {
-        return jobType;
+    public String getJobId() {
+        return jobId;
     }
 
-    public void setJobType(String jobType) {
-        this.jobType = jobType == null ? null : jobType.trim();
+    public void setJobId(String jobId) {
+        this.jobId = jobId == null ? null : jobId.trim();
     }
 
     public String getMatchLevel() {

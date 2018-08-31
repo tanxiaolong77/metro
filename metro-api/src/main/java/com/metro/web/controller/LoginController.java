@@ -144,7 +144,7 @@ public class LoginController  extends BaseController{
 	}
 	
 	/**
-	 * 管理严退出
+	 * 管理员退出
 	 * 
 	 * @return 跳转到登录页面
 	 */
@@ -154,4 +154,15 @@ public class LoginController  extends BaseController{
 		return "redirect:/tologinM";
 	}
 	
+	/**
+	 * 错误页面
+	 * 
+	 * @return 跳转到登录页面
+	 */
+	@RequestMapping("error")
+	public String error(HttpServletRequest request) {
+		request.getSession().invalidate();
+		return "redirect:/error";
+	}
+
 }

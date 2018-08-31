@@ -42,6 +42,9 @@ public class SysInterceptor implements HandlerInterceptor {
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
+		if(ex != null){
+			response.sendRedirect("/error");
+		}
 	}
 
 }

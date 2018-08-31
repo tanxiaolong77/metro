@@ -7,9 +7,10 @@ import com.metro.basic.BaseService;
 import com.metro.basic.EntityDao;
 import com.metro.dao.ScoreMapper;
 import com.metro.model.Score;
+import com.metro.service.ScoreService;
 
 @Service("scoreService")
-public class ScoreServiceImpl  extends BaseService<Score,String> {
+public class ScoreServiceImpl  extends BaseService<Score,String> implements ScoreService{
    
 	
 	@Autowired

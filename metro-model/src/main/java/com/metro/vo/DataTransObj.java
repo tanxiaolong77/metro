@@ -26,7 +26,9 @@ public class DataTransObj implements Serializable {
     /**
      * 响应描述
      */
-    public String rstDesc;
+    private String rstDesc;
+    
+    private int pageTotal;
 
     /**
      * 失败
@@ -56,6 +58,16 @@ public class DataTransObj implements Serializable {
         return dataTransObj;
     }
 
+	public static DataTransObj onSuccess(Object rstObj, String rstDesc,
+			int pageTotal) {
+		DataTransObj dataTransObj = new DataTransObj();
+		dataTransObj.setRstDesc(rstDesc);
+		dataTransObj.setRstFlag(true);
+		dataTransObj.setRstObj(rstObj);
+		dataTransObj.setPageTotal(pageTotal);
+		return dataTransObj;
+	}
+    
 	public boolean isRstFlag() {
 		return rstFlag;
 	}
@@ -78,5 +90,13 @@ public class DataTransObj implements Serializable {
 
 	public void setRstDesc(String rstDesc) {
 		this.rstDesc = rstDesc;
+	}
+
+	public int getPageTotal() {
+		return pageTotal;
+	}
+
+	public void setPageTotal(int pageTotal) {
+		this.pageTotal = pageTotal;
 	}
 }

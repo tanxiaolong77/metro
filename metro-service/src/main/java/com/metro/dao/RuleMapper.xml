@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="skill_type" property="skillType" jdbcType="VARCHAR" />
     <result column="question_type" property="questionType" jdbcType="VARCHAR" />
-    <result column="job_type" property="jobType" jdbcType="VARCHAR" />
+    <result column="job_id" property="jobId" jdbcType="VARCHAR" />
     <result column="match_level" property="matchLevel" jdbcType="VARCHAR" />
     <result column="auth_level" property="authLevel" jdbcType="VARCHAR" />
     <result column="content_type" property="contentType" jdbcType="VARCHAR" />
@@ -81,7 +81,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, skill_type, question_type, job_type, match_level, auth_level, content_type, one_choose, 
+    id, skill_type, question_type, job_id, match_level, auth_level, content_type, one_choose, 
     many_choose, judge, create_time, operater, update_time, modifier, verb_filed1, verb_filed2, 
     verb_filed3, verb_filed4, verb_filed5
   </sql>
@@ -118,14 +118,14 @@
   </delete>
   <insert id="insert" parameterType="com.metro.model.Rule" >
     insert into rule (id, skill_type, question_type, 
-      job_type, match_level, auth_level, 
+      job_id, match_level, auth_level, 
       content_type, one_choose, many_choose, 
       judge, create_time, operater, 
       update_time, modifier, verb_filed1, 
       verb_filed2, verb_filed3, verb_filed4, 
       verb_filed5)
     values (#{id,jdbcType=VARCHAR}, #{skillType,jdbcType=VARCHAR}, #{questionType,jdbcType=VARCHAR}, 
-      #{jobType,jdbcType=VARCHAR}, #{matchLevel,jdbcType=VARCHAR}, #{authLevel,jdbcType=VARCHAR}, 
+      #{jobId,jdbcType=VARCHAR}, #{matchLevel,jdbcType=VARCHAR}, #{authLevel,jdbcType=VARCHAR}, 
       #{contentType,jdbcType=VARCHAR}, #{oneChoose,jdbcType=VARCHAR}, #{manyChoose,jdbcType=VARCHAR}, 
       #{judge,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{operater,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR}, #{verbFiled1,jdbcType=VARCHAR}, 
@@ -144,8 +144,8 @@
       <if test="questionType != null" >
         question_type,
       </if>
-      <if test="jobType != null" >
-        job_type,
+      <if test="jobId != null" >
+        job_id,
       </if>
       <if test="matchLevel != null" >
         match_level,
@@ -203,8 +203,8 @@
       <if test="questionType != null" >
         #{questionType,jdbcType=VARCHAR},
       </if>
-      <if test="jobType != null" >
-        #{jobType,jdbcType=VARCHAR},
+      <if test="jobId != null" >
+        #{jobId,jdbcType=VARCHAR},
       </if>
       <if test="matchLevel != null" >
         #{matchLevel,jdbcType=VARCHAR},
@@ -271,8 +271,8 @@
       <if test="record.questionType != null" >
         question_type = #{record.questionType,jdbcType=VARCHAR},
       </if>
-      <if test="record.jobType != null" >
-        job_type = #{record.jobType,jdbcType=VARCHAR},
+      <if test="record.jobId != null" >
+        job_id = #{record.jobId,jdbcType=VARCHAR},
       </if>
       <if test="record.matchLevel != null" >
         match_level = #{record.matchLevel,jdbcType=VARCHAR},
@@ -329,7 +329,7 @@
     set id = #{record.id,jdbcType=VARCHAR},
       skill_type = #{record.skillType,jdbcType=VARCHAR},
       question_type = #{record.questionType,jdbcType=VARCHAR},
-      job_type = #{record.jobType,jdbcType=VARCHAR},
+      job_id = #{record.jobId,jdbcType=VARCHAR},
       match_level = #{record.matchLevel,jdbcType=VARCHAR},
       auth_level = #{record.authLevel,jdbcType=VARCHAR},
       content_type = #{record.contentType,jdbcType=VARCHAR},
@@ -358,8 +358,8 @@
       <if test="questionType != null" >
         question_type = #{questionType,jdbcType=VARCHAR},
       </if>
-      <if test="jobType != null" >
-        job_type = #{jobType,jdbcType=VARCHAR},
+      <if test="jobId != null" >
+        job_id = #{jobId,jdbcType=VARCHAR},
       </if>
       <if test="matchLevel != null" >
         match_level = #{matchLevel,jdbcType=VARCHAR},
@@ -413,7 +413,7 @@
     update rule
     set skill_type = #{skillType,jdbcType=VARCHAR},
       question_type = #{questionType,jdbcType=VARCHAR},
-      job_type = #{jobType,jdbcType=VARCHAR},
+      job_id = #{jobId,jdbcType=VARCHAR},
       match_level = #{matchLevel,jdbcType=VARCHAR},
       auth_level = #{authLevel,jdbcType=VARCHAR},
       content_type = #{contentType,jdbcType=VARCHAR},

@@ -48,4 +48,8 @@ public abstract class BaseService<T,PK> {
     public int updateByExample(T entity , BaseExample example) {
     	return getEntityDao().updateByExampleSelective(entity,example);
     }
+    
+    public int deleteByExample(BaseExample example) throws DataAccessException{
+    	return getEntityDao().deleteByExample(example);
+    }
 }

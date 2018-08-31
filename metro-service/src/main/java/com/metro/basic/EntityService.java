@@ -2,7 +2,6 @@ package com.metro.basic;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.dao.DataAccessException;
 
 import com.metro.model.BaseExample;
@@ -28,6 +27,7 @@ public interface EntityService<T,PK> {
     
     public int deleteById(PK id) throws DataAccessException;
     
-	int updateByExample(T entity , BaseExample example);
+	public int updateByExample(T entity , BaseExample example) throws DataAccessException;;
 
+    public int deleteByExample(BaseExample example) throws DataAccessException;
 }

@@ -315,73 +315,73 @@ public class RuleExample extends BaseExample {
             return (Criteria) this;
         }
 
-        public Criteria andJobTypeIsNull() {
-            addCriterion("job_type is null");
+        public Criteria andJobIdIsNull() {
+            addCriterion("job_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andJobTypeIsNotNull() {
-            addCriterion("job_type is not null");
+        public Criteria andJobIdIsNotNull() {
+            addCriterion("job_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andJobTypeEqualTo(String value) {
-            addCriterion("job_type =", value, "jobType");
+        public Criteria andJobIdEqualTo(String value) {
+            addCriterion("job_id =", value, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobTypeNotEqualTo(String value) {
-            addCriterion("job_type <>", value, "jobType");
+        public Criteria andJobIdNotEqualTo(String value) {
+            addCriterion("job_id <>", value, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobTypeGreaterThan(String value) {
-            addCriterion("job_type >", value, "jobType");
+        public Criteria andJobIdGreaterThan(String value) {
+            addCriterion("job_id >", value, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("job_type >=", value, "jobType");
+        public Criteria andJobIdGreaterThanOrEqualTo(String value) {
+            addCriterion("job_id >=", value, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobTypeLessThan(String value) {
-            addCriterion("job_type <", value, "jobType");
+        public Criteria andJobIdLessThan(String value) {
+            addCriterion("job_id <", value, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobTypeLessThanOrEqualTo(String value) {
-            addCriterion("job_type <=", value, "jobType");
+        public Criteria andJobIdLessThanOrEqualTo(String value) {
+            addCriterion("job_id <=", value, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobTypeLike(String value) {
-            addCriterion("job_type like", value, "jobType");
+        public Criteria andJobIdLike(String value) {
+            addCriterion("job_id like", value, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobTypeNotLike(String value) {
-            addCriterion("job_type not like", value, "jobType");
+        public Criteria andJobIdNotLike(String value) {
+            addCriterion("job_id not like", value, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobTypeIn(List<String> values) {
-            addCriterion("job_type in", values, "jobType");
+        public Criteria andJobIdIn(List<String> values) {
+            addCriterion("job_id in", values, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobTypeNotIn(List<String> values) {
-            addCriterion("job_type not in", values, "jobType");
+        public Criteria andJobIdNotIn(List<String> values) {
+            addCriterion("job_id not in", values, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobTypeBetween(String value1, String value2) {
-            addCriterion("job_type between", value1, value2, "jobType");
+        public Criteria andJobIdBetween(String value1, String value2) {
+            addCriterion("job_id between", value1, value2, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobTypeNotBetween(String value1, String value2) {
-            addCriterion("job_type not between", value1, value2, "jobType");
+        public Criteria andJobIdNotBetween(String value1, String value2) {
+            addCriterion("job_id not between", value1, value2, "jobId");
             return (Criteria) this;
         }
 
