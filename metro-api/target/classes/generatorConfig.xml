@@ -43,7 +43,7 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<table tableName="%" enableCountByExample="true"
+		<table tableName="jobs" enableCountByExample="true"
 			enableUpdateByExample="true" enableDeleteByPrimaryKey="true"
 			enableSelectByExample="true" selectByExampleQueryId="true">
 			<property name="useActualColumnNames" value="false" />

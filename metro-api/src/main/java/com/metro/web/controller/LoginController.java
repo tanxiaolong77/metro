@@ -1,6 +1,7 @@
 package com.metro.web.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,23 +10,23 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.metro.common.constant.Constant;
-import com.metro.model.SysUser;
-import com.metro.service.AnswerService;
-import com.metro.util.SysUserUtils;
+import com.metro.model.Employee;
+import com.metro.model.EmployeeExample;
+import com.metro.service.EmployeeService;
 
 
 @Controller
 @RequestMapping(value="/")
 public class LoginController  extends BaseController{
 	
+	
 	@Autowired
-	private AnswerService sysUserService;
+	private EmployeeService employeeService;
 
 //	/**
 //	 * 管理主页
@@ -83,39 +84,35 @@ public class LoginController  extends BaseController{
 //		return msg;
 //	}
 //	
-//	/**
-//	 * 普通用户登录
-//	 * 
-//	 * @param username
-//	 * @param password
-//	 * @param code
-//	 * @return
-//	 */
-//	@RequestMapping(value = "login", method = RequestMethod.POST)
-//	public @ResponseBody Map<String, Object> login(String username,
-//			String password, String code, HttpServletRequest request) {
-//
-//		Map<String, Object> msg = new HashMap<String, Object>();
-//		HttpSession session = request.getSession();
-//		code = StringUtils.trim(code);
-//		username = StringUtils.trim(username);
-//		password = StringUtils.trim(password);
-//		Object scode = session.getAttribute("code");
-//		String sessionCode = null;
-//		if (scode != null)
-//			sessionCode = scode.toString();
-//		if (!StringUtils.equalsIgnoreCase(code, sessionCode)) {
-//			msg.put("error", "验证码错误");
-//			return msg;
-//		}
-//		SysUser user = sysUserService.checkUser(username, password);
-//		if (null != user) {
-//			session.setAttribute(Constant.SESSION_LOGIN_USER, user);
-//		} else {
-//			msg.put("error", "用户名或密码错误");
-//		}
-//		return msg;
-//	}
+	/**
+	 * 普通用户登录
+	 * 
+	 * @param username
+	 * @param password
+	 * @param code
+	 * @return
+	 */
+	@RequestMapping(value = "login", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> login(String realName,
+			String usercard, HttpServletRequest request) {
+
+		Map<String, Object> msg = new HashMap<String, Object>();
+		HttpSession session = request.getSession();
+		realName = StringUtils.trim(realName);
+		usercard = StringUtils.trim(usercard);
+
+		EmployeeExample example = new EmployeeExample();
+		EmployeeExample.Criteria c = example.createCriteria();
+		c.andUserCardEqualTo(usercard);
+		c.andRealNameEqualTo(realName);
+		List<Employee> user = employeeService.selectByExample(example);
+		if (null != user) {
+			session.setAttribute(Constant.SESSION_LOGIN_USER, user);
+		} else {
+			msg.put("error", "用户名或密码错误");
+		}
+		return msg;
+	}
 	
 	
 	/**
