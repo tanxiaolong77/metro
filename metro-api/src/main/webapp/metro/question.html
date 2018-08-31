@@ -1,0 +1,562 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0306)http://exercise.5any.com/Exercise/WebUI/Exercise/Do?CourseName=%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E5%88%86%E6%9E%90&DoOrShow=1&DoPaperTimestamp=636711381992538949&doType=1&isCorrect=1&ShowStatus=2&StudentPaperId=8658868&ViewPaperId=T_19_7420&DoPaperSignText=fe627eac3a05c54f64ecf083d0b1e939&sign_type=MD5 -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+  <title>地铁考试</title> 
+  <link href="./static/css/common.css" rel="stylesheet" type="text/css" /> 
+  <link href="./static/css/new_win.css" rel="stylesheet" type="text/css" /> 
+  <link href="./static/css/public02.css" rel="stylesheet" type="text/css" /> 
+  <script type="text/javascript" src="./static/js/test/jquery-1.7.2.js"></script> 
+  <script src="./static/js/test/MicrosoftAjax.js" type="text/javascript"></script> 
+  <script src="./static/js/test/MicrosoftMvcAjax.js" type="text/javascript"></script> 
+  <script src="./static/js/test/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script> 
+  <script src="./static/js/test/com._5any.Frameworks.UI.js" type="text/javascript"></script> 
+  <!--[if !IE]><!--> 
+  <link rel="stylesheet" href="./static/uploadifive.css" /> 
+  <script type="text/javascript" src="./static/js/test/jquery.uploadifive.js"></script> 
+  <script type="text/javascript">
+          $(function(){
+             //上传文件控件
+             $("#uploadifyImage").uploadifive({
+                    buttonClass: 'UploadifyFile',
+                    buttonText: '上传答案',
+                    fileType:"*.doc|*.docx|*.rar|*.zip",
+                    fileSizeLimit: '10MB',
+                    uploadScript: '/Exercise/WebUI/Exercise/UploadFile/' + '8658868',
+                    removeCompleted: true,
+                    multi: false, //是否允许选多个文件
+                    auto: true,
+                    onUploadComplete: function (file, data) {//上传完后执行 data是返回保存成功后的文件名fileName;
+                    var rs = data.split('|');
+                    if (rs[0] == "OK") {
+                    $("#AnwerFileName").html(rs[1]);
+                    $("#AnwerFileName").attr('href', rs[2]);
+                    }
+                    else {
+                    alert(rs[0]);
+                    }
+                    },
+                    height: 31,
+                    width: 110
+                    });
+          })
+          </script> 
+  <!--<![endif]--> 
+  <!--[if lt IE 10]>
+    <link href="/Exercise/WebUI/Content/upload/uploadify.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/Exercise/WebUI/Content/upload/jquery.uploadify.js?dfdf"></script>
+          <script type="text/javascript">
+          $(function(){
+            //上传文件控件
+            $("#uploadifyImage").uploadify({
+                'fileTypeDesc': '请上传' + '*.doc;*.docx;*.rar;*.zip' + '格式的文件',
+                'fileTypeExts': '*.doc;*.docx;*.rar;*.zip',
+                'successTimeout': 25,
+                'buttonImage': '/Exercise/WebUI/Content/upload/upload_bg.jpg',
+                swf: '/Exercise/WebUI/Content/upload/uploadify.swf',
+                uploader: '/Exercise/WebUI/Exercise/UploadFile/' + '8658868',
+                multi: false, //是否允许选多个文件
+                width: 95,
+                height: 31,
+                auto: true,
+
+                onUploadStart: function (file) {//上传开始前执行 file.name 原文件名 file.size 文件大小字节为单位 
+
+                },
+                onUploadSuccess: function (file, data, response) {//上传完后执行 data是返回保存成功后的文件名fileName
+                    var rs = data.split('|');
+                    if (rs[0] == "OK") {
+                        $("#AnwerFileName").html(rs[1]);
+                        $("#AnwerFileName").attr('href', rs[2]);
+                    }
+                    else {
+                        alert(rs[0]);
+                    }
+                }
+
+            });
+    });
+          </script>
+   <![endif]--> 
+  <script type="text/javascript">
+    $(document).ready(function () {
+        ShowWaiting('正在加载试题，请稍候...');
+        Stop();
+        var h = $(document).height();
+        $(".overlay").css({ "height": h });
+
+        $(".action").click(ShowWaiting);
+        $("span[id^='A_']").click(AttentionProblem);
+        //绑定收藏
+        BindCare();
+      
+        if ($("#DoStatus").val() == '1' && $("#CloseAnwer").val() != '1') {
+            if ('600000' != '0') {
+                //定时保存试卷
+                // setInterval(function () {
+                // $("#savebtn").click();
+
+                // }, '600000');
+            }
+        }
+    });
+
+
+    //绑定收藏
+    function BindCare() {
+        $("span[id^='A_']").each(function () {
+            var itemId = $(this).attr("Id").substr(2);
+            var careProblem = ''.split(',')
+
+
+            if ($.inArray(itemId, careProblem) > -1) {
+                $(this).html('取消收藏');
+                $(this).removeClass().addClass("scgt_bg02"); //取消收藏
+
+            }
+        });
+
+    }
+
+
+    //收藏试题
+    function AttentionProblem(obj) {
+
+        var problemId = $(obj.target).attr("Id").substr(2);
+        var operateType = '';
+        if ($(obj.target).hasClass("scgt_bg02") == true) {
+            operateType = 'CancelCare';
+        }
+        var targetUrl = '/Exercise/WebUI/Exercise/CareProblem/' + problemId + '?CourseId=' + $('#CourseId').val() + '&OperateType=' + operateType;
+
+        AjaxSubmit(targetUrl, "GET", function (data) {
+            //确认按钮事件
+            if (data.AjaxResult == "OK") {
+                if ($(obj.target).hasClass("scgt_bg02") != true) {
+                    alert("收藏试题成功！");
+                    //取消收藏
+                    $(obj.target).html('取消收藏');
+                    $(obj.target).removeClass().addClass("scgt_bg02");
+                }
+                else {
+                    alert("已取消收藏！");
+                    $(obj.target).html('收藏试题');
+                    $(obj.target).removeClass().addClass("scgt_bg01");
+                }
+            }
+            else {
+                alert(data.AjaxResult);
+            }
+        });
+
+    }
+
+    function ShowWaiting(loadingWord) {
+
+        if (loadingWord != '') {
+            $("#loadingWord").html(loadingWord);
+        }
+        $(".overlay").css({ 'display': 'block', 'opacity': '0.8' });
+
+        $(".showbox").stop(true).animate({ 'margin-top': '300px', 'opacity': '1' }, 200);
+
+        //            setTimeout(function () {
+
+        //                $(".showbox").stop(true).animate({ 'margin-top': '250px', 'opacity': '0' }, 400);
+
+        //                $(".overlay").css({ 'display': 'none', 'opacity': '0' });
+
+        //            }, 800);
+
+    }
+
+
+
+
+    function Stop() {
+        $(".showbox").stop(true).animate({ 'margin-top': '250px', 'opacity': '0' }, 400);
+
+        $(".overlay").css({ 'display': 'none', 'opacity': '0' });
+    }
+
+
+
+
+    //    //刷新列表
+    //    window.onunload = function () {
+    //        //window.opener.location.reload();
+    //        window.opener.location.href = window.opener.location.href;
+    //    }
+
+
+    //Mvc3 Ajax 执行成功后的调用函数(context:json)
+    function AjaxSubmitCorrectResultCheck(context) {
+        Stop();
+
+        setTimeout(function () {
+            if (context.AjaxResult == 'OK') {
+                alert("提交成功，点击确定将关闭该页，并刷新批改列表!"); //"OK"为执行成功的返回值。
+                window.close();
+
+
+            }
+            else if (context.AjaxResult.indexOf('NotComplete！') > -1) {
+                //有未做的试题
+
+                var notCompleteProblem = context.AjaxResult.replace(/NotComplete！/ig, "");
+
+                var notCompleteInfo = notCompleteProblem.split(",");
+                if (confirm("您还有" + notCompleteInfo[1] + "道题目没有回答，是否不做这些试题，继续提交，未答的试题将记零分！")) {
+                    $("#confirm").val(1); //二次确认提交；
+                    //CheckComplete();
+                    $("#submitBtn").click();
+                }
+                else {
+                    $("#P_" + notCompleteInfo[0]).focus();
+                }
+            }
+            else {
+                alert(context.AjaxResult);
+
+            }
+        }, 600);
+    }
+
+    //保存操作返回调用函数
+    function AjaxSaveCorrectResultCheck(context) {
+
+
+        if (context.AjaxResult == 'OK') {
+            // alert("保存成功!"); //"OK"为执行成功的返回值。
+            $("#loadingWord").html("保存成功！");
+
+        } else {
+            alert(context.AjaxResult);
+        }
+        setTimeout(Stop, 1000);
+    }
+    function CheckComplete() {
+        $("#SubmitType").val("submit");
+        $("#DoExercise").attr("data-ajax-success", "AjaxSubmitCorrectResultCheck");
+        if ($("#DoExercise").attr("action") == '') {
+            $("#DoExercise").attr("action", '/Exercise/WebUI/Exercise/DoExer');
+        }
+        //遍历,编辑控件bug，在提交前调用编辑器方法赋值
+        for (var i = 0; i < window.frames.length; i++) {
+            window.frames[i].ie();
+        }
+        ShowWaiting('正在保存试卷，请稍候...');
+    }
+
+    function SavePaper() {
+
+        $("#SubmitType").val("save");
+        $("#DoExercise").attr("data-ajax-success", "AjaxSaveCorrectResultCheck");
+        if ($("#DoExercise").attr("action") == '') {
+            $("#DoExercise").attr("action", '/Exercise/WebUI/Exercise/DoExer');
+        }
+        //遍历,编辑控件bug，在提交前调用编辑器方法赋值
+        for (var i = 0; i < window.frames.length; i++) {
+            window.frames[i].ie();
+        }
+        ShowWaiting('正在保存试卷，请稍候...');
+
+    }
+
+    function AutoSavePaper() {
+
+        $("#SubmitType").val("save");
+        $("#DoExercise").attr("data-ajax-success", "");
+        if ($("#DoExercise").attr("action") == '') {
+            $("#DoExercise").attr("action", '/Exercise/WebUI/Exercise/DoExer');
+        }
+        //遍历,编辑控件bug，在提交前调用编辑器方法赋值
+        for (var i = 0; i < window.frames.length; i++) {
+            window.frames[i].ie();
+        }
+        //ShowWaiting('正在保存试卷，请稍候...');
+    }
+
+    $(window).unload(function () { window.opener.location.href = window.opener.location.href; });
+
+</script> 
+  <!-- WebGrid样式 --> 
+  <style type="text/css">
+          .webgrid th,.webgrid td
+        {
+            text-align:center;
+        }
+
+*{margin:0;padding:0;list-style-type:none;}
+a,img{border:0;}
+.demo{margin:100px auto 0 auto;width:400px;text-align:center;font-size:18px;}
+.demo .action{color:#3366cc;text-decoration:none;font-family:"微软雅黑","宋体";}
+
+.overlay{position:fixed;top:0;right:0;bottom:0;left:0;z-index:998;width:100%;height:100%;_padding:0 20px 0 0;background:#f6f4f5;display:none;}
+.showbox{position:fixed;top:0;left:50%;z-index:9999;opacity:0;filter:alpha(opacity=0);margin-left:-80px;}
+*html,*html body{background-image:url(about:blank);background-attachment:fixed;}
+*html .showbox,*html .overlay{position:absolute;top:expression(eval(document.documentElement.scrollTop));}
+#AjaxLoading{border:1px solid #8CBEDA;color:#37a;font-size:12px;font-weight:bold;}
+#AjaxLoading div.loadingWord{width:220px;height:50px;line-height:50px;border:2px solid #D6E7F2;background:#fff;}
+#AjaxLoading img{margin:10px 15px;float:left;display:inline;}
+</style> 
+ </head> 
+ <body> 
+  <div style=" background-color:#fafafa;"> 
+   <div class="bg2"> 
+    <!--项部结束--> 
+    <div class="middle_content"> 
+     <!--内容主体开始--> 
+     <div class="overlay" style="display: none; opacity: 0; height: 7162px;"></div> 
+     <div id="AjaxLoading" class="showbox" onclick="Stop();" style="opacity: 0; margin-top: 250px;"> 
+      <div class="loadingWord">
+       <img src="./static/waiting.gif" />
+       <div id="loadingWord" style="height:50px;line-height:50px;">
+        正在加载试题，请稍候...
+       </div>
+      </div> 
+     </div> 
+     <script type="text/javascript">    </script> 
+     <div class="con_content_bg"> 
+      <div class="top_word"> 
+       <p class="lx_title01">2018年8月份考试作业算法设计分析第1次</p> 
+       <p class="lx_title02">算法设计分析</p> 
+      </div> 
+      <div> 
+       <table width="916" border="0" cellpadding="0" cellspacing="1" class="table_style02"> 
+        <tbody>
+         <tr bgcolor="#fefef6" class="word_color44"> 
+          <td>题号</td> 
+          <td>一</td>
+          <td>二 </td>
+          <td>三 </td>
+          <td>合计</td> 
+         </tr> 
+         <tr> 
+          <td class="word_color44" style="width:120px;">题量</td> 
+          <td>0 / 40</td> 
+          <td>0 / 30</td> 
+          <td>0 / 30</td> 
+          <td style=" width:100px;">0 / 100</td> 
+         </tr> 
+         <tr> 
+          <td class="word_color44" style="width:120px;">分值</td> 
+          <td>0 / 40</td> 
+          <td>0 / 30</td> 
+          <td>0 / 30</td> 
+          <td style=" width:100px;">0 / 100</td> 
+         </tr> 
+        </tbody>
+       </table> 
+      </div> 
+      <form action="" data-ajax="true" data-ajax-method="POST" data-ajax-success="AjaxSubmitCorrectResultCheck" id="DoExercise" method="post" name="DoExercise"> 
+       <input type="hidden" id="SubmitType" name="SubmitType" value="save" /> 
+       <input type="hidden" id="" name="" value="" /> 
+       <div class="lx_cc_content2"> 
+        <!-- 试卷正文开始 --> 
+        <div class="word_con" id="302"> 
+         <p>一 、 单项选择题 <font class="word_color5">(共 40 题、0 / 40 分 )</font> </p> 
+         <br /> 
+        </div> 
+        <div class="word_con02" id="P_6f961f6a-a121-4139-83be-d3b44c68a165"> 
+         <div> 
+          <div style=" float:left;">
+           1、
+          </div>
+          <div style=" float:left;">
+           <p>设 m[i, j] 为计算矩阵链A<sub>i…j</sub> 所需的乘法运算次数的最小值，则矩阵链A<sub>1…n</sub>所需的乘法运算次数的最小值为（&nbsp; ）。</p> 
+          </div>
+          <div style=" clear:both;"></div>
+         </div> 
+         <ul> 
+          <li class="word_color5"> 
+           <div class="dx_word_style_left"> 
+            <input name="6f961f6a-a121-4139-83be-d3b44c68a165" id="017b50ea-a822-f4fe-fc2d-7dde293c83c2" type="radio" value="017b50ea-a822-f4fe-fc2d-7dde293c83c2" class="dx_style" /> 
+           </div> 
+           <div class="dx_word_style">
+            <label for="017b50ea-a822-f4fe-fc2d-7dde293c83c2">
+             <div> 
+              <div style=" float:left;">
+               A、
+              </div>
+              <div style=" float:left;">
+               m[0,n]
+              </div>
+              <div style=" clear:both;"></div>
+             </div> </label>
+           </div> 
+           <div style=" clear:both"></div> </li> 
+          <li class="word_color5"> 
+           <div class="dx_word_style_left"> 
+            <input name="6f961f6a-a121-4139-83be-d3b44c68a165" id="c0b4203f-65be-9bd3-175c-bb60e60a8864" type="radio" value="c0b4203f-65be-9bd3-175c-bb60e60a8864" class="dx_style" /> 
+           </div> 
+           <div class="dx_word_style">
+            <label for="c0b4203f-65be-9bd3-175c-bb60e60a8864">
+             <div> 
+              <div style=" float:left;">
+               B、
+              </div>
+              <div style=" float:left;">
+               m[1,n-1]
+              </div>
+              <div style=" clear:both;"></div>
+             </div> </label>
+           </div> 
+           <div style=" clear:both"></div> </li> 
+          <li class="word_color5"> 
+           <div class="dx_word_style_left"> 
+            <input name="6f961f6a-a121-4139-83be-d3b44c68a165" id="7635df4f-e610-c2ac-a778-cac4e8ae98fa" type="radio" value="7635df4f-e610-c2ac-a778-cac4e8ae98fa" class="dx_style" /> 
+           </div> 
+           <div class="dx_word_style">
+            <label for="7635df4f-e610-c2ac-a778-cac4e8ae98fa">
+             <div> 
+              <div style=" float:left;">
+               C、
+              </div>
+              <div style=" float:left;">
+               m[1,n+1]
+              </div>
+              <div style=" clear:both;"></div>
+             </div> </label>
+           </div> 
+           <div style=" clear:both"></div> </li> 
+          <li class="word_color5"> 
+           <div class="dx_word_style_left"> 
+            <input name="6f961f6a-a121-4139-83be-d3b44c68a165" id="2cdd29f6-ae61-dc77-abe5-84e126080461" type="radio" value="2cdd29f6-ae61-dc77-abe5-84e126080461" class="dx_style" /> 
+           </div> 
+           <div class="dx_word_style">
+            <label for="2cdd29f6-ae61-dc77-abe5-84e126080461">
+             <div> 
+              <div style=" float:left;">
+               D、
+              </div>
+              <div style=" float:left;">
+               m[1,n]
+              </div>
+              <div style=" clear:both;"></div>
+             </div> </label>
+           </div> 
+           <div style=" clear:both"></div> </li> 
+          <li>&nbsp;</li> 
+         </ul> 
+        </div> 
+        <div class="word_con" id="303"> 
+         <p>二 、 多选题 <font class="word_color5">(共 30 题、0 / 30 分 )</font> </p> 
+         <br /> 
+        </div> 
+        <div class="word_con02" id="P_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> 
+         <div> 
+          <div style=" float:left;">
+           1、
+          </div>
+          <div style=" float:left;">
+           <p>下列属于蔬菜的有。（&nbsp;&nbsp; ）<br /></p> 
+          </div>
+          <div style=" clear:both;"></div>
+         </div> 
+         <ul> 
+          <li class="word_color5"> 
+           <div class="dx_word_style_left"> 
+            <input name="2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" id="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" type="checkbox" value="id" class="dx_style" /> 
+           </div> 
+           <div class="dx_word_style">
+            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> 菠菜</label>
+           </div> 
+           <div style=" clear:both"></div> </li> 
+          <li class="word_color5"> 
+           <div class="dx_word_style_left"> 
+            <input name="2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" id="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" type="checkbox" value="id" class="dx_style" /> 
+           </div> 
+           <div class="dx_word_style">
+            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> 生菜</label>
+           </div> 
+           <div style=" clear:both"></div> </li> 
+          <li class="word_color5"> 
+           <div class="dx_word_style_left"> 
+            <input name="2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" id="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" type="checkbox" value="id" class="dx_style" /> 
+           </div> 
+           <div class="dx_word_style">
+            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> 大白菜</label>
+           </div> 
+           <div style=" clear:both"></div> </li> 
+          <li class="word_color5"> 
+           <div class="dx_word_style_left"> 
+            <input name="2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" id="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" type="checkbox" value="id" class="dx_style" /> 
+           </div> 
+           <div class="dx_word_style">
+            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> 芒果</label>
+           </div> 
+           <div style=" clear:both"></div> </li> 
+         </ul> 
+        </div> 
+        <div class="word_con" id="303"> 
+         <p>三 、 判断题 <font class="word_color5">(共 30 题、0 / 30 分 )</font> </p> 
+         <br /> 
+        </div> 
+        <div class="word_con02" id="P_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> 
+         <div> 
+          <div style=" float:left;">
+           1、
+          </div>
+          <div style=" float:left;">
+           <p>应用Huffmann编码的目的是用更少的比特流表达更多的信息。（&nbsp;&nbsp; ）<br /></p> 
+          </div>
+          <div style=" clear:both;"></div>
+         </div> 
+         <ul> 
+          <li class="word_color5"> 
+           <div class="dx_word_style_left"> 
+            <input name="2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" id="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" type="radio" value="true" class="dx_style" /> 
+           </div> 
+           <div class="dx_word_style">
+            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> 正确</label>
+           </div> 
+           <div style=" clear:both"></div> </li> 
+          <li class="word_color5"> 
+           <div class="dx_word_style_left"> 
+            <input name="2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" id="false_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" type="radio" value="false" class="dx_style" /> 
+           </div> 
+           <div class="dx_word_style">
+            <label for="false_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> 错误</label>
+           </div> 
+           <div style=" clear:both"></div> </li> 
+          <li>&nbsp;</li> 
+         </ul> 
+        </div> 
+        <!-- 试卷正文结束 --> 
+        <div> 
+         <div class="lx_llook_whole"> 
+          <div class="lx_llook_01"> 
+           <span style=" line-height:36px;">特别提醒：</span>
+          </div> 
+          <div class="lx_llook_02">
+           <p>1、本试卷共有各类试题总数（100）题；</p> 
+           <p> 2、题目由系统自动判卷。</p> 
+           <p> 3、请认真回答所有试题后及时提交试卷。</p> 
+          </div> 
+          <div class="lx_llook_03"> 
+          </div> 
+         </div> 
+        </div> 
+        <!----> 
+       </div> 
+       <div class="zj_btn_layout3"> 
+        <span> <input name="" type="submit" value="保存答案" onclick="SavePaper();" class="zj_sub_btn" /> <input name="" type="submit" value="保存答案" onclick="AutoSavePaper();" id="savebtn" class="zj_sub_btn" style=" display:none;" /> </span> 
+        <span> <input name="submitBtn" type="submit" value="提交作业" onclick="CheckComplete();" id="submitBtn" class="zj_sub_btn" /> </span> 
+        <br /> 
+        <br /> 
+        <br /> 
+       </div> 
+      </form> 
+      <input id="DoStatus" type="hidden" value="1" /> 
+      <input id="CloseAnwer" type="hidden" value="0" /> 
+     </div> &gt; 
+     <!--内容主体结束--> 
+     <div class="clearfloat"></div> 
+     <!--<div class="middle_content">重庆大学网络教育学院版权所有　Copyright 2007-2012 5ANY.com,All Rights Reserved.　渝ICP备03003084号 </div>--> 
+    </div> 
+   </div> 
+  </div> 
+ </body>
+</html>
