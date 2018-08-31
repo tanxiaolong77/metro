@@ -1,29 +1,36 @@
-package com.metro.model;
+package com.metro.vo;
 
 import java.util.Date;
 
-public class Rule {
+public class QuestionVo implements java.io.Serializable {
+	
+	private static final long serialVersionUID = 1L;
+			
     private String id;
+
+    private String questionDesc;
+
+    private String questionImage;
+
+    private String score;
+
+    private String answerId;
 
     private String skillType;
 
-    private String questionType;
+    private String testType;
 
-    private String jobId;
+    private String jobsId;
+
+    private String jobsName;
 
     private String matchLevel;
 
     private String authLevel;
 
     private String contentType;
-    
-    private String contentRate;
 
-    private String oneChoose;
-
-    private String manyChoose;
-
-    private String judge;
+    private String questionType;
 
     private Date createTime;
 
@@ -42,13 +49,55 @@ public class Rule {
     private String verbFiled4;
 
     private String verbFiled5;
+    
+    private int count;
+    
+	public int getCount() {
+		return count;
+	}
 
-    public String getId() {
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    public String getQuestionDesc() {
+        return questionDesc;
+    }
+
+    public void setQuestionDesc(String questionDesc) {
+        this.questionDesc = questionDesc == null ? null : questionDesc.trim();
+    }
+
+    public String getQuestionImage() {
+        return questionImage;
+    }
+
+    public void setQuestionImage(String questionImage) {
+        this.questionImage = questionImage == null ? null : questionImage.trim();
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score == null ? null : score.trim();
+    }
+
+    public String getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(String answerId) {
+        this.answerId = answerId == null ? null : answerId.trim();
     }
 
     public String getSkillType() {
@@ -59,20 +108,28 @@ public class Rule {
         this.skillType = skillType == null ? null : skillType.trim();
     }
 
-    public String getQuestionType() {
-        return questionType;
+    public String getTestType() {
+        return testType;
     }
 
-    public void setQuestionType(String questionType) {
-        this.questionType = questionType == null ? null : questionType.trim();
+    public void setTestType(String testType) {
+        this.testType = testType == null ? null : testType.trim();
     }
 
-    public String getJobId() {
-        return jobId;
+    public String getJobsId() {
+        return jobsId;
     }
 
-    public void setJobId(String jobId) {
-        this.jobId = jobId == null ? null : jobId.trim();
+    public void setJobsId(String jobsId) {
+        this.jobsId = jobsId == null ? null : jobsId.trim();
+    }
+
+    public String getJobsName() {
+        return jobsName;
+    }
+
+    public void setJobsName(String jobsName) {
+        this.jobsName = jobsName == null ? null : jobsName.trim();
     }
 
     public String getMatchLevel() {
@@ -99,36 +156,12 @@ public class Rule {
         this.contentType = contentType == null ? null : contentType.trim();
     }
 
-    public String getContentRate() {
-		return contentRate;
-	}
-
-	public void setContentRate(String contentRate) {
-		this.contentRate = contentRate;
-	}
-
-	public String getOneChoose() {
-        return oneChoose;
+    public String getQuestionType() {
+        return questionType;
     }
 
-    public void setOneChoose(String oneChoose) {
-        this.oneChoose = oneChoose == null ? null : oneChoose.trim();
-    }
-
-    public String getManyChoose() {
-        return manyChoose;
-    }
-
-    public void setManyChoose(String manyChoose) {
-        this.manyChoose = manyChoose == null ? null : manyChoose.trim();
-    }
-
-    public String getJudge() {
-        return judge;
-    }
-
-    public void setJudge(String judge) {
-        this.judge = judge == null ? null : judge.trim();
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType == null ? null : questionType.trim();
     }
 
     public Date getCreateTime() {

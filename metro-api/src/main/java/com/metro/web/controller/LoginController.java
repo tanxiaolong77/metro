@@ -161,7 +161,6 @@ public class LoginController  extends BaseController{
 	 */
 	@RequestMapping("error")
 	public String error(HttpServletRequest request) {
-		request.getSession().invalidate();
 		return "redirect:/error";
 	}
 

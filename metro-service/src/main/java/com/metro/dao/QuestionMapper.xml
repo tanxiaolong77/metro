@@ -478,4 +478,16 @@
       verb_filed5 = #{verbFiled5,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  
+  <select id="countByQuestionVo" parameterType="com.metro.vo.QuestionVo" >
+    SELECT 
+    	<include refid="Base_Column_List" />
+    from question
+    where skill_type = #{skillType,jdbcType=VARCHAR}
+    and test_type = #{testType,jdbcType=VARCHAR}
+    and jobs_id = #{jobsId,jdbcType=VARCHAR}
+    and match_level = #{matchLevel,jdbcType=VARCHAR}
+    order by RAND() limit #{count,jdbcType=Integer}
+  </select>
+  
 </mapper>

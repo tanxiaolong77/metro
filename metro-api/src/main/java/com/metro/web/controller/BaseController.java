@@ -17,8 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class BaseController {
 	
-	public String toIndex(){
-		return "redirect:/index";
+	public String error() {
+		return "redirect:/error";
 	}
 	
 	public ModelAndView toIndexMAV(){

@@ -1,7 +1,5 @@
 package com.metro.vo;
 
-import java.io.Serializable;
-
 /**
  * 微信用户
  * 
