@@ -91,7 +91,7 @@ public class MatchController  extends BaseController{
 	 * 
 	 */
 	@RequestMapping(value = "matchSetInit.m", method = RequestMethod.GET)
-	public String matchSetInit(ModelMap model,@RequestParam(value="id") String id) {
+	public String matchSetInit(ModelMap model,String id) {
 		if(StringUtils.isNotBlank(id)){
 			model.put("match",matchService.getById(id));
 		}
@@ -107,12 +107,12 @@ public class MatchController  extends BaseController{
 	 */
 	@RequestMapping(value = "matchSet.m", method = RequestMethod.POST)
 	public @ResponseBody DataTransObj matchSet(
-			@RequestParam(value="matchName") String matchName,
+			String matchName,
 			@RequestParam(value="jobsId", required = true) String jobsId,
 			@RequestParam(value="startDate", required = true) String startDate,
 			@RequestParam(value="endDate", required = true) String endDate,
 			@RequestParam(value="matchLevel", required = true) String matchLevel,
-			@RequestParam(value="id") String id) {
+			String id) {
 		
 		try {
 			Match match = new Match();
