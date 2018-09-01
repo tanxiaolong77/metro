@@ -487,7 +487,7 @@
     and test_type = #{testType,jdbcType=VARCHAR}
     and jobs_id = #{jobsId,jdbcType=VARCHAR}
     and match_level = #{matchLevel,jdbcType=VARCHAR}
-    order by RAND() limit #{count,jdbcType=Integer}
+    order by RAND() limit #{count}
   </select>
   
 </mapper>
