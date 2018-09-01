@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="format-detection" content="telephone=no">
+		<title>北京地铁</title>
+		<link href="css/iconfont.min.css" rel="stylesheet" type="text/css" />
+		<link href="css/amazeui.css" rel="stylesheet" type="text/css">
+		<link href="css/amazeui.datetimepicker.css" rel="stylesheet" type="text/css/">
+		<link href="css/all.css" rel="stylesheet" type="text/css" />
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+		<script src="js/amazeui.min.js"></script>
+		<script src="js/amazeui.datetimepicker.min.js"></script>
+		<script src="js/all.js"></script>
+	</head>
+	<style>
+		.table {
+			height: 100%;
+			padding-top: 0.1px;
+		}
+		
+		.nav {
+			height: 80px;
+			line-height: 80px;
+		}
+		
+		.nav-content {
+			margin-left: 100px;
+			border-bottom: 1px solid #cccc;
+		}
+		
+		.index-footer {
+			position: absolute;
+			bottom: 0px;
+			text-align: center;
+			width: 100%;
+		}
+		
+		.table-content {
+			margin-top: 50px;
+			text-align: center;
+		}
+		
+		ul {
+			padding-left: 0 !important;
+		}
+		
+		.submit-div {
+			padding-left: 2em;
+		}
+		
+		.ta-r {
+			text-align: right;
+		}
+		
+		.ta-l {
+			text-align: left;
+		}
+		
+		.title-fr {
+			float: right;
+			width: 140px;
+		}
+		
+		.title-fl {
+			float: left;
+			width: 400px;
+		}
+		.width-100{
+			width: 100%;
+			height: 40px;
+		}
+		.title-fl .am-dropdown{
+			width: 100% !important;
+		}
+	</style>
+
+	<body>
+		<div class="form">
+			<div class="index-header clearfix">
+				<div class="header-left fl">
+					<div class="logo-bg"></div>
+				</div>
+				<div class="header-center fl">
+					<h1 class="header-h1">北京地铁答题系统</h1>
+				</div>
+				<div class="header-right fr">
+					<button class="outline">退出</button>
+				</div>
+			</div>
+			<div class="nav">
+				<div class="nav-content">
+					<span>导航页:</span>
+					<span>首页-题库导入</span>
+				</div>
+			</div>
+			<div class="table-content">
+				<form>
+					<ul class="clearfix">
+						<li class=" creditwe-search-li">
+							<div class="am-g">
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-r">
+									<div class="ta-l title-fr">
+										<span>文本框</span><span class="must">（必选）：</span>
+									</div>
+								</div>
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-l">
+									<div class="ta-l title-fl">
+										<input type="type" class="width-100" class="userid search-input" />
+
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class=" creditwe-search-li">
+							<div class="am-g">
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-r">
+									<div class="ta-l title-fr">
+										<span>下拉框</span><span class="must">（必选）：</span>
+									</div>
+								</div>
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-l">
+									<div class="ta-l title-fl">
+										<select class="width-100" data-am-selected="{btnWidth: '140px', btnSize: 'sm', btnStyle: 'secondary'}">
+											<option value='0'>请选择</option>
+											<option value="id">商户编码</option>
+											<option value="contact_phone">联系人手机号</option>
+											<option value="contact">联系人姓名</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</li>
+
+						<li class=" creditwe-search-li">
+							<div class="am-g">
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-r">
+									<div class="ta-l title-fr">
+										<span>日期框</span><span class="must">（必选）：</span>
+									</div>
+
+								</div>
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-l">
+									<div class="ta-l title-fl">
+										<input type="text" class="am-form-field data-input search-input" placeholder="日历组件" data-am-datepicker readonly required /> --
+										<input type="text" class="am-form-field data-input search-input" placeholder="日历组件" data-am-datepicker readonly required />
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="creditwe-search-li clearfix">
+							<div class="am-g">
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-r">
+									<div class="ta-l title-fr">
+										<span>上传附件</span><span class="must">（必选）：</span>
+									</div>
+
+								</div>
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-l">
+									<div class="ta-l title-fl am-form-group am-form-file">
+										<button type="button" class="width-100 am-btn am-btn-danger am-btn-sm">
+	    									<i class="am-icon-cloud-upload"></i> 选择要上传的文件</button>
+										<input id="doc-form-file" type="file" multiple>
+										<div id="file-list" class="width-100"></div>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+					<div class="operation">
+						<div class="add">
+							<button class="addTopic am-btn am-btn-default am-radius">增加题型</button>
+						</div>
+					</div>
+					<div class="submit-div">
+						<button class="mr10 am-btn am-btn-primary" type="button">提交</button>
+					</div>
+				</form>
+			</div>
+			<div class="index-footer">
+				<footer class="footer-content">北京地铁有限公司</footer>
+			</div>
+
+		</div>
+		<script>
+			$(function() {
+				$('#doc-form-file').on('change', function() {
+					var fileNames = '';
+					$.each(this.files, function() {
+						fileNames += '<span class="am-badge">' + this.name + '</span> ';
+					});
+					$('#file-list').html(fileNames);
+				});
+			});
+		</script>
+	</body>
+
+</html>

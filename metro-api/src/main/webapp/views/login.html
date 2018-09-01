@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="format-detection" content="telephone=no">
+		<title>北京地铁</title>
+		<link href="css/all.css" rel="stylesheet" type="text/css" />
+		<link href="css/iconfont.min.css" rel="stylesheet" type="text/css" />
+	</head>
+	<script>
+	var ctxPath = "${ctxPath}";
+	</script>
+	<style>
+		html,
+		body {
+			width: 100%;
+			height: 100%;
+		}
+		
+		.logoin-wrap {
+			width: 100%;
+			height: 100%;
+			background: url(img/login/bg.jpg) no-repeat;
+			background-size: 100% 100%;
+			position: relative;
+		}
+		
+		.login-form {
+			position: absolute;
+			width: 500px;
+			height: 400px;
+			left: 50%;
+			margin-left: -250px;
+			top: 50%;
+			margin-top: -200px;
+			background: rgba(253, 253, 253, .5);
+			border-radius: 20px;
+			text-align: center;
+		}
+		
+		.login-title {
+			color: #fff;
+			margin: 50px 0;
+		}
+		
+		.user,
+		.password {
+			height: 10px;
+			margin: 40px 10px 10px;
+			vertical-align: middle;
+		}
+		
+		.Hui-iconfont {
+			width: 35px;
+			height: 35px;
+		}
+		
+		.userName,
+		.password-input {
+			width: 250px;
+			height: 35px;
+		}
+		
+		.login {
+			margin-top: 40px;
+		}
+		
+		.login-button {
+			cursor:pointer;
+			width: 100px;
+			height: 50px;
+			border: none;
+			background: moccasin;
+			border-radius: 10px;
+		}
+	</style>
+	
+	<script>
+	
+	$("#login").on("click",function(){
+       $('#form').ajaxSubmit(
+			{
+				url: '${ctxPath!}/login.m',
+				type: 'post',
+				dataType: 'json',
+				beforeSubmit: function () {},
+				success: function (data) {
+					if (data.rstFlag) {
+						alert("成功");
+					} else {
+						alert("失败");
+					}
+				},
+				clearForm: false,//禁止清楚表单
+				resetForm: false //禁止重置表单
+			});
+
+	
+	</script>
+
+	<body>
+		<div class="logoin-wrap">
+			<form class="login-form" name="form">
+				<h2 class="login-title">地铁考试系统</h2>
+				<div class="user">
+					<i class="Hui-iconfont">&#xe62c;</i>
+					<input class="userName" name="username" />
+				</div>
+				<div class="password">
+					<i class="Hui-iconfont">&#xe60e;</i>
+					<input class="password-input" type="password" name="password"/>
+				</div>
+				<div class="login">
+					<button id="login" type="button" class="login-button">登录</button>
+				</div>
+			</form>
+		</div>
+	</body>
+
+</html>
