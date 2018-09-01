@@ -17,7 +17,7 @@ import com.metro.model.BaseExample;
  */
 @Transactional
 public abstract class BaseService<T,PK> {
-
+ 
 	protected abstract EntityDao<T,PK> getEntityDao();
 
 	@Transactional(readOnly = true)
