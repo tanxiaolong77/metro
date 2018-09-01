@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+ 
 public class BaseUtil {
 	private static Logger logger = LoggerFactory.getLogger(BaseUtil.class);
     private static SimpleDateFormat sdf8 = new SimpleDateFormat("yyyyMMdd");
