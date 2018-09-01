@@ -1,4 +1,4 @@
-package com.metro.util;
+package com.metro.service.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,24 +31,31 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.metro.model.Answer;
+import com.metro.model.Question;
 import com.metro.request.QuestionUploadRequest;
+import com.metro.service.AnswerService;
+import com.metro.service.QuestionExcelService;
 import com.metro.service.QuestionService;
+import com.metro.util.BaseUtil;
+import com.metro.vo.DataTransObj;
 
-@Component
-public class QuestionExcelParser {
+@Service("questionExcelService")
+public class QuestionExcelServiceImpl  implements QuestionExcelService{
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-	private static Logger logger = LoggerFactory.getLogger(QuestionExcelParser.class);
+	private  Logger logger = LoggerFactory.getLogger(QuestionExcelServiceImpl.class);
 	
 	@Autowired
 	private QuestionService questionService;
 	
+	@Autowired
+	private AnswerService answerService;
 
-	public static void parse(File file,QuestionUploadRequest req) throws Exception {
+	public  DataTransObj parse(File file,QuestionUploadRequest request) throws Exception {
 
 		InputStream inp = new FileInputStream(file);
 		HSSFWorkbook workbook = (HSSFWorkbook) WorkbookFactory.create(inp);
@@ -75,11 +82,7 @@ public class QuestionExcelParser {
 		}
 
 		// 循环行Row
-		List<QuestionUploadRequest> requests = new ArrayList<>();
-		
 		for (int rowNum = 2; rowNum <= sheet.getLastRowNum(); rowNum++) {
-			
-			QuestionUploadRequest request = BeanUtils.transferB(req, QuestionUploadRequest.class);
 			
 			HSSFRow hssfRow = sheet.getRow(rowNum);
 			int index = 0;
@@ -92,9 +95,9 @@ public class QuestionExcelParser {
 				String serialNo = getCellValue(hssfRow.getCell(index++), workbook);//序号
 				
 				Map<String,String> qestion = getPicAndTextCellValue(questionId, 
-						map.get(rowNum+":"+index), getCellValue(hssfRow.getCell(index++), workbook));//题目中含有图片	
+						map.get(rowNum+":"+index), getCellValue(hssfRow.getCell(index++), workbook),request.getPicturePath());//题目中含有图片	
 				Map<String,String> A = getPicAndTextCellValue(questionId+"-A", 
-						map.get(rowNum+":"+index), getCellValue(hssfRow.getCell(index++), workbook));//选项A
+						map.get(rowNum+":"+index), getCellValue(hssfRow.getCell(index++), workbook),request.getPicturePath());//选项A
 				Answer anwer = new Answer();
 				anwer.setId(BaseUtil.getUUID());
 				anwer.setAnswerDesc(A.get("desc"));
@@ -106,7 +109,7 @@ public class QuestionExcelParser {
 				answers.add(anwer);
 				
 				Map<String,String> B = getPicAndTextCellValue(questionId+"-B", 
-						map.get(rowNum+":"+index), getCellValue(hssfRow.getCell(index++), workbook));//选项B
+						map.get(rowNum+":"+index), getCellValue(hssfRow.getCell(index++), workbook),request.getPicturePath());//选项B
 				anwer = new Answer();
 				anwer.setId(BaseUtil.getUUID());
 				anwer.setAnswerDesc(B.get("desc"));
@@ -117,7 +120,7 @@ public class QuestionExcelParser {
 				answers.add(anwer);
 				
 				Map<String,String> C = getPicAndTextCellValue(questionId+"-C", 
-						map.get(rowNum+":"+index), getCellValue(hssfRow.getCell(index++), workbook));//选项C
+						map.get(rowNum+":"+index), getCellValue(hssfRow.getCell(index++), workbook),request.getPicturePath());//选项C
 				anwer = new Answer();
 				anwer.setId(BaseUtil.getUUID());
 				anwer.setAnswerDesc(C.get("desc"));
@@ -128,7 +131,7 @@ public class QuestionExcelParser {
 				answers.add(anwer);
 				
 				Map<String,String> D = getPicAndTextCellValue(questionId+"-D", 
-						map.get(rowNum+":"+index), getCellValue(hssfRow.getCell(index++), workbook));//选项D
+						map.get(rowNum+":"+index), getCellValue(hssfRow.getCell(index++), workbook),request.getPicturePath());//选项D
 				anwer = new Answer();
 				anwer.setId(BaseUtil.getUUID());
 				anwer.setAnswerDesc(D.get("desc"));
@@ -159,35 +162,40 @@ public class QuestionExcelParser {
 				}
 				
 				//封装题目实体
-				request.setId(questionId);
-				request.setQuestionDesc(qestion.get("desc"));
-				request.setQuestionImage(qestion.get("img"));
-				request.setScore("1");//###当前版本写死1分，因为excel中没有分数记录
-				request.setAnswerId(rightAnswerIds);//正确答案
-				request.setContentType(knowledgePoint);//知识点
+				Question question = new Question();
+				question.setId(questionId);
+				question.setQuestionDesc(qestion.get("desc"));
+				question.setQuestionImage(qestion.get("img"));
+				question.setScore("1");//###当前版本写死1分，因为excel中没有分数记录
+				question.setAnswerId(rightAnswerIds);//正确答案
+				question.setContentType(knowledgePoint);//知识点
 				if(qestionType.contains("单选")){
-					request.setQuestionType("1");
+					question.setQuestionType("1");
 				}else if(qestionType.contains("多选")){
-					request.setQuestionType("2");
+					question.setQuestionType("2");
 				}else if(qestionType.contains("判断")){
-					request.setQuestionType("3");
+					question.setQuestionType("3");
 				}
-				request.setCreateTime(new Date());//创建时间
-				request.setOperater(SessionUtils.getLoginManager().getId());//创建人
-				request.setAnswers(answers);//选项
+				question.setCreateTime(new Date());//创建时间
+				question.setOperater(request.getUserId());//创建人
+				questionService.insert(question);
+				for (Answer answerEntity : answers) {
+					answerService.insert(answerEntity);//选项
+				}
+				
 			} catch (Exception e) {
 				logger.error(e.getMessage(),e);
 			}
-
 		}
+		return DataTransObj.onSuccess(null,"上传成功");
 	}
 	
 	
-	public static Map<String,String> getPicAndTextCellValue(String picName,HSSFPictureData data,String cellValue){
+	public  Map<String,String> getPicAndTextCellValue(String picName,HSSFPictureData data,String cellValue,String pictruePath){
 		String img = "";
 		if(data != null){
 			//图片，生成名称并保存
-			img = savePic(picName, data);
+			img = savePic(picName, data,pictruePath);
 			if(StringUtils.isBlank(img)){
 				img = "";
 			}
@@ -202,14 +210,13 @@ public class QuestionExcelParser {
 		return result;
 	}
 
-	public static String savePic(String picName, PictureData pic) {
+	public  String savePic(String picName, PictureData pic,String pictruePath) {
 		FileOutputStream out = null;
 		try {
 			String ext = pic.suggestFileExtension();
 			String picAllName = picName + ext;
 			byte[] data = pic.getData();
-			out = new FileOutputStream(
-					ResourceUtil.getPropertyValue("picturePath") + picAllName);
+			out = new FileOutputStream(pictruePath + picAllName);
 			out.write(data);
 			return picAllName;
 		} catch (Exception e) {
@@ -224,7 +231,7 @@ public class QuestionExcelParser {
 		return null;
 	}
 
-	public static String getCellValue(HSSFCell brandIdHSSFCell,
+	public  String getCellValue(HSSFCell brandIdHSSFCell,
 			HSSFWorkbook hssfWorkbook) throws IOException, ParseException {
 		String cellStr = null;
 		FormulaEvaluator evaluator = hssfWorkbook.getCreationHelper()

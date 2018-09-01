@@ -8,15 +8,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.metro.request.QuestionUploadRequest;
+import com.metro.service.impl.QuestionExcelServiceImpl;
 import com.metro.util.DateUtil;
-import com.metro.util.QuestionExcelParser;
 import com.metro.util.ResourceUtil;
+import com.metro.vo.DataTransObj;
 
 /***
  * 题库控制
@@ -29,6 +31,9 @@ public class QuestionBankController  extends BaseController{
 	
 	private static Logger logger = LoggerFactory.getLogger(QuestionBankController.class);
 
+	@Autowired
+	private QuestionExcelServiceImpl questionExcelService;
+	
 	/***
 	 * 题库上传
 	 * @param request
@@ -37,7 +42,7 @@ public class QuestionBankController  extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value="/upload.m")
-	public void upload(HttpServletRequest request,HttpServletResponse response,
+	public DataTransObj upload(HttpServletRequest request,HttpServletResponse response,
 			@RequestParam("file") CommonsMultipartFile file,
 			@RequestParam("skillType") String skillType,
 			@RequestParam("jobsId") String jobsId,
@@ -50,14 +55,15 @@ public class QuestionBankController  extends BaseController{
         try {
         	file.transferTo(newFile);
         	QuestionUploadRequest bizRequest = new QuestionUploadRequest();
+        	bizRequest.setPicturePath(ResourceUtil.getPropertyValue("picturePath"));
         	bizRequest.setSkillType(skillType);
         	bizRequest.setJobsId(jobsId);
         	bizRequest.setAuthLevel(authLevel);
-			QuestionExcelParser.parse(newFile,bizRequest);
-			response.getWriter().write("上传成功");
+			return questionExcelService.parse(newFile,bizRequest);
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 		}
+        return DataTransObj.onFailure(null,"上传失败");
 	}
 	
 }

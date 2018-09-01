@@ -28,7 +28,7 @@ import com.metro.vo.DataTransObj;
  *
  */
 @Controller
-@RequestMapping(value="jobs")
+@RequestMapping(value="rule")
 public class RuleController  extends BaseController{
 	
 	private static Logger logger = LoggerFactory.getLogger(RuleController.class);

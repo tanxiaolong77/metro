@@ -1,26 +1,59 @@
 package com.metro.request;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.metro.model.Answer;
-import com.metro.model.Question;
-
 /***
  * 题库上传
  * @author dell
  *
  */
-public class QuestionUploadRequest extends Question implements Request  {
+public class QuestionUploadRequest implements Request  {
 	
-	private List<Answer> answers = new ArrayList<>();
-
-	public List<Answer> getAnswers() {
-		return answers;
+	private String userId;
+	
+	private String 	picturePath;
+	
+	private String skillType;
+	
+	private String jobsId;
+	
+	private String authLevel;
+	
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setAnswers(List<Answer> answers) {
-		this.answers = answers;
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getPicturePath() {
+		return picturePath;
+	}
+
+	public void setPicturePath(String picturePath) {
+		this.picturePath = picturePath;
+	}
+
+	public String getSkillType() {
+		return skillType;
+	}
+
+	public void setSkillType(String skillType) {
+		this.skillType = skillType;
+	}
+
+	public String getJobsId() {
+		return jobsId;
+	}
+
+	public void setJobsId(String jobsId) {
+		this.jobsId = jobsId;
+	}
+
+	public String getAuthLevel() {
+		return authLevel;
+	}
+
+	public void setAuthLevel(String authLevel) {
+		this.authLevel = authLevel;
 	}
 }
