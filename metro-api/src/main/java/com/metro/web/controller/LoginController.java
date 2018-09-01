@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.metro.common.constant.Constant;
@@ -22,13 +23,13 @@ import com.metro.model.UserExample;
 import com.metro.service.EmployeeService;
 import com.metro.service.UserService;
 import com.metro.util.BeanUtils;
+import com.metro.util.EncryptUtils;
 import com.metro.vo.DataTransObj;
 import com.metro.vo.EmployeeVO;
 import com.metro.vo.UserVO;
 
 
 @Controller
-@RequestMapping(value="/")
 public class LoginController  extends BaseController{
 	
 	
@@ -51,7 +52,6 @@ public class LoginController  extends BaseController{
 //		}
 //		return "WEB-INF/article.html";
 //	}
-//
 	/**
 	 * 跳转到用户登录页面
 	 * 
@@ -65,9 +65,9 @@ public class LoginController  extends BaseController{
 	 * 跳转到员工登录页面
 	 * 
 	 */
-	@RequestMapping(value = "/m", method = RequestMethod.GET)
+	@RequestMapping(value = "m", method = RequestMethod.GET)
 	public String toMngLogin() {
-		return "login.html";
+		return "views/sys-login.html";
 	}
 	
 	/**
@@ -79,8 +79,10 @@ public class LoginController  extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value = "sysLogin", method = RequestMethod.POST)
-	public @ResponseBody DataTransObj sysLogin(String username,
-			String password, HttpServletRequest request) {
+	public @ResponseBody DataTransObj sysLogin(
+			@RequestParam(value="username",required=true) String username,
+			@RequestParam(value="password",required=true) String password,
+			HttpServletRequest request) {
 
 		HttpSession session = request.getSession();
 		username = StringUtils.trim(username);
@@ -89,15 +91,14 @@ public class LoginController  extends BaseController{
 		UserExample example = new UserExample();
 		UserExample.Criteria c = example.createCriteria();
 		c.andUserNameEqualTo(username);
-		c.andPassWordEqualTo(password);
+		c.andPassWordEqualTo(EncryptUtils.Md5Encode(password));
 		List<User> user = userService.selectByExample(example);
 		if (user != null && user.size() > 0) {
-			session.setAttribute(Constant.SESSION_LOGIN_MANAGER, user);
+			session.setAttribute(Constant.SESSION_LOGIN_MANAGER, user.get(0));
 		} else {
 			return DataTransObj.onFailure(null, "用户名或密码错误");
 		}
-		UserVO userVO = BeanUtils.transferB(user.get(0),UserVO.class);
-		return DataTransObj.onSuccess(userVO, "登录成功");
+		return DataTransObj.onSuccess(null, "登录成功");
 	}
 
 	/**
@@ -122,13 +123,13 @@ public class LoginController  extends BaseController{
 		c.andUserCardEqualTo(usercard);
 		c.andRealNameEqualTo(realName);
 		List<Employee> user = employeeService.selectByExample(example);
+		
 		if (user != null && user.size() > 0) {
-			session.setAttribute(Constant.SESSION_LOGIN_USER, user);
+			session.setAttribute(Constant.SESSION_LOGIN_MANAGER, user.get(0));
 		} else {
-			return DataTransObj.onFailure(null, "姓名和身份证不匹配");
+			return DataTransObj.onFailure(null, "用户名或密码错误");
 		}
-		EmployeeVO employeeVO = BeanUtils.transferB(user.get(0),EmployeeVO.class);
-		return DataTransObj.onSuccess(employeeVO, "登录成功");
+		return DataTransObj.onSuccess(null, "登录成功");
 	}
 	
 	
@@ -140,7 +141,7 @@ public class LoginController  extends BaseController{
 	@RequestMapping("logout.u")
 	public String logoutU(HttpServletRequest request) {
 		request.getSession().invalidate();
-		return "redirect:/tologinU";
+		return "redirect:/";
 	}
 	
 	/**
@@ -151,7 +152,7 @@ public class LoginController  extends BaseController{
 	@RequestMapping("logout.m")
 	public String logoutM(HttpServletRequest request) {
 		request.getSession().invalidate();
-		return "redirect:/tologinM";
+		return "redirect:/m";
 	}
 	
 	/**

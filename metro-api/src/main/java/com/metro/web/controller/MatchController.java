@@ -50,7 +50,7 @@ public class MatchController  extends BaseController{
 	public String matchlist(ModelMap model) {
 		List<Jobs> jobs = jobsService.selectByExample(new JobsExample());
 		model.put("jobs", jobs);//岗位
-		return "matchlist.html";
+		return "views/match-list.html";
 	}
 	
 	/**
@@ -59,9 +59,9 @@ public class MatchController  extends BaseController{
 	 */
 	@RequestMapping(value = "matchSearch.m", method = RequestMethod.GET)
 	public @ResponseBody DataTransObj matchSearch(
-			@RequestParam(value="jobsId") String jobsId,
-			@RequestParam(value="startNumber") Integer startNumber,
-			@RequestParam(value="pageSize") Integer pageSize) {
+			String jobsId,
+			Integer startNumber,
+			Integer pageSize) {
 		
 		
 		MatchExample example = new MatchExample();
@@ -80,7 +80,9 @@ public class MatchController  extends BaseController{
 		}
 		
 		List<Match> list = matchService.selectByExample(example);
-		
+		for (Match match : list) {
+			match.setJobsName(jobsService.getById(match.getJobId()).getJobsName());
+		}
 		return DataTransObj.onSuccess(list, "查询成功", totalNum);
 	}
 	
@@ -89,7 +91,7 @@ public class MatchController  extends BaseController{
 	 * 
 	 */
 	@RequestMapping(value = "matchSetInit.m", method = RequestMethod.GET)
-	public String matchSetInit(ModelMap model,@RequestParam(value="id") String id) {
+	public String matchSetInit(ModelMap model,String id) {
 		if(StringUtils.isNotBlank(id)){
 			model.put("match",matchService.getById(id));
 		}
@@ -105,12 +107,12 @@ public class MatchController  extends BaseController{
 	 */
 	@RequestMapping(value = "matchSet.m", method = RequestMethod.POST)
 	public @ResponseBody DataTransObj matchSet(
-			@RequestParam(value="matchName") String matchName,
+			String matchName,
 			@RequestParam(value="jobsId", required = true) String jobsId,
 			@RequestParam(value="startDate", required = true) String startDate,
 			@RequestParam(value="endDate", required = true) String endDate,
 			@RequestParam(value="matchLevel", required = true) String matchLevel,
-			@RequestParam(value="id") String id) {
+			String id) {
 		
 		try {
 			Match match = new Match();

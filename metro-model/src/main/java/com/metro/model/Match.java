@@ -8,6 +8,8 @@ public class Match {
     private String matchName;
 
     private String jobId;
+    
+    private String jobsName;
 
     private String matchLevel;
 
@@ -102,4 +104,12 @@ public class Match {
     public void setModifier(Date modifier) {
         this.modifier = modifier;
     }
+
+	public String getJobsName() {
+		return jobsName;
+	}
+
+	public void setJobsName(String jobsName) {
+		this.jobsName = jobsName;
+	}
 }

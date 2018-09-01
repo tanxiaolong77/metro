@@ -15,13 +15,11 @@
 		http://www.springframework.org/schema/aop/spring-aop.xsd"
 	default-lazy-init="false">
 
-	<!-- 加载配置-->
-	<context:property-placeholder  ignore-unresolvable="true" location="classpath:application.properties"/>
- 
-	 
- 
+	<!-- 加载配置
+	<context:property-placeholder  ignore-unresolvable="true" location="classpath:resources.properties"/>
+ -->
 	<!-- 只扫描Controller 注解 -->
-	<context:component-scan base-package="com.metro.web" use-default-filters="false">
+	<context:component-scan base-package="com.metro" use-default-filters="false">
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 		<context:include-filter type="annotation"
@@ -53,84 +51,25 @@
             </bean>
 
             <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
-            <bean id="fastJsonHttpMessageConverter" class="com.metro.util.FastJsonHttpMessageConverter">
+            <bean id="fastJsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
                 <property name="supportedMediaTypes">
                     <list>
                         <value>application/json;charset=UTF-8</value>
                     </list>
                 </property>
-                <property name="features">
+                <!--<property name="serializerFeature">-->
                 	<!--这个地方加上这个功能吧，能自己配置一些东西，比如时间的格式化，null输出""等等-->
-                	 <array>
-	                    <value>QuoteFieldNames</value>
-	                    <value>DisableCircularReferenceDetect</value>
-	                </array>
-
-                </property>
+                <!--</property>-->
+                
+                <property name="features">
+            		<array value-type="com.alibaba.fastjson.serializer.SerializerFeature">
+                	<value>DisableCircularReferenceDetect</value>
+            		</array>
+        		</property>
             </bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 
-		<!-- json html 格式输出 -->
-	<bean
-		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-		<property name="ignoreAcceptHeader" value="true" />
-		<property name="defaultContentType" value="text/html" />
-		<property name="mediaTypes">
-			<map>
-				<entry key="json" value="application/json" />
-			</map>
-		</property>
-		<property name="favorParameter" value="false" />
-		<property name="viewResolvers">
-			<list>
-				<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
-				<bean
-					class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-					<property name="viewClass"
-						value="org.springframework.web.servlet.view.JstlView" />
-					<property name="prefix" value="/views/" />
-					<property name="suffix" value=".html">
-					</property>
-				</bean>
-			</list>
-		</property>
-		<property name="defaultViews">
-			<list>
-					<bean class="com.alibaba.fastjson.support.spring.FastJsonJsonView" />
-			</list>
-		</property>
-	</bean>
-
-	<!-- 当在web.xml 中   DispatcherServlet使用 <url-pattern>/</url-pattern> 映射时，能映射静态资源 -->
-	<mvc:default-servlet-handler />
-
-	<!-- json html xml格式输出 -->
-	<bean
-		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-		<property name="ignoreAcceptHeader" value="true" />
-		<property name="defaultContentType" value="text/html" />
-		<property name="mediaTypes">
-			<map>
-				<entry key="json" value="application/json" />
-			</map>
-		</property>
-		<property name="favorParameter" value="false" />
-		<property name="viewResolvers">
-			<list>
-				<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
-				<bean
-					class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-					<property name="viewClass"
-						value="org.springframework.web.servlet.view.JstlView" />
-					<property name="prefix" value="/views/" />
-					<property name="suffix" value=".html">
-					</property>
-				</bean>
-			</list>
-		</property>
-		
-	</bean>
 	
 	
 	<mvc:interceptors>

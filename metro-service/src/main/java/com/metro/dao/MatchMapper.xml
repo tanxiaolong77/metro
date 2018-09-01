@@ -82,7 +82,7 @@
     </if>
     'true' as QUERYID,
     <include refid="Base_Column_List" />
-    from match
+    from match_conf
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -91,7 +91,7 @@
     </if>
   </select>
   <delete id="deleteByExample" parameterType="com.metro.model.MatchExample">
-    delete from match
+    delete from match_conf
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -174,13 +174,13 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.metro.model.MatchExample" resultType="java.lang.Long">
-    select count(*) from match
+    select count(*) from match_conf
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update match
+    update match_conf
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=VARCHAR},
@@ -218,7 +218,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update match
+    update match_conf
     set id = #{record.id,jdbcType=VARCHAR},
       match_name = #{record.matchName,jdbcType=VARCHAR},
       job_id = #{record.jobId,jdbcType=VARCHAR},

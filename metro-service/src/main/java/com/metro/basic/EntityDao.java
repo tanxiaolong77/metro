@@ -26,7 +26,7 @@ public interface EntityDao<T , PK> {
 	
     public List<T> selectByExample(BaseExample example) throws DataAccessException;
     
-    public int countByExample(BaseExample example) throws DataAccessException;
+    public Long countByExample(BaseExample example) throws DataAccessException;
     
     public int deleteByPrimaryKey(PK id) throws DataAccessException;
     

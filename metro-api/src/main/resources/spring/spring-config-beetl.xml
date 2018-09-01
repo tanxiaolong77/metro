@@ -24,7 +24,7 @@
 		</property>
 		<property name="functionPackages">
 			<map>
-				<!-- <entry key="dict" value-ref="dictFunction" />
+<!-- 				<entry key="dict" value-ref="dictFunction" />
 				<entry key="office" value-ref="officeFunctions" />
 				<entry key="role" value-ref="roleFunctions" />
 				<entry key="auth" value-ref="authUserFunctions" />
