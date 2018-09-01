@@ -38,7 +38,7 @@ public abstract class BaseService<T,PK> {
     }
     
     public int countByExample(BaseExample example) throws DataAccessException {
-    	return getEntityDao().countByExample(example);
+    	return getEntityDao().countByExample(example).intValue();
     }
     
     public int deleteById(PK id) throws DataAccessException {

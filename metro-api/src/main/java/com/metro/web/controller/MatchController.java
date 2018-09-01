@@ -59,9 +59,9 @@ public class MatchController  extends BaseController{
 	 */
 	@RequestMapping(value = "matchSearch.m", method = RequestMethod.GET)
 	public @ResponseBody DataTransObj matchSearch(
-			@RequestParam(value="jobsId") String jobsId,
-			@RequestParam(value="startNumber") Integer startNumber,
-			@RequestParam(value="pageSize") Integer pageSize) {
+			String jobsId,
+			Integer startNumber,
+			Integer pageSize) {
 		
 		
 		MatchExample example = new MatchExample();

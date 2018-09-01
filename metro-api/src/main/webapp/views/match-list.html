@@ -145,101 +145,48 @@
 						"orderable": false //包含上样式名‘nosort’的禁止排序
 					}],
 					ajax: function(data, callback, settings) {
-						var returnData = {};
-						returnData.data = [{
-							"userid": "0096ca24-1050-4e4a-a388-691a7cfffb32",
-							"truename": "沈惠庆",
-							"account": "13999692827",
-							"idcard": "622101196901075426",
-							"bankPhone": "13999692827",
-							"mycode": "BRAWTC",
-							"invitedcode": "MF1609"
-
-						}, {
-							"userid": "009e8aac-50c2-4e98-ab5d-6e844fd891a3",
-							"truename": "应用",
-							"account": "18811111115",
-							"idcard": "150102199003079415",
-							"bankPhone": "15123456789",
-							"mycode": "A00CI0",
-							"invitedcode": null,
-
-						}, {
-							"userid": "00ab711c-f376-48ff-9d8c-e24581128e54",
-							"truename": "董斌",
-							"account": "15388904678",
-							"idcard": "430181198707068302",
-							"bankPhone": "15388904678",
-							"mycode": "NML3W5",
-							"invitedcode": null,
-
-						}, {
-							"userid": "00d7385e-e75f-4024-99da-bfe6e752971d",
-							"truename": "汪亭",
-							"account": "15671684911",
-							"idcard": "341021198301237494",
-							"bankPhone": "15671684911",
-							"mycode": "EODRIF",
-							"invitedcode": null,
-
-						}, {
-							"userid": "0124ac57-4650-49e2-8d0e-c5922745153c",
-							"truename": "金学元",
-							"account": "13072245224",
-							"idcard": "120104196207311141",
-							"bankPhone": "13072245224",
-							"mycode": "GTURO4",
-							"invitedcode": null,
-
-						}, {
-							"userid": "013cdcfd-e860-4269-8280-538b142b951c",
-							"truename": "常小平",
-							"account": "18911547877",
-							"idcard": "140221199009178246",
-							"bankPhone": "18911547877",
-							"mycode": "W94L7R",
-							"invitedcode": null,
-
-						}, {
-							"userid": "017a9213-c39a-4b90-9544-a28a1dce6647",
-							"truename": "戴娇娇",
-							"account": "13932067817",
-							"idcard": "130402198504067787",
-							"bankPhone": null,
-							"mycode": "636TBP",
-							"invitedcode": null,
-
-						}, {
-							"userid": "018cfc64-7e13-4a0f-83f3-4073441780d0",
-							"truename": "汪泽远",
-							"account": "13717685454",
-							"idcard": "110104195104162852",
-							"bankPhone": null,
-							"mycode": "JNF9HG",
-							"invitedcode": "B3D1C8",
-
-						}, {
-							"userid": "03935e93-79c7-40e2-9c4b-3d0ac4770028",
-							"truename": "于燕萍",
-							"account": "18500073819",
-							"idcard": "411522199109013222",
-							"bankPhone": null,
-							"mycode": "SM9LMA",
-							"invitedcode": null,
-
-						}, {
-							"userid": "051763cb-1de1-4638-bf6a-3f1f4340e47f",
-							"truename": "褚京玲",
-							"account": "13520432735",
-							"idcard": "110104196402076637",
-							"bankPhone": null,
-							"mycode": "QHLV7A",
-							"invitedcode": "N5WVV4",
-
-						}];
+						
+						/* var returnData = {};
+						returnData.data = [];
 						returnData.recordsTotal = 50; //返回数据全部记录
 						returnData.recordsFiltered = 50;
-						callback(returnData);
+						callback(returnData); */
+						//that.param.pageSize = data.length; //页面显示记录条数，在页面显示每页显示多少项的时候
+						//that.param.startNumber = data.start; //开始的记录序号
+						//that.paramTem.pageSize = (data.start / data.length) + 1; //当前页码
+						$.ajax({
+							type: "get",
+							url: "${ctxPath}/match/matchSearch.m",
+							async: false,
+							data: "",
+							success: function(data) {
+								console.log(data)
+								return;
+								if(data.error) {
+									//location.href = "/notFound/notFound";
+								} else {
+									if(data.result.status === '1') {
+										var result = data.result.resultData;
+										//封装返回数据
+										var returnData = {};
+										returnData.recordsTotal = result.pageTotal; //返回数据全部记录
+										returnData.recordsFiltered = result.pageTotal; //后台不实现过滤功能，每次查询均视作全部结果
+										returnData.data = result.userInfoList; //返回的数据列表
+										//调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+										//此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+										callback(returnData);
+										//列表初始化
+										//customerList.editReset();
+									} else {
+
+									}
+								}
+							},
+							error: function() {
+								console.log('ajaxError')
+							}
+						})
+						
 					},
 					"aoColumns": [{
 							"data": "userid", //UserID

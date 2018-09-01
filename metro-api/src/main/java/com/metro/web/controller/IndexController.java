@@ -24,7 +24,7 @@ public class IndexController  extends BaseController{
 	public String toMngLogin(ModelMap modelMap) {
 		UserVO userVO = BeanUtils.transferB(SessionUtils.getLoginManager(),UserVO.class);
 		modelMap.put("user",userVO);
-		return "views/sys_index.html";
+		return "views/sys-index.html";
 	}
 	
 	/**

@@ -67,7 +67,7 @@ public class LoginController  extends BaseController{
 	 */
 	@RequestMapping(value = "m", method = RequestMethod.GET)
 	public String toMngLogin() {
-		return "views/sys_login.html";
+		return "views/sys-login.html";
 	}
 	
 	/**
