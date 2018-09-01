@@ -53,10 +53,10 @@ public class LoginController  extends BaseController{
 //	}
 //
 	/**
-	 * 跳转到员工登录页面
+	 * 跳转到用户登录页面
 	 * 
 	 */
-	@RequestMapping(value = "tologinU", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String toLogin() {
 		return "login.html";
 	}
@@ -65,9 +65,9 @@ public class LoginController  extends BaseController{
 	 * 跳转到员工登录页面
 	 * 
 	 */
-	@RequestMapping(value = "tologinM", method = RequestMethod.GET)
+	@RequestMapping(value = "/m", method = RequestMethod.GET)
 	public String toMngLogin() {
-		return "syslogin.html";
+		return "login.html";
 	}
 	
 	/**

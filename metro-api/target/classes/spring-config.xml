@@ -49,23 +49,6 @@
 	<!-- 启用aop注解 -->
 	<aop:aspectj-autoproxy expose-proxy="true"/>
 	 
-	 <!-- 查询缓存 -->
-	 <bean id="StorageMethodResult" class="com.quanjing.util.StorageMethodResult"></bean>
-	 <bean
-		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-		<property name="beanNames">
-			<list>
-				<value>*Service</value> 
-			</list>			
-		</property>
-		<property name="interceptorNames">
-			<list>				
-				<idref bean="StorageMethodResult" />
-			</list>
-		</property>
-	</bean>
-	
-	
 	<import resource="classpath*:spring/**.xml" />  
 	 
 	 <!-- 全局异常配置 start -->     
