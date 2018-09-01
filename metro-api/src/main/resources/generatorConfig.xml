@@ -4,7 +4,11 @@
   "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
 
+<<<<<<< HEAD
 	<classPathEntry location="E:\mysqlConnectorJava\mysql-connector-java-5.1.41.jar" />
+=======
+	<classPathEntry location="\Library\mysql\mysql-connector-java-5.1.41.jar" />
+>>>>>>> dd587ebd85131ad33f5dd1f389aa29b85935949f
 	<context id="aisSnsTables" defaultModelType="flat">
 		<commentGenerator>
 

@@ -5,6 +5,7 @@
 <generatorConfiguration>
 
 	<classPathEntry location="E:\mysqlConnectorJava\mysql-connector-java-5.1.41.jar" />
+	<classPathEntry location="\Library\mysql\mysql-connector-java-5.1.41.jar" />
 	<context id="aisSnsTables" defaultModelType="flat">
 		<commentGenerator>
 
