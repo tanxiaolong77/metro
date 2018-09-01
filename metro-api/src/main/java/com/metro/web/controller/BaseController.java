@@ -26,7 +26,7 @@ public class BaseController {
 		return result;
 	}
 	
-	
+	    
 	
 	protected String getIpAddr(HttpServletRequest request) {
 	    String ip = request.getHeader("x-forwarded-for");  
