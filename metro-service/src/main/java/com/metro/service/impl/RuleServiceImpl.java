@@ -26,7 +26,7 @@ public class RuleServiceImpl extends BaseService<Rule,String> implements RuleSer
 		return ruleMapper;
 	}
 	
-	public void add(List<String> rules,String skillType,String jobsId,String operater){
+	public void add(List<String> rules,String skillType,String jobsId,String operater,String contentRate){
 		
 		for (String ruleStr : rules) {
 			String[] ruleArray = ruleStr.split("##");
@@ -35,9 +35,10 @@ public class RuleServiceImpl extends BaseService<Rule,String> implements RuleSer
 			rule.setSkillType(skillType);
 			rule.setJobId(jobsId);
 			rule.setContentType(ruleArray[0]);
-			rule.setOneChoose(ruleArray[1]);
-			rule.setManyChoose(ruleArray[2]);
-			rule.setJudge(ruleArray[3]);
+			rule.setContentRate(ruleArray[1]);
+			rule.setOneChoose(ruleArray[2]);
+			rule.setManyChoose(ruleArray[3]);
+			rule.setJudge(ruleArray[4]);
 			rule.setCreateTime(new Date());
 			rule.setOperater(operater);
 			

@@ -108,6 +108,7 @@ public class RuleController  extends BaseController{
 			@RequestParam(value="skillType", required = true) String skillType,
 			@RequestParam(value="jobsId", required = true) String jobsId,
 			@RequestParam(value="operationType", required = true) String operationType,
+			@RequestParam(value="contentRate", required = true) String contentRate,
 			@RequestParam(value="rules", required = true) List<String> rules
 			) {
 		
@@ -124,7 +125,7 @@ public class RuleController  extends BaseController{
 			
 			try {
 				//新增
-				ruleService.add(rules, skillType, jobsId, SessionUtils.getLoginUser().getId());
+				ruleService.add(rules, skillType, jobsId, SessionUtils.getLoginUser().getId(),contentRate);
 			} catch (Exception e) {
 				logger.error(e.getMessage(),e);
 				return DataTransObj.onFailure(null,"新增失败");

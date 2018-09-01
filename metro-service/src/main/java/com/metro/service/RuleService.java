@@ -7,5 +7,5 @@ import com.metro.model.Rule;
 
 public interface RuleService extends EntityService<Rule,String>{
   
-	public void add(List<String> rules,String skillType,String jobsId,String operater);
+	public void add(List<String> rules,String skillType,String jobsId,String operater,String contentRate);
 }
