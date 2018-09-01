@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
 
-	<classPathEntry location="F:\mysqlConnectorJava\mysql-connector-java-5.1.41.jar" />
+	<classPathEntry location="\Library\mysql\mysql-connector-java-5.1.41.jar" />
 	<context id="aisSnsTables" defaultModelType="flat">
 		<commentGenerator>
 
@@ -43,7 +43,7 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<table tableName="rule" enableCountByExample="true"
+		<table tableName="user_question" enableCountByExample="true"
 			enableUpdateByExample="true" enableDeleteByPrimaryKey="true"
 			enableSelectByExample="true" selectByExampleQueryId="true">
 			<property name="useActualColumnNames" value="false" />
