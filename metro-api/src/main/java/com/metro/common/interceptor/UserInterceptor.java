@@ -27,7 +27,7 @@ public class UserInterceptor implements HandlerInterceptor {
 		Employee sessionUser = SessionUtils.getLoginUser();
 
 		if (sessionUser == null) { // 转到登陆页面
-			response.sendRedirect(ctx + "/login");
+			response.sendRedirect(ctx + "/");
 			return false;
 		} else {
 			return true;

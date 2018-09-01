@@ -7,16 +7,16 @@
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="format-detection" content="telephone=no">
 		<title>北京地铁</title>
-		<link href="css/iconfont.min.css" rel="stylesheet" type="text/css" />
-		<link href="css/amazeui.css" rel="stylesheet" type="text/css">
-		<link href="css/amazeui.datetimepicker.css" rel="stylesheet" type="text/css/">
+		<link href="${ctxPath}/views/css/iconfont.min.css" rel="stylesheet" type="text/css" />
+		<link href="${ctxPath}/views/css/amazeui.css" rel="stylesheet" type="text/css">
+		<link href="${ctxPath}/views/css/amazeui.datetimepicker.css" rel="stylesheet" type="text/css/">
 		<link href="https://cdn.bootcss.com/datatables/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
-		<link href="css/all.css" rel="stylesheet" type="text/css" />
+		<link href="${ctxPath}/views/css/all.css" rel="stylesheet" type="text/css" />
 		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-		<script src="js/amazeui.min.js"></script>
-		<script src="js/amazeui.datetimepicker.min.js"></script>
+		<script src="${ctxPath}/views/js/amazeui.min.js"></script>
+		<script src="${ctxPath}/views/js/amazeui.datetimepicker.min.js"></script>
 		<script src="https://cdn.bootcss.com/datatables/1.10.16/js/jquery.dataTables.min.js"></script>
-		<script src="js/all.js"></script>
+		<script src="${ctxPath}/views/js/all.js"></script>
 	</head>
 	<style>
 		.table {
@@ -24,12 +24,18 @@
 		}
 		
 		.nav {
-			height: 80px;
-			line-height: 80px;
+			height: 50px;
+			line-height: 50px;
+			margin-bottom:20px;
 		}
-		
+		.nav-content{
+			border-bottom:1px solid #eee;
+			
+		}
 		.nav-content {
 			margin-left: 100px;
+			margin-right:50px;
+			
 		}
 		
 		.table-search {
@@ -57,7 +63,7 @@
 			<div class="nav">
 				<div class="nav-content">
 					<span>导航页:</span>
-					<span>首页-技能鉴定-查询</span>
+					<span><a href="${ctxPath}/index.m">首页</a>-开赛设置-查询</span>
 				</div>
 			</div>
 			<div class="table-content">
@@ -90,6 +96,9 @@
 						<li class="fl creditwe-search-li">
 							<button class="mr10 am-btn am-btn-primary" type="button">查询</button>
 						</li>
+						<li class="fl creditwe-search-li">
+							<button class="mr10 am-btn am-btn-primary" type="button">新增</button>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -98,13 +107,11 @@
 				<table id="dataTables" class="am-table-centered am-table am-table-bordered am-table-radius am-text-nowrap">
 					<thead class="text-c">
 						<tr class="am-primary">
-							<th>xxxxxx</th>
-							<th>xxxxxx</th>
-							<th>xxxxxx</th>
-							<th>xxxx</th>
-							<th>xxxxxxx</th>
-							<th>xxxxxxx</th>
-							<th>xxxxxxxxx</th>
+							<th>赛事名称</th>
+							<th>岗位</th>
+							<th>开始时间</th>
+							<th>结束时间</th>
+							<th>当前阶段</th>
 							<th>操作</th>
 						</tr>
 					</thead>

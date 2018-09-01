@@ -50,7 +50,7 @@ public class MatchController  extends BaseController{
 	public String matchlist(ModelMap model) {
 		List<Jobs> jobs = jobsService.selectByExample(new JobsExample());
 		model.put("jobs", jobs);//岗位
-		return "matchlist.html";
+		return "views/match-list.html";
 	}
 	
 	/**
@@ -80,7 +80,9 @@ public class MatchController  extends BaseController{
 		}
 		
 		List<Match> list = matchService.selectByExample(example);
-		
+		for (Match match : list) {
+			match.setJobsName(jobsService.getById(match.getJobId()).getJobsName());
+		}
 		return DataTransObj.onSuccess(list, "查询成功", totalNum);
 	}
 	

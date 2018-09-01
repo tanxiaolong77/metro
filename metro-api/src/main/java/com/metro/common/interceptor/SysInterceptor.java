@@ -27,7 +27,7 @@ public class SysInterceptor implements HandlerInterceptor {
 		User sessionUser = SessionUtils.getLoginManager();
 
 		if (sessionUser == null) { // 转到登陆页面
-			response.sendRedirect(ctx + "/syslogin");
+			response.sendRedirect(ctx + "/m");
 			return false;
 		} else {
 			return true;
