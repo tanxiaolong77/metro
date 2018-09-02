@@ -1,5 +1,6 @@
 package com.metro.web.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -48,7 +49,7 @@ public class RuleController extends BaseController {
 	public String rulelist(ModelMap model) {
 		List<Jobs> jobs = jobsService.selectByExample(new JobsExample());
 		model.put("jobs", jobs);// 岗位
-		return "rulelist.html";
+		return "views/sys-rule-list.html";
 	}
 
 	/**
@@ -91,40 +92,38 @@ public class RuleController extends BaseController {
 	public String ruleSetInit(ModelMap model) {
 		List<Jobs> jobs = jobsService.selectByExample(new JobsExample());
 		model.put("jobs", jobs);// 岗位
-		return "rule-add.html";
+		return "views/sys-rule-add.html";
 	}
 
 	/**
-	 * 新建、修改出题规则
+	 * 新建出题规则
 	 * 
 	 */
 	@RequestMapping(value = "ruleSet.m", method = RequestMethod.POST)
-	public @ResponseBody DataTransObj ruleSet(@RequestParam(value = "skillType", required = true) String skillType,
+	public @ResponseBody DataTransObj ruleSet(
 			@RequestParam(value = "jobsId", required = true) String jobsId,
-			@RequestParam(value = "operationType", required = true) String operationType,
-			@RequestParam(value = "contentRate", required = true) String contentRate,
-			@RequestParam(value = "rules", required = true) List<String> rules) {
+			@RequestParam(value = "rules", required = true) String rules) {
 
-		if (rules != null && rules.size() > 0) {
 
-			// if("2".equals(operationType)){
-			// //修改则把之前的规则删除
-			// RuleExample example = new RuleExample();
-			// RuleExample.Criteria c = example.createCriteria();
-			// c.andSkillTypeEqualTo(skillType);
-			// c.andJobIdEqualTo(jobsId);
-			// ruleService.deleteByExample(example);
-			// }
 
-			try {
-				// 新增
-				ruleService.add(rules, skillType, jobsId, SessionUtils.getLoginUser().getId(), contentRate);
-			} catch (Exception e) {
-				logger.error(e.getMessage(), e);
-				return DataTransObj.onFailure(null, "新增失败");
-			}
+		// if("2".equals(operationType)){
+		// //修改则把之前的规则删除
+		// RuleExample example = new RuleExample();
+		// RuleExample.Criteria c = example.createCriteria();
+		// c.andSkillTypeEqualTo(skillType);
+		// c.andJobIdEqualTo(jobsId);
+		// ruleService.deleteByExample(example);
+		// }
 
+		try {
+			// 新增
+			ruleService.add(Arrays.asList(rules.split(",")), jobsId, SessionUtils.getLoginManager().getId());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return DataTransObj.onFailure(null, "操作失败");
 		}
+
+	
 
 		return DataTransObj.onSuccess(null, "操作成功");
 	}

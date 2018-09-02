@@ -1,5 +1,6 @@
 package com.metro.web.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -40,8 +41,8 @@ public class JobsController  extends BaseController{
 	public String jobSetInit(ModelMap model) {
 		
 		List<Jobs> jobs = jobsService.selectByExample(new JobsExample());
-		model.put("result", jobs);
-		return "jobs.html";
+		model.put("jobs", jobs);
+		return "views/sys-jobs.html";
 	}
 	
 	/**
@@ -49,12 +50,13 @@ public class JobsController  extends BaseController{
 	 * 
 	 */
 	@RequestMapping(value = "jobSet.m", method = RequestMethod.POST)
-	public @ResponseBody DataTransObj jobSet(
-			@RequestParam(value="jobId", required = true) List<String> jobIds
-			) {
-		
+	public @ResponseBody DataTransObj jobSet(String[] jobIds) {
 		try {
-			jobsService.jobSet(jobIds);
+			List<String> jobs = null;
+			if(jobIds != null){
+				jobs = Arrays.asList(jobIds);
+			}
+			jobsService.jobSet(jobs);
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 			return DataTransObj.onFailure(null,"更新失败");

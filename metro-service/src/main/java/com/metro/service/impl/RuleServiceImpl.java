@@ -26,13 +26,12 @@ public class RuleServiceImpl extends BaseService<Rule,String> implements RuleSer
 		return ruleMapper;
 	}
 	
-	public void add(List<String> rules,String skillType,String jobsId,String operater,String contentRate){
+	public void add(List<String> rules,String jobsId,String operater){
 		
 		for (String ruleStr : rules) {
-			String[] ruleArray = ruleStr.split("##");
+			String[] ruleArray = ruleStr.split("#");
 			Rule rule = new Rule();
 			rule.setId(BaseUtil.getUUID());
-			rule.setSkillType(skillType);
 			rule.setJobId(jobsId);
 			rule.setContentType(ruleArray[0]);
 			rule.setContentRate(ruleArray[1]);

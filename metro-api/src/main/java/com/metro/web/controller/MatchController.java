@@ -51,7 +51,7 @@ public class MatchController  extends BaseController{
 	public String matchlist(ModelMap model) {
 		List<Jobs> jobs = jobsService.selectByExample(new JobsExample());
 		model.put("jobs", jobs);//岗位
-		return "views/match-list.html";
+		return "views/sys-match-list.html";
 	}
 	
 	/**
@@ -98,7 +98,7 @@ public class MatchController  extends BaseController{
 		}
 		List<Jobs> jobs = jobsService.selectByExample(new JobsExample());
 		model.put("jobs", jobs);//岗位
-		return "views/match-add.html";
+		return "views/sys-match-add.html";
 	}
 	
 	
