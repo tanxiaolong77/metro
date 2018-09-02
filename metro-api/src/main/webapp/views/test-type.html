@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="format-detection" content="telephone=no">
+		<title>北京地铁</title>
+		<link href="${ctxPath}/views/css/all.css" rel="stylesheet" type="text/css" />
+		<link href="${ctxPath}/views/css/iconfont.min.css" rel="stylesheet" type="text/css" />
+		<style>
+			html {
+				height: 100%;
+			}
+			
+			body {
+				display: flex;
+				flex-direction: column;
+				height: 100%;
+			}
+			
+			.index {
+				flex: 1 0 auto;
+			}
+			
+			.index-footer {
+				flex: 0 0 auto;
+			}
+			
+			.index-header {
+				text-align: center;
+				height: 100px;
+				line-height: 100px;
+				background: url(${ctxPath}/views/img/blue.png);
+			}
+			
+			.header-left {
+				width: 20%;
+				margin-top: 25px;
+			}
+			
+			.logo-bg {
+				width: 150px;
+				height: 50px;
+				background: url(${ctxPath}/views/img/logoText.png) no-repeat;
+				background-size: 100% 100%;
+				margin-left: 50px;
+			}
+			
+			.header-center {
+				width: 60%;
+			}
+			
+			.header-h1 {
+				font-size: 28px;
+				color: #FFFFFF;
+			}
+			
+			.header-right {
+				width: 20%;
+				text-align: right;
+				padding-right: 50px;
+			}
+			
+			.outline {
+				background: url(${ctxPath}/views/img/button.jpg) 50%;
+				border: none;
+				font-size: 14px;
+				width: 56px;
+				height: 36px;
+				border-radius: 5px;
+				color: #fff;
+				background-size: 135%;
+			}
+			
+			.index-footer {
+				position: absolute;
+				bottom: 0px;
+				text-align: center;
+				width: 100%;
+			}
+			
+			.footer-content {
+				font-size: 18px;
+				height: 32px;
+				line-height: 32px;
+				background: #ccc;
+			}
+			
+			.index-content {
+				height: 60%;
+				margin-top: 180px;
+			}
+			
+			.content-button {
+				text-align: center;
+			}
+			
+			.button-max {
+				cursor: pointer;
+				height: 80px;
+				width: 200px;
+				border-radius: 20px;
+				background: lightgray;
+				margin: 0 20px;
+				background: #5eb95e;
+				color: #fff;
+				font-size: 28px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="index">
+			<div class="index-header clearfix">
+				<div class="header-left fl">
+					<div class="logo-bg"></div>
+				</div>
+				<div class="header-center fl">
+					<h1 class="header-h1">北京地铁答题系统</h1>
+				</div>
+				<div class="header-right fr">
+					<button class="outline" onclick="${ctxPath}/logout.u">退出</button>
+				</div>
+			</div>
+			<div class="index-content">
+				<div class="content-button">
+					<button class="button-max" onclick="javascript:window.location.href='${ctxPath}/skip/toSeemJobType.u'">模拟</button>
+					<button class="button-max" onclick="javascript:window.location.href='${ctxPath}/skip/toTestJobType.u'">大赛</button>
+				</div>
+			</div>
+			<div class="index-footer">
+				<footer class="footer-content">北京地铁有限公司</footer>
+			</div>
+		</div>
+	</body>
+
+</html>
