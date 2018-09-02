@@ -26,6 +26,7 @@ public class JobsServiceImpl extends BaseService<Jobs,String> implements JobsSer
 	
 	@Override
 	public void jobSet(List<String> jobIds) {
+		
 		//全部更改为不显示
 		Jobs job = new Jobs();
 		job.setIsShow("1");//不显示

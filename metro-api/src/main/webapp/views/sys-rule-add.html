@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="format-detection" content="telephone=no">
+		<title>北京地铁</title>
+		<link href="${ctxPath}/views/css/iconfont.min.css" rel="stylesheet" type="text/css" />
+		<link href="${ctxPath}/views/css/amazeui.css" rel="stylesheet" type="text/css">
+		<link href="${ctxPath}/views/css/amazeui.datetimepicker.css" rel="stylesheet" type="text/css/">
+		<link href="${ctxPath}/views/css/all.css" rel="stylesheet" type="text/css" />
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.min.js"></script>
+		<script src="${ctxPath}/views/js/amazeui.min.js"></script>
+		<script src="${ctxPath}/views/js/amazeui.datetimepicker.min.js"></script>
+		<script src="${ctxPath}/views/js/all.js"></script>
+	</head>
+	<style>
+		.table {
+			height: 100%;
+			padding-top: 0.1px;
+		}
+		
+		.nav {
+			height: 80px;
+			line-height: 80px;
+		}
+		
+		.nav-content {
+			margin-left: 100px;
+			border-bottom: 1px solid #cccc;
+		}
+		
+		.index-footer {
+			position: absolute;
+			bottom: 0px;
+			text-align: center;
+			width: 100%;
+		}
+		
+		.table-content {
+			margin-top: 50px;
+			text-align: center;
+		}
+		
+		ul {
+			padding-left: 0 !important;
+		}
+		
+		.submit-div {
+			padding-left: 2em;
+			padding-top: 30px;
+		}
+		
+		.ta-r {
+			text-align: right;
+		}
+		
+		.ta-l {
+			text-align: left;
+		}
+		
+		.title-fr {
+			float: right;
+			width: 140px;
+		}
+		
+		.title-fl {
+			float: left;
+			width: 400px;
+		}
+		
+		.width-100 {
+			width: 95%;
+			height: 40px;
+		}
+		
+		.width-10 {
+			width: 13%;
+		}
+		
+		.title-fl .am-dropdown {
+			width: 95% !important;
+		}
+		
+		.addSpan {
+			display: block;
+			height: 37px;
+			line-height: 37px;
+			margin: 10px 10px 0;
+		}
+	</style>
+
+	<body>
+		<div class="form">
+			<div class="index-header clearfix">
+				<div class="header-left fl">
+					<div class="logo-bg"></div>
+				</div>
+				<div class="header-center fl">
+					<h1 class="header-h1">北京地铁答题系统</h1>
+				</div>
+				
+			</div>
+			<div class="nav">
+				<div class="nav-content">
+					<span>导航页:</span>
+					<span>首页 - 出题规则- 新建</span>
+				</div>
+			</div>
+			<div class="table-content">
+				<form id="form">
+				<input id="rules" name="rules" type="hidden">
+				@if(rule! != null){
+					<input name="id" type="hidden" value="${match.id}"/>
+				@}
+					<ul class="clearfix">
+						<li class=" creditwe-search-li">
+							<div class="am-g">
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-r">
+									<div class="ta-l title-fr">
+										<span>岗位</span><span class="must">（必选）：</span>
+									</div>
+								</div>
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-l">
+									<div class="ta-l title-fl">
+										<select class="width-100" id="jobsId" name="jobsId" data-am-selected="{btnWidth: '140px', btnSize: 'sm', btnStyle: 'secondary'}">
+											 @for(job in jobs!){
+												@if(match! != null && match.jobId==job.id){      		 
+													<option value='${job.id}' selected="selected">${job.jobsName}</option>
+												@}else{
+													<option value='${job.id}'>${job.jobsName}</option>
+												@}
+											@}
+										</select>
+									</div>
+								</div>
+							</div>
+						</li>
+						
+						<div class="operation am-g">
+							<div class="add am-u-sm-6 am-u-lg-6 am-u-md-6 ta-r">
+								<button type="button" class="addTopic am-btn am-btn-secondary am-radiusta-l title-fr am-radius" style="margin-right: 1.5rem;">增加知识点</button>
+							</div>
+							<div class=""></div>
+						</div>
+					</ul>
+
+					<div class="submit-div">
+						<button id="commitForm" class="mr10 am-btn am-btn-primary am-radius" type="button">提交</button>
+					</div>
+				</form>
+			</div>
+			<div class="index-footer">
+				<footer class="footer-content">北京地铁有限公司</footer>
+			</div>
+
+		</div>
+		<script>
+			var index = 0;
+
+			$(function() {
+				$('#doc-form-file').on('change', function() {
+					var fileNames = '';
+					$.each(this.files, function() {
+						fileNames += '<span class="am-badge">' + this.name + '</span> ';
+					});
+					$('#file-list').html(fileNames);
+				});
+				$(".addTopic").on('click', function() {
+					add();
+					console.log($('.operation'));
+					var html = '<li class="clearfix add-li" style="margin-bottom: 20px;"><div class="am-g"><div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-r"><div class="ta-l title-fr" style=" margin-right: 1.5rem;"><input type="type" class="am-form-field" placeholder="请输入知识点" name="contentType"></div></div><div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-l"><div class="ta-l title-fl" style="width: 100%;"><input type="type" placeholder="出题占比" name="contentRate" class="am-form-field width-10 fl"/><span class="fl addSpan">%</span><input class="am-form-field width-10 fl"  type="type" placeholder="单选占比" name="oneChoose"/><span class="fl addSpan">%</span><input type="type" class="am-form-field width-10 fl" placeholder="多选占比" name="manyChoose"/><span class="fl addSpan">%</span><input type="type" placeholder="判断占比" name="judge" class="am-form-field width-10 fl"/><span class="fl addSpan">%</span><button type="button" class="delTopic am-btn am-btn-danger width-10 am-radius">删除</button></div></div></div></li>'
+					$('.operation').before(html);
+					$(".delTopic").on('click',delTopic)
+				})
+				function delTopic(){
+					rm();
+					$(this).parents('li').remove();
+				}
+				function add(){
+					index++;
+				}
+				function rm(){
+					index--;
+				}
+				
+			});
+			
+			$("#commitForm").on("click",function(){
+				
+				  //岗位不能为空
+				  if(index == 0){
+					  alert("请添加知识点");
+					  return;
+				  }
+				  var isPass = true;
+				  var contentType = "";
+				  var contentRate = "";
+				  var oneChoose = "";
+				  var manyChoose = "";
+				  var judge = "";
+				  
+				  $("[name=contentType]").each(function () {
+			        	if($(this).val() == ""){
+			        		alert("知识点不能为空");
+			        		$(this).focus();
+			        		isPass = false;
+			        		return false;
+			        	}else if(contentType.indexOf($(this).val()) != -1){
+			        		alert("知识点名称不能重复");
+			        		$(this).focus();
+			        		isPass = false;
+			        		return false;
+			        	}else{
+			        		contentType += "#"+$(this).val();
+			        	}
+			      });
+				  if(!isPass){
+					  return;
+				  }
+				  $("[name=contentRate]").each(function () {
+			        	if($(this).val() == ""){
+			        		alert("出题占比不能为空");
+			        		$(this).focus();
+			        		isPass = false;
+			        		return false;
+			        	}else{
+			        		contentRate += "#"+$(this).val();
+			        	}
+			      });
+				  if(!isPass){
+					  return;
+				  }
+				  $("[name=oneChoose]").each(function () {
+			        	if($(this).val() == ""){
+			        		alert("单选占比不能为空");
+			        		$(this).focus();
+			        		isPass = false;
+			        		return false;
+			        	}else{
+			        		oneChoose += "#"+$(this).val();
+			        	}
+			      });
+				  if(!isPass){
+					  return;
+				  }
+				  $("[name=manyChoose]").each(function () {
+			        	if($(this).val() == ""){
+			        		alert("多选占比不能为空");
+			        		$(this).focus();
+			        		isPass = false;
+			        		return false;
+			        	}else{
+			        		manyChoose += "#"+$(this).val();
+			        	}
+			      });
+				  if(!isPass){
+					  return;
+				  }
+				  $("[name=judge]").each(function () {
+			        	if($(this).val() == ""){
+			        		alert("判断占比不能为空");
+			        		$(this).focus();
+			        		isPass = false;
+			        		return false;
+			        	}else{
+			        		judge += "#"+$(this).val();
+			        	}
+			      });
+				  if(!isPass){
+					  return;
+				  }
+
+				  contentType = contentType.substring(1,contentType.length).split("#");
+				  contentRate = contentRate.substring(1,contentRate.length).split("#");
+				  oneChoose = oneChoose.substring(1,oneChoose.length).split("#");
+				  manyChoose = manyChoose.substring(1,manyChoose.length).split("#");
+				  judge = judge.substring(1,judge.length).split("#");
+				  
+				  var rules = "";
+				  var rowsRate = 0;
+				  for(var i=0;i<contentType.length;i++){
+					  var lineRate = parseInt(oneChoose[i])+parseInt(manyChoose[i])+parseInt(judge[i]);
+					  if(lineRate != 100){
+						  alert("知识点为：“"+contentType[i]+"”选项（单选、多选、判断）的比例加起来必须等于100%，请检查");
+						  return;
+					  }
+					  rowsRate += parseInt(contentRate[i]);
+					  rules += ","+contentType[i]+"#"+contentRate[i]+"#"+oneChoose[i]+"#"+manyChoose[i]+"#"+judge[i];
+				  }
+				   if(rowsRate != 100){
+					  alert("“知识点”的出题比例加起来必须为100%");
+					  return;
+				  }
+				  $("#rules").val(rules.substring(1,rules.length));
+				  var data = $("#form").serialize();
+			       $.ajax(
+						{
+							url: '${ctxPath!}/rule/ruleSet.m',
+							type: 'post',
+							data: data,
+							dataType: 'json',
+							success: function (data) {
+								if (data.rstFlag) {
+									alert(data.rstDesc);
+								} else {
+									alert(data.rstDesc);
+								}
+							},
+							clearForm: false,//禁止清楚表单
+							resetForm: false //禁止重置表单
+						})	
+			});
+		</script>
+	</body>
+
+</html>
