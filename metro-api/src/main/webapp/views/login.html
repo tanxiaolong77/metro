@@ -81,14 +81,14 @@
 	<body>
 		<div class="logoin-wrap">
 			<form class="login-form" id="form">
-				<h2 class="login-title">北京地铁答题系统-管理员登录</h2>
-				<div class="user">
-					<i class="Hui-iconfont">&#xe62c;</i>
-					<input class="userName" name="username" />
-				</div>
+				<h2 class="login-title">北京地铁答题系统-员工登录</h2>
 				<div class="password">
-					<i class="Hui-iconfont">&#xe60e;</i>
-					<input class="password-input" type="password" name="password"/>
+					<i class="Hui-iconfont">姓&emsp;&emsp;名</i>
+					<input class="userName" name="realName"/>
+				</div>
+				<div class="user">
+					<i class="Hui-iconfont">身份证号</i>
+					<input class="userName" name="userCard" />
 				</div>
 				<div class="login">
 					<button id="login" type="button" class="login-button">登录</button>
@@ -101,14 +101,14 @@
 	  var data = $("#form").serialize();
        $.ajax(
 			{
-				url: '${ctxPath!}/sysLogin',
+				url: '${ctxPath!}/login',
 				type: 'post',
 				data: data,
 				dataType: 'json',
 				beforeSubmit: function () {alert(123);},
 				success: function (data) {
 					if (data.rstFlag) {
-						window.location.href = "${ctxPath!}/index.m";
+						window.location.href = "${ctxPath!}/index.u";
 					} else {
 						alert(data.rstDesc);
 					}

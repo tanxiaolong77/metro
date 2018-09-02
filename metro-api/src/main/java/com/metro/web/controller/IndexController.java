@@ -14,8 +14,6 @@ import com.metro.vo.UserVO;
 @Controller
 public class IndexController  extends BaseController{
 	
-	
-	
 	/**
 	 * 跳转到管理员登录页面
 	 * 
@@ -28,15 +26,14 @@ public class IndexController  extends BaseController{
 	}
 	
 	/**
-	 * 跳转到管理员登录页面
+	 * 跳转到技能类型页面
 	 * 
 	 */
 	@RequestMapping(value = "index.u", method = RequestMethod.GET)
 	public String toLogin(ModelMap modelMap) {
 		EmployeeVO employeeVO = BeanUtils.transferB(SessionUtils.getLoginUser(),EmployeeVO.class);
 		modelMap.put("user",employeeVO);
-		return "views/index.html";
+		return "views/skill-type.html";
 	}
-	
 	
 }
