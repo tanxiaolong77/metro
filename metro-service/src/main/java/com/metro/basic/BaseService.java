@@ -17,9 +17,9 @@ import com.metro.model.BaseExample;
  */
 @Transactional
 public abstract class BaseService<T,PK> {
- 
+  
 	protected abstract EntityDao<T,PK> getEntityDao();
-
+ 
 	@Transactional(readOnly = true)
 	public T getById(PK id) throws DataAccessException {
 		return (T) getEntityDao().selectByPrimaryKey(id);

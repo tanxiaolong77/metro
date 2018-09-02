@@ -20,6 +20,7 @@ import com.metro.model.Match;
 import com.metro.model.MatchExample;
 import com.metro.service.JobsService;
 import com.metro.service.MatchService;
+import com.metro.util.BaseUtil;
 import com.metro.util.DateUtil;
 import com.metro.util.SessionUtils;
 import com.metro.vo.DataTransObj;
@@ -97,7 +98,7 @@ public class MatchController  extends BaseController{
 		}
 		List<Jobs> jobs = jobsService.selectByExample(new JobsExample());
 		model.put("jobs", jobs);//岗位
-		return "match-add.html";
+		return "views/match-add.html";
 	}
 	
 	
@@ -119,8 +120,8 @@ public class MatchController  extends BaseController{
 			match.setId(id);
 			match.setMatchName(matchName);
 			match.setJobId(jobsId);
-			match.setStartDate(DateUtil.strToDate(DateUtil.DATE_FORMAT_STA, startDate));
-			match.setEndDate(DateUtil.strToDate(DateUtil.DATE_FORMAT_STA,endDate));
+			match.setStartDate(DateUtil.strToDate(DateUtil.DATE_FORMAT_SHORT, startDate));
+			match.setEndDate(DateUtil.strToDate(DateUtil.DATE_FORMAT_SHORT,endDate));
 			match.setMatchLevel(matchLevel);
 			match.setCreateTime(new Date());
 			match.setOperater(SessionUtils.getLoginManager().getId());
@@ -130,6 +131,7 @@ public class MatchController  extends BaseController{
 				matchService.update(match);
 			}else{
 				//新增
+				match.setId(BaseUtil.getUUID());
 				matchService.insert(match);
 			}
 		} catch (Exception e) {

@@ -75,6 +75,12 @@
     id, match_name, job_id, match_level, start_date, end_date, create_time, operater, 
     update_time, modifier
   </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from match_conf
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
   <select id="selectByExample" parameterType="com.metro.model.MatchExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -97,7 +103,7 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.metro.model.Match">
-    insert into match (id, match_name, job_id, 
+    insert into match_conf (id, match_name, job_id, 
       match_level, start_date, end_date, 
       create_time, operater, update_time, 
       modifier)
@@ -107,7 +113,7 @@
       #{modifier,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.metro.model.Match">
-    insert into match
+    insert into match_conf
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -232,5 +238,39 @@
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.metro.model.Match">
+    update match_conf
+    <set>
+      <if test="matchName != null">
+        match_name = #{matchName,jdbcType=VARCHAR},
+      </if>
+      <if test="jobId != null">
+        job_id = #{jobId,jdbcType=VARCHAR},
+      </if>
+      <if test="matchLevel != null">
+        match_level = #{matchLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null">
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operater != null">
+        operater = #{operater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id}
   </update>
 </mapper>

@@ -14,7 +14,7 @@ import com.metro.model.BaseExample;
  * @date 2017年11月21日
  */
 public interface EntityService<T,PK> {
-
+ 
 	public T getById(PK id) throws DataAccessException;
 
 	public int insert(T entity)throws DataAccessException;

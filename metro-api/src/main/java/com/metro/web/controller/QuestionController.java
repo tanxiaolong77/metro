@@ -38,8 +38,6 @@ import com.metro.vo.QuestionVo;
 
 /***
  * 考题控制   
- * @author dell
- *
  */
 @Controller
 @RequestMapping(value="question")
@@ -74,7 +72,7 @@ public class QuestionController  extends BaseController{
 	 * @param testType		考试类型（1：模拟、2：考试）
 	 * @param matchLevel	赛制级别（1:初赛、2:复赛、3:决赛、4:总决赛）
 	 */
-	@RequestMapping(value = "doTest.u", method = RequestMethod.POST)
+@RequestMapping(value = "toQuestion.u", method = RequestMethod.POST)
 	public String doTest(ModelMap model,
 			@RequestParam("userId") String userId,
 			@RequestParam("skillType") String skillType,
@@ -114,13 +112,14 @@ public class QuestionController  extends BaseController{
 					logger.info("初次参赛，有资格参赛。");
 					// 出题逻辑
 					model = doQuestion(model,userId,date,skillType,testType,jobId,match.getId(),match.getMatchLevel());
+					return "views/test.html";
 				} else if (matchUserPassList.size() > 0 && !match.getMatchLevel().equals("1")
 						&& (matchUserPassList.get(0).getMatchLevel() + 1).equals(match.getMatchLevel()) 
 						&& matchUserPassList.get(0).getIsPass().equals("1")) {
 					logger.info("上次比赛通过，此次比赛有资格。");
 					// 出题逻辑
 					model = doQuestion(model,userId,date,skillType,testType,jobId,match.getId(),match.getMatchLevel());
-					
+					return "views/test.html";
 				} else {
 					logger.info("没有资格参加比赛！！！");
 					return error();
@@ -132,7 +131,7 @@ public class QuestionController  extends BaseController{
 			}
 		}
 		
-		return "question.html";
+		return "toskillType.u";
 	}
 
 	private ModelMap doQuestion(ModelMap model,String userId,Date date,String skillType,String testType,String jobId,

@@ -15,7 +15,7 @@ import com.metro.model.BaseExample;
  * @param <PK>
  */
 public interface EntityDao<T , PK> {
-
+ 
 	public T selectByPrimaryKey(PK id) throws DataAccessException;
 
 	public int insertSelective(T entity) throws DataAccessException;

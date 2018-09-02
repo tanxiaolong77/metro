@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="format-detection" content="telephone=no">
+		<title>北京地铁</title>
+		<link href="${ctxPath}/views/css/iconfont.min.css" rel="stylesheet" type="text/css" />
+		<link href="${ctxPath}/views/css/amazeui.css" rel="stylesheet" type="text/css">
+		<link href="${ctxPath}/views/css/amazeui.datetimepicker.css" rel="stylesheet" type="text/css/">
+		<link href="${ctxPath}/views/css/all.css" rel="stylesheet" type="text/css" />
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.min.js"></script>
+		<script src="${ctxPath}/views/js/amazeui.min.js"></script>
+		<script src="${ctxPath}/views/js/amazeui.datetimepicker.min.js"></script>
+		<script src="${ctxPath}/views/js/all.js"></script>
+	</head>
+	<style>
+		.table {
+			height: 100%;
+			padding-top: 0.1px;
+		}
+		
+		.nav {
+			height: 80px;
+			line-height: 80px;
+		}
+		
+		.nav-content {
+			margin-left: 100px;
+			border-bottom: 1px solid #cccc;
+		}
+		
+		.index-footer {
+			position: absolute;
+			bottom: 0px;
+			text-align: center;
+			width: 100%;
+		}
+		
+		.table-content {
+			margin-top: 50px;
+			text-align: center;
+		}
+		
+		ul {
+			padding-left: 0 !important;
+		}
+		
+		.submit-div {
+			padding-left: 2em;
+			padding-top: 30px;
+		}
+		
+		.ta-r {
+			text-align: right;
+		}
+		
+		.ta-l {
+			text-align: left;
+		}
+		
+		.title-fr {
+			float: right;
+			width: 140px;
+		}
+		
+		.title-fl {
+			float: left;
+			width: 400px;
+		}
+		
+		.width-100 {
+			width: 95%;
+			height: 40px;
+		}
+		
+		.width-10 {
+			width: 10%;
+		}
+		
+		.title-fl .am-dropdown {
+			width: 95% !important;
+		}
+		
+		.addSpan {
+			display: block;
+			height: 37px;
+			line-height: 37px;
+			margin: 10px 10px 0;
+		}
+	</style>
+
+	<body>
+		<div class="form">
+			<div class="index-header clearfix">
+				<div class="header-left fl">
+					<div class="logo-bg"></div>
+				</div>
+				<div class="header-center fl">
+					<h1 class="header-h1">北京地铁答题系统</h1>
+				</div>
+				
+			</div>
+			<div class="nav">
+				<div class="nav-content">
+					<span>导航页:</span>
+					<span>首页 - 开赛设置</span>
+					@if(match! == null){
+					<span>- 新建</span>
+					@}else{
+					<span> -编辑</span>
+					@}
+				</div>
+			</div>
+			<div class="table-content">
+				<form id="form">
+				@if(match! != null){
+					<input name="id" type="hidden" value="${match.id}"/>
+				@}
+					<ul class="clearfix">
+						<li class=" creditwe-search-li">
+							<div class="am-g">
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-r">
+									<div class="ta-l title-fr">
+										<span>赛事名称</span><span class="must">（必选）：</span>
+									</div>
+								</div>
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-l">
+									<div class="ta-l title-fl">
+										<input type="type" id="matchName" name="matchName" value="${match.matchName!}" class="width-100" class="userid search-input" />
+
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class=" creditwe-search-li">
+							<div class="am-g">
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-r">
+									<div class="ta-l title-fr">
+										<span>岗位</span><span class="must">（必选）：</span>
+									</div>
+								</div>
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-l">
+									<div class="ta-l title-fl">
+										<select class="width-100" id="jobsId" name="jobsId" data-am-selected="{btnWidth: '140px', btnSize: 'sm', btnStyle: 'secondary'}">
+											 @for(job in jobs!){
+												@if(match! != null && match.jobId==job.id){      		 
+													<option value='${job.id}' selected="selected">${job.jobsName}</option>
+												@}else{
+													<option value='${job.id}'>${job.jobsName}</option>
+												@}
+											@}
+											
+										</select>
+									</div>
+								</div>
+							</div>
+						</li>
+
+						<li class=" creditwe-search-li">
+							<div class="am-g">
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-r">
+									<div class="ta-l title-fr">
+										<span>比赛时间</span><span class="must">（必选）：</span>
+									</div>
+
+								</div>
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-l">
+									<div class="ta-l title-fl">
+										
+										<input id="startDate" name="startDate" value="${match.startDate!,'yyyy-MM-dd'}" type="text" class="am-form-field data-input search-input" placeholder="开始日期" data-am-datepicker readonly required /> --
+										<input id="endDate"   name="endDate" value="${match.startDate!,'yyyy-MM-dd'}" type="text" class="am-form-field data-input search-input" placeholder="结束日期" data-am-datepicker readonly required />
+									</div>
+								</div>
+							</div>
+						</li>
+					
+					</ul>
+					
+						<li class=" creditwe-search-li">
+							<div class="am-g">
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-r">
+									<div class="ta-l title-fr">
+										<span>开放阶段</span><span class="must">（必选）：</span>
+									</div>
+
+								</div>
+								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-l">
+									<div class="ta-l title-fl">
+										@if(match! != null && match.matchLevel=="1"){
+											<input name="matchLevel" type="radio" value="1" checked="checked"/> 初赛&nbsp;&nbsp;&nbsp;
+										@}else{
+											<input name="matchLevel" value="1" type="radio"/> 初赛&nbsp;&nbsp;&nbsp;
+										@}		
+										
+										@if(match! != null && match.matchLevel=="2"){
+											<input name="matchLevel" type="radio" value="2" checked="checked"/> 复赛&nbsp;&nbsp;&nbsp;
+										@}else{
+											<input name="matchLevel" value="2" type="radio"/> 复赛&nbsp;&nbsp;&nbsp;
+										@}	
+										
+										@if(match! != null && match.matchLevel=="3"){
+											<input name="matchLevel" type="radio" value="3" checked="checked"/> 决赛nbsp;&nbsp;&nbsp;
+										@}else{
+											<input name="matchLevel" value="3" type="radio"/> 决赛&nbsp;&nbsp;&nbsp;
+										@}	
+										
+										@if(match! != null && match.matchLevel=="4"){
+											<input name="matchLevel" type="radio" value="4" checked="checked"/> 总决赛&nbsp;&nbsp;&nbsp;
+										@}else{
+											<input name="matchLevel" value="4" type="radio"/> 总决赛&nbsp;&nbsp;&nbsp;
+										@}	
+										
+										
+									</div>
+								</div>
+							</div>
+						</li>
+					
+					</ul>
+
+					<div class="submit-div">
+						<button id="commitForm" class="mr10 am-btn am-btn-primary am-radius" type="button">提交</button>
+					</div>
+				</form>
+			</div>
+			<div class="index-footer">
+				<footer class="footer-content">北京地铁有限公司</footer>
+			</div>
+
+		</div>
+		<script>
+		
+			$("#commitForm").on("click",function(){
+			  var data = $("#form").serialize();
+			  //岗位不能为空
+			  if($("#jobsId").val() == null || $("#jobsId").val() == ""){
+				  alert("岗位不能为空");
+				  return;
+			  }
+			  //比赛时间不能为空
+			  if($("#startDate").val() == null || $("#startDate").val() == ""){
+				  alert("开始时间不能为空");
+				  return;
+			  }
+			  if($("#endDate").val() == null || $("#endDate").val() == ""){
+				  alert("结束时间不能为空");
+				  return;
+			  }
+			  var startDate = new Date($("#startDate").val());
+			  var endDate = new Date($("#endDate").val());
+			  if(startDate.getTime() > endDate.getTime()){
+				  alert("开始时间不能大于结束时间");
+				  return;
+			  }
+			  if($("input[name='matchLevel']:checked").val() == undefined){
+				  alert("必须勾选开放阶段");
+				  return;
+			  }
+		       $.ajax(
+					{
+						url: '${ctxPath!}/match/matchSet.m',
+						type: 'post',
+						data: data,
+						dataType: 'json',
+						success: function (data) {
+							if (data.rstFlag) {
+								alert(data.rstDesc);
+							} else {
+								alert(data.rstDesc);
+							}
+						},
+						clearForm: false,//禁止清楚表单
+						resetForm: false //禁止重置表单
+					})});
+		
+		
+			$(function() {
+				$('#doc-form-file').on('change', function() {
+					var fileNames = '';
+					$.each(this.files, function() {
+						fileNames += '<span class="am-badge">' + this.name + '</span> ';
+					});
+					$('#file-list').html(fileNames);
+				});
+				$(".addTopic").on('click', function() {
+					console.log($('.operation'));
+					var html = '<li class="clearfix add-li" style="margin-bottom: 20px;"><div class="am-g"><div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-r"><div class="ta-l title-fr" style=" margin-right: 1.5rem;"><input type="type" class="am-form-field" placeholder="请输入题型"></div></div><div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-l"><div class="ta-l title-fl" style="width: 100%;"><input type="type" placeholder="百分比" class="am-form-field width-10 fl"/><span class="fl addSpan">%</span><input class="am-form-field width-10 fl"  type="type" placeholder="百分比"/><span class="fl addSpan">%</span><input type="type" class="am-form-field width-10 fl" placeholder="百分比"/><span class="fl addSpan">%</span><input type="type" placeholder="百分比" class="am-form-field width-10 fl"/><span class="fl addSpan">%</span><button type="button" class="delTopic am-btn am-btn-danger width-10 am-radius">删除</button></div></div></div></li>'
+					$('.operation').before(html);
+					$(".delTopic").on('click',delTopic)
+				})
+				function delTopic(){
+					$(this).parents('li').remove();
+				}
+			});
+		</script>
+	</body>
+
+</html>
