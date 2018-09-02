@@ -133,18 +133,16 @@
 			</div>
 			<div class="index-content">
 				<div class="content-button">
-						 @for(job in jobs!){
-						 	
-							@if((jobLP.index-1) % 3 == 0){
-              					<br>
-            				 @}
-             
-							@if(job.isShow == "0"){
-								<button class="button-max" style="cursor:pointer" onclick="javascript:window.location.href='${ctxPath}/skip/toMatchType.u?jobId=${job.id}'">${job.jobsName}</button>
-							@}else{
-								<button class="button-max">${job.jobsName}</button>
-							@}
+					@for(job in jobs!){
+						 @if((jobLP.index-1) % 3 == 0){
+						 	<br>
+						 @}
+						 @if(job.isShow == "0"){
+						 	<button class="button-max" style="cursor:pointer" onclick="javascript:window.location.href='${ctxPath}/skip/toMatchType.u?jobId=${job.id}'">${job.jobsName}</button>
+						@}else{
+							<button class="button-max">${job.jobsName}</button>
 						@}
+					@}
 				</div>
 			</div>
 			<div class="index-footer">

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.metro.basic.BaseService;
 import com.metro.basic.EntityDao;
-import com.metro.dao.RuleMapper;
+import com.metro.dao.UserQuestionMapper;
 import com.metro.model.UserQuestion;
 import com.metro.service.UserQuestionService;
 
@@ -14,10 +14,10 @@ public class UserQuestionServiceImpl extends BaseService<UserQuestion,String> im
   
 	
 	@Autowired
-	private RuleMapper ruleMapper;
+	private UserQuestionMapper userQuestionMapper;
 	
 	@Override
 	protected EntityDao getEntityDao() {
-		return ruleMapper;
+		return userQuestionMapper;
 	}
 }

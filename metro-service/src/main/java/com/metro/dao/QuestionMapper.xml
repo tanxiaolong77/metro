@@ -479,7 +479,7 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
   
-  <select id="countByQuestionVo" parameterType="com.metro.vo.QuestionVo" >
+  <select id="selectByQuestionVo" parameterType="com.metro.vo.QuestionVo" resultMap="BaseResultMap">
     SELECT 
     	<include refid="Base_Column_List" />
     from question

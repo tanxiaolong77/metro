@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.metro.model.Employee;
 import com.metro.model.Jobs;
 import com.metro.model.JobsExample;
 import com.metro.model.Match;
@@ -55,6 +56,8 @@ public class IndexController  extends BaseController{
 	 */
 	@RequestMapping(value = "index.u", method = RequestMethod.GET)
 	public String toLogin(ModelMap modelMap) {
+		Employee user = BeanUtils.transferB(SessionUtils.getLoginUser(),Employee.class);
+		modelMap.put("user",user);
 		return "views/index.html";
 	}
 	

@@ -24,8 +24,14 @@ public class Constant {
 	public static final String SESSION_LOGIN_MANAGER = "managerUser";
 	public static final String SUPER_ADMIN = "1"; // 超级管理员
 	
-	// 用户赛事权限
-	public static final String DATA_MATCH_USER_PASS = "matchUserPass";
+	// 技能类型
+	public static final String SKILL_TYPE = "skillType";
+	
+	// 考试类型
+	public static final String TEST_TYPE = "skillType";
+	
+	// 岗位类型
+	public static final String JOB_TYPE = "jobType";
 
 	// 缓存key
 	public static final String CACHE_SYS_RESOURCE = "sysResource_cache"; // 资源的缓存名称

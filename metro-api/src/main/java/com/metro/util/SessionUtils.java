@@ -36,6 +36,27 @@ public class SessionUtils {
 	}
 	
 	/**
+	 * session中的技能类型
+	 */
+	public static String getSkillType(){
+		return  (String) getSession().getAttribute(Constant.SKILL_TYPE);
+	}
+	
+	/**
+	 * session中的考试类型
+	 */
+	public static String getTestType(){
+		return  (String) getSession().getAttribute(Constant.TEST_TYPE);
+	}
+	
+	/**
+	 * session中的岗位类型
+	 */
+	public static String getJobType(){
+		return  (String) getSession().getAttribute(Constant.JOB_TYPE);
+	}
+	
+	/**
 	 * @Title: getCurRequest
 	 * @Description:(获得当前的request) 
 	 * @param:@return 

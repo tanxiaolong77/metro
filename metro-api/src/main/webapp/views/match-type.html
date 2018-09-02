@@ -126,8 +126,19 @@
 			</div>
 			<div class="index-content">
 				<div class="content-button">
-					<button class="button-max" onclick="javascript:window.location.href='${ctxPath}/skip/toJobType.u'">技能大赛</button>
-					<button class="button-max">技能鉴定</button>
+					@if(matchLevel == "1"){
+						<!-- 改样式 --> 
+					@}else if(matchLevel == "2"){
+						<!-- 改样式 -->
+					@}else if(matchLevel == "3"){
+						<!-- 改样式 -->
+					@}else if(matchLevel == "4"){
+						<!-- 改样式 -->
+					@}
+					<button class="button-max" style="cursor:pointer" onclick="javascript:window.location.href='${ctxPath}/skip/toMatchType.u'">初赛</button>
+					<button class="button-max" style="cursor:pointer" onclick="javascript:window.location.href='${ctxPath}/skip/toMatchType.u'">复赛</button>
+					<button class="button-max" style="cursor:pointer" onclick="javascript:window.location.href='${ctxPath}/skip/toMatchType.u'">决赛</button>
+					<button class="button-max" style="cursor:pointer" onclick="javascript:window.location.href='${ctxPath}/skip/toMatchType.u'">总决赛</button>
 				</div>
 			</div>
 			<div class="index-footer">

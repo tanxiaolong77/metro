@@ -25,11 +25,6 @@ public class QuestionServiceImpl extends BaseService<Question,String> implements
 	}
 
 	@Override
-	public int countByQuestionVo(QuestionVo questionVo) {
-		return questionMapper.countByQuestionVo(questionVo);
-	}
-
-	@Override
 	public List<Question> selectByQuestionVo(QuestionVo questionVo) {
 		return questionMapper.selectByQuestionVo(questionVo);
 	}

@@ -15,8 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import com.metro.model.Employee;
 import com.metro.model.Match;
 import com.metro.model.MatchExample;
 import com.metro.model.MatchUserPass;
@@ -34,6 +34,7 @@ import com.metro.service.RuleService;
 import com.metro.service.UserQuestionService;
 import com.metro.util.BaseUtil;
 import com.metro.util.DateUtil;
+import com.metro.util.SessionUtils;
 import com.metro.vo.QuestionVo;
 
 /***
@@ -72,12 +73,14 @@ public class QuestionController  extends BaseController{
 	 * @param testType		考试类型（1：模拟、2：考试）
 	 * @param matchLevel	赛制级别（1:初赛、2:复赛、3:决赛、4:总决赛）
 	 */
-@RequestMapping(value = "toQuestion.u", method = RequestMethod.POST)
-	public String doTest(ModelMap model,
-			@RequestParam("userId") String userId,
-			@RequestParam("skillType") String skillType,
-			@RequestParam("testType") String testType,
-			@RequestParam("jobId") String jobId) {
+	@RequestMapping(value = "toQuestion.u", method = RequestMethod.GET)
+	public String doTest(ModelMap model) {
+		
+		Employee user = SessionUtils.getLoginUser();
+		String userId = user.getId();
+		String skillType = SessionUtils.getSkillType();
+		String testType = SessionUtils.getTestType();
+		String jobId = SessionUtils.getJobType();
 		
 		Date date = new Date();
 		
@@ -91,10 +94,10 @@ public class QuestionController  extends BaseController{
 			matchCriteria.andStartDateLessThanOrEqualTo(date);
 			matchCriteria.andEndDateGreaterThan(date);
 			List<Match> matchList = matchService.selectByExample(matchExample);
-			Match match = matchList.get(0);
 			
-			if (match != null) {
+			if (matchList!=null && !matchList.isEmpty()) {
 				logger.info("存在有效比赛！！！");
+				Match match = matchList.get(0);
 				
 				// 判断用户是否有资格参加比赛
 				MatchUserPassExample matchUserPassExample = new MatchUserPassExample();
@@ -153,10 +156,10 @@ public class QuestionController  extends BaseController{
 		userQuestionCriteria.andStartTimeLessThanOrEqualTo(date);
 		userQuestionCriteria.andEndTimeGreaterThan(date);
 		if(StringUtils.isNotBlank(skillType)){
-			userQuestionCriteria.andUserIdEqualTo(userId);
+			userQuestionCriteria.andSkillTypeEqualTo(skillType);
 		}
 		if(StringUtils.isNotBlank(testType)){
-			userQuestionCriteria.andUserIdEqualTo(userId);
+			userQuestionCriteria.andTestTypeEqualTo(testType);
 		}
 		if(StringUtils.isNotBlank(jobId)){
 			userQuestionCriteria.andJobsIdEqualTo(jobId);
@@ -166,12 +169,11 @@ public class QuestionController  extends BaseController{
 		}
 		List<UserQuestion> userQuestionList = userQuestionService.selectByExample(userQuestionExample);
 		
-		
-		if (userQuestionList.get(0) != null) {
+		if (userQuestionList!=null && !userQuestionList.isEmpty()) {
 			logger.info("45分钟之内出过题！！！");
 			String questionId = userQuestionList.get(0).getQuestionId();
 			String[] questions = questionId.split(",");
-			ArrayList questionIdList = (ArrayList) Arrays.asList(questions);
+			ArrayList<String> questionIdList = (ArrayList<String>) Arrays.asList(questions);
 			QuestionExample questionExample = new QuestionExample();
 			QuestionExample.Criteria questionCriteria = questionExample.createCriteria();
 			questionCriteria.andIdIn(questionIdList);
@@ -190,61 +192,49 @@ public class QuestionController  extends BaseController{
 			String time = DateUtil.formatDate(userQuestion.getEndTime());
 			logger.info("考试结束时间：" + time);
 			model.put("time", time);
-			
 		
 		} else {
 			logger.info("45分钟之内没出过题！！！");
-			// 出题规则
+			// 出题规则（岗位、知识点、题型、题量）
 			QuestionVo question = new QuestionVo();
-			if(StringUtils.isNotBlank(skillType)){
-				question.setSkillType(skillType);
-			}
-			if(StringUtils.isNotBlank(testType)){
-				question.setTestType(testType);
-			}
 			if(StringUtils.isNotBlank(jobId)){
 				question.setJobsId(jobId);
-			}
-			if(StringUtils.isNotBlank(matchLevel)){
-				question.setMatchLevel(matchLevel);
 			}
 			 
 			logger.info("根据岗位，查看出题规则，岗位类型：" + jobId);
 			RuleExample ruleExample = new RuleExample();
 			RuleExample.Criteria ruleCriteria = ruleExample.createCriteria();
 			if(StringUtils.isNotBlank(jobId)){
-				ruleCriteria.andSkillTypeEqualTo(jobId);
+				ruleCriteria.andJobIdEqualTo(jobId);
 			}
 			List<Rule> ruleList = ruleService.selectByExample(ruleExample);
-			for (int i = 0; i < ruleList.size(); i++) {
-				Rule rule = ruleList.get(i);
-				String contentType = rule.getContentType();
-				question.setContentType(contentType);
-				
-				// 每一个知识点题量
-				int count = 100 * (Integer.parseInt(rule.getContentRate()) / 100);
-				
-				// 单选题量
-				int oneChoose = count * (Integer.parseInt(rule.getOneChoose()) / 100);
-				question.setQuestionType("1");
-				question.setCount(oneChoose);
-				// 单选出题
-				questionList1.addAll(questionService.selectByQuestionVo(question));
-				
-				// 多选题量
-				int manyChoose = count * Integer.parseInt(rule.getManyChoose()) / 100;
-				question.setQuestionType("2");
-				question.setCount(manyChoose);
-				// 多选出题
-				questionList2.addAll(questionService.selectByQuestionVo(question));
-				
-				// 判断题量
-				int judge = count * Integer.parseInt(rule.getJudge()) / 100;
-				question.setQuestionType("3");
-				question.setCount(judge);
-				// 判断出题
-				questionList3.addAll(questionService.selectByQuestionVo(question));
-			}
+			Rule rule = ruleList.get(0);
+			String contentType = rule.getContentType();
+			question.setContentType(contentType);
+			
+			// 每一个知识点题量
+			int count = Integer.parseInt(rule.getContentRate());
+			
+			// 单选题量
+			int oneChoose = (int) (count * (Double.valueOf(rule.getOneChoose()).doubleValue() / 100));
+			question.setQuestionType("1");
+			question.setCount(oneChoose);
+			// 单选出题
+			questionList1.addAll(questionService.selectByQuestionVo(question));
+			
+			// 多选题量
+			int manyChoose = (int) (count * (Double.valueOf(rule.getManyChoose()).doubleValue() / 100));
+			question.setQuestionType("2");
+			question.setCount(manyChoose);
+			// 多选出题
+			questionList2.addAll(questionService.selectByQuestionVo(question));
+			
+			// 判断题量
+			int judge = (int) (count * (Double.valueOf(rule.getJudge()).doubleValue() / 100));
+			question.setQuestionType("3");
+			question.setCount(judge);
+			// 判断出题
+			questionList3.addAll(questionService.selectByQuestionVo(question));
 			
 			// 打乱不同知识点题目顺序
 			Collections.shuffle(questionList1);
@@ -257,11 +247,7 @@ public class QuestionController  extends BaseController{
 			
 			// 考试时间：45分钟
 			String time = "";
-			try {
-				time = DateUtil.formatDate(DateUtil.addMinutesToDate(time, 45));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+			time = DateUtil.formatDate(DateUtil.addMinutesToDate(date, 45));
 			logger.info("考试结束时间：" + time);
 			model.put("time", time);
 			
@@ -285,18 +271,19 @@ public class QuestionController  extends BaseController{
 			userQuestion.setTestType(testType);
 			userQuestion.setQuestionId(questionId);
 			userQuestion.setCreateTime(date);
+			userQuestion.setStartTime(date);
 			userQuestion.setEndTime(DateUtil.formatDateStr(time));
+			userQuestionService.insert(userQuestion);
 			
 			// 入用户比赛晋级表
 			MatchUserPass matchUserPass = new MatchUserPass();
 			matchUserPass.setId(BaseUtil.getUUID());
 			matchUserPass.setUserId(userId);
 			matchUserPass.setJobId(jobId);
-			matchUserPass.setMatchId(matchId);
+			matchUserPass.setMatchLevel(matchLevel);
 			matchUserPass.setCreateTime(new Date());
 			matchUserPass.setIsPass("0");
 			matchUserPassService.insert(matchUserPass);
-			
 			
 		}
 		
