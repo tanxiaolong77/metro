@@ -76,8 +76,8 @@ public class MatchController  extends BaseController{
 		
 		//分页
 		if(startNumber != null && pageSize != null){
-			example.setLimitStart(startNumber);
-			example.setLimitEnd(pageSize);
+			example.setStartNumber(startNumber);
+			example.setPageSize(pageSize);
 		}
 		
 		List<Match> list = matchService.selectByExample(example);

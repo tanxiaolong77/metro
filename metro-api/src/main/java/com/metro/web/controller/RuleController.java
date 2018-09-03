@@ -74,11 +74,11 @@ public class RuleController extends BaseController {
 		int totalNum = ruleService.countByExample(example);
 
 		// 分页
-		if (startNumber != null && pageSize != null) {
-			example.setLimitStart(startNumber);
-			example.setLimitEnd(pageSize);
+		if(startNumber != null && pageSize != null){
+			example.setStartNumber(startNumber);
+			example.setPageSize(pageSize);
 		}
-
+		
 		List<Rule> list = ruleService.selectByExample(example);
 
 		return DataTransObj.onSuccess(list, "查询成功", totalNum);
