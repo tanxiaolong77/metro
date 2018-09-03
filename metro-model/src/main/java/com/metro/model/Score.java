@@ -23,7 +23,7 @@ public class Score {
 
     private String skillType;
 
-    private String questionType;
+    private String testType;
 
     private String jobsType;
 
@@ -129,12 +129,12 @@ public class Score {
         this.skillType = skillType == null ? null : skillType.trim();
     }
 
-    public String getQuestionType() {
-        return questionType;
+    public String getTestType() {
+        return testType;
     }
 
-    public void setQuestionType(String questionType) {
-        this.questionType = questionType == null ? null : questionType.trim();
+    public void setTestType(String testType) {
+        this.testType = testType == null ? null : testType.trim();
     }
 
     public String getJobsType() {

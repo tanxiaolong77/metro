@@ -1,6 +1,5 @@
 package com.metro.web.controller;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,7 +44,7 @@ import com.metro.vo.QuestionVo;
  */
 @Controller
 @RequestMapping(value="question")
-public class QuestionController  extends BaseController{
+public class QuestionController extends BaseController{
 	
 	private static Logger logger = LoggerFactory.getLogger(QuestionController.class);
 	
@@ -202,9 +201,9 @@ public class QuestionController  extends BaseController{
 		} else {
 			logger.info("45分钟之内没出过题！！！");
 			// 出题规则（岗位、知识点、题型、题量）
-			QuestionVo question = new QuestionVo();
+			QuestionVo questionVo = new QuestionVo();
 			if(StringUtils.isNotBlank(jobId)){
-				question.setJobsId(jobId);
+				questionVo.setJobsId(jobId);
 			}
 			 
 			logger.info("根据岗位，查看出题规则，岗位类型：" + jobId);
@@ -216,43 +215,71 @@ public class QuestionController  extends BaseController{
 			List<Rule> ruleList = ruleService.selectByExample(ruleExample);
 			Rule rule = ruleList.get(0);
 			String contentType = rule.getContentType();
-			question.setContentType(contentType);
+			questionVo.setContentType(contentType);
 			
 			// 每一个知识点题量
 			int count = Integer.parseInt(rule.getContentRate());
 			
 			// 单选题量
 			int oneChoose = (int) (count * (Double.valueOf(rule.getOneChoose()).doubleValue() / 100));
-			question.setQuestionType("1");
-			question.setCount(oneChoose);
+			questionVo.setQuestionType("1");
+			questionVo.setCount(oneChoose);
 			// 单选出题
 			// 题目
-			List<Question> questions = questionService.selectByQuestionVo(question);
-			for (int i = 0; i < questions.size(); i++) {
-				String questionId = questions.get(i).getId();
+			List<Question> questionOneList = questionService.selectByQuestionVo(questionVo);
+			for (int i = 0; i < questionOneList.size(); i++) {
+				Question questionOne = questionOneList.get(i);
+				String questionId = questionOne.getId();
 				AnswerExample answerExample = new AnswerExample();
 				AnswerExample.Criteria answerCriteria = answerExample.createCriteria();
 				answerCriteria.andQuestionIdEqualTo(questionId);
+				// 答案
 				List<Answer> answerList = answerService.selectByExample(answerExample);
+				questionOne.setAnswers(answerList);
+				questionOneList.add(questionOne);
 			}
-			
-			
-			questionList1.addAll(questions);
+			questionList1.addAll(questionOneList);
 			
 			
 			// 多选题量
 			int manyChoose = (int) (count * (Double.valueOf(rule.getManyChoose()).doubleValue() / 100));
-			question.setQuestionType("2");
-			question.setCount(manyChoose);
+			questionVo.setQuestionType("2");
+			questionVo.setCount(manyChoose);
 			// 多选出题
-			questionList2.addAll(questionService.selectByQuestionVo(question));
+			// 题目
+			List<Question> questionManyList = questionService.selectByQuestionVo(questionVo);
+			for (int i = 0; i < questionManyList.size(); i++) {
+				Question questionMany = questionManyList.get(i);
+				String questionId = questionMany.getId();
+				AnswerExample answerExample = new AnswerExample();
+				AnswerExample.Criteria answerCriteria = answerExample.createCriteria();
+				answerCriteria.andQuestionIdEqualTo(questionId);
+				// 答案
+				List<Answer> answerList = answerService.selectByExample(answerExample);
+				questionMany.setAnswers(answerList);
+				questionManyList.add(questionMany);
+			}
+			questionList2.addAll(questionManyList);
 			
 			// 判断题量
 			int judge = (int) (count * (Double.valueOf(rule.getJudge()).doubleValue() / 100));
-			question.setQuestionType("3");
-			question.setCount(judge);
+			questionVo.setQuestionType("3");
+			questionVo.setCount(judge);
 			// 判断出题
-			questionList3.addAll(questionService.selectByQuestionVo(question));
+			// 题目
+			List<Question> questionJudgeList = questionService.selectByQuestionVo(questionVo);
+			for (int i = 0; i < questionJudgeList.size(); i++) {
+				Question questionJudge = questionJudgeList.get(i);
+				String questionId = questionJudge.getId();
+				AnswerExample answerExample = new AnswerExample();
+				AnswerExample.Criteria answerCriteria = answerExample.createCriteria();
+				answerCriteria.andQuestionIdEqualTo(questionId);
+				// 答案
+				List<Answer> answerList = answerService.selectByExample(answerExample);
+				questionJudge.setAnswers(answerList);
+				questionJudgeList.add(questionJudge);
+			}
+			questionList2.addAll(questionJudgeList);
 			
 			// 打乱不同知识点题目顺序
 			Collections.shuffle(questionList1);

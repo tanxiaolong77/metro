@@ -33,9 +33,9 @@ import com.metro.util.SessionUtils;
  */
 @Controller
 @RequestMapping(value="skip")
-public class SkipController  extends BaseController{
+public class SkipController extends BaseController{
 	
-	private static Logger logger = LoggerFactory.getLogger(MatchController.class);
+	private static Logger logger = LoggerFactory.getLogger(SkipController.class);
 	
 	@Autowired
 	private JobsService jobsService;
@@ -56,9 +56,6 @@ public class SkipController  extends BaseController{
 		HttpSession session = request.getSession();
 		String skillType = "1";
 		session.setAttribute(Constant.SKILL_TYPE, skillType);
-		
-		List<Jobs> jobs = jobsService.selectByExample(new JobsExample());
-		model.put("jobs", jobs);// 岗位
 		
 		return "views/test-type.html";
 	}
@@ -128,6 +125,9 @@ public class SkipController  extends BaseController{
 				Match match = matchList.get(0);
 				logger.info("正在比赛的级别：" + match.getMatchLevel());
 				if (match.getMatchLevel() != null) {
+					
+					session.setAttribute(Constant.MATCH_LEVEL, match.getMatchLevel());
+					
 					model.put("matchLevel", match.getMatchLevel());// 赛程
 				}
 			} else {

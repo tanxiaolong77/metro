@@ -57,6 +57,20 @@ public class SessionUtils {
 	}
 	
 	/**
+	 * session中的岗位类型
+	 */
+	public static String getMatchLevel(){
+		return  (String) getSession().getAttribute(Constant.MATCH_LEVEL);
+	}
+	
+	/**
+	 * session中的岗位类型
+	 */
+	public static String getAuthLevel(){
+		return  (String) getSession().getAttribute(Constant.AUTH_LEVEL);
+	}
+	
+	/**
 	 * @Title: getCurRequest
 	 * @Description:(获得当前的request) 
 	 * @param:@return 

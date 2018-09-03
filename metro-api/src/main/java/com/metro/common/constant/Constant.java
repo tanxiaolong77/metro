@@ -32,6 +32,12 @@ public class Constant {
 	
 	// 岗位类型
 	public static final String JOB_TYPE = "jobType";
+	
+	// 赛程
+	public static final String MATCH_LEVEL = "matchLevel";
+	
+	// 级别
+	public static final String AUTH_LEVEL  = "authLevel";
 
 	// 缓存key
 	public static final String CACHE_SYS_RESOURCE = "sysResource_cache"; // 资源的缓存名称

@@ -1,6 +1,9 @@
 package com.metro.vo;
 
 import java.util.Date;
+import java.util.List;
+
+import com.metro.model.Answer;
 
 public class QuestionVo implements java.io.Serializable {
 	
