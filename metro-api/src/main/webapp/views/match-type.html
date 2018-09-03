@@ -7,9 +7,15 @@
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="format-detection" content="telephone=no">
 		<title>北京地铁</title>
-		<link href="${ctxPath}/views/css/all.css" rel="stylesheet" type="text/css" />
 		<link href="${ctxPath}/views/css/iconfont.min.css" rel="stylesheet" type="text/css" />
+		<link href="${ctxPath}/views/css/amazeui.css" rel="stylesheet" type="text/css">
+		<link href="${ctxPath}/views/css/amazeui.datetimepicker.css" rel="stylesheet" type="text/css/">
+		<link href="${ctxPath}/views/css/all.css" rel="stylesheet" type="text/css" />
 		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.min.js"></script>
+		<script src="${ctxPath}/views/js/amazeui.min.js"></script>
+		<script src="${ctxPath}/views/js/amazeui.datetimepicker.min.js"></script>
+		<script src="${ctxPath}/views/js/all.js"></script>
 		<style>
 			html {
 				height: 100%;
@@ -116,18 +122,8 @@
 	</head>
 
 	<body>
-		<div class="index">
-			<div class="index-header clearfix">
-				<div class="header-left fl">
-					<div class="logo-bg"></div>
-				</div>
-				<div class="header-center fl">
-					<h1 class="header-h1">北京地铁答题系统</h1>
-				</div>
-				<div class="header-right fr">
-					<button class="outline" onclick="${ctxPath}/logout.u">退出</button>
-				</div>
-			</div>
+		<div class="index pageWrap">
+			<header class="clearfix"></header>
 			<div class="index-content">
 				<div class="content-button">
 					
@@ -137,13 +133,16 @@
 					<button class="button-max" style="cursor:pointer" >总决赛</button>
 				</div>
 			</div>
-			<div class="index-footer">
-				<footer class="footer-content">北京地铁有限公司</footer>
-			</div>
+			
+			<footer></footer>
+			
 		</div>
+		
+		<script src="${ctxPath}/views/js/all.js"></script>
 		<script>
 			$(".button-max").eq(${matchLevel}).addClass('isTrue').attr('onclick',"javascript:window.location.href='${ctxPath}/skip/toMatchType.u'");
 		</script>
+		
 	</body>
 
 </html>

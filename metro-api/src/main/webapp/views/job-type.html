@@ -119,18 +119,8 @@
 	</head>
 
 	<body>
-		<div class="index">
-			<div class="index-header clearfix">
-				<div class="header-left fl">
-					<div class="logo-bg"></div>
-				</div>
-				<div class="header-center fl">
-					<h1 class="header-h1">北京地铁答题系统</h1>
-				</div>
-				<div class="header-right fr">
-					<button class="outline" onclick="${ctxPath}/logout.u">退出</button>
-				</div>
-			</div>
+		<div class="index pageWrap">
+			<header class="clearfix"></header>
 			<div class="index-content">
 				<div class="content-button">
 					@for(job in jobs!){
@@ -145,10 +135,13 @@
 					@}
 				</div>
 			</div>
-			<div class="index-footer">
-				<footer class="footer-content">北京地铁有限公司</footer>
-			</div>
+			
+			<footer></footer>
+			
 		</div>
+		
+		<script src="${ctxPath}/views/js/all.js"></script>
+		
 	</body>
 
 </html>
