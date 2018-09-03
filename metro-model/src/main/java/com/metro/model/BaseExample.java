@@ -9,24 +9,23 @@ package com.metro.model;
  */
 public class BaseExample {
 
-    protected Integer limitStart = 0;
+    protected Integer startNumber = 0;
 
-    protected Integer limitEnd = 50;
+    protected Integer pageSize = 50;
 
-    public Integer getLimitStart() {
-		return limitStart;
+	public Integer getStartNumber() {
+		return startNumber;
 	}
 
-	public void setLimitStart(Integer limitStart) {
-		this.limitStart = limitStart;
+	public void setStartNumber(Integer startNumber) {
+		this.startNumber = startNumber;
 	}
 
-	public Integer getLimitEnd() {
-		return limitEnd;
+	public Integer getPageSize() {
+		return pageSize;
 	}
 
-	public void setLimitEnd(Integer limitEnd) {
-		this.limitEnd = limitEnd;
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
 	}
-	
 }

@@ -1,497 +1,517 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.metro.dao.ScoreMapper" >
-  <resultMap id="BaseResultMap" type="com.metro.model.Score" >
-    <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="user_id" property="userId" jdbcType="VARCHAR" />
-    <result column="user_name" property="userName" jdbcType="VARCHAR" />
-    <result column="user_card" property="userCard" jdbcType="VARCHAR" />
-    <result column="user_number" property="userNumber" jdbcType="VARCHAR" />
-    <result column="theory_score" property="theoryScore" jdbcType="VARCHAR" />
-    <result column="operate_score" property="operateScore" jdbcType="VARCHAR" />
-    <result column="addup_score" property="addupScore" jdbcType="VARCHAR" />
-    <result column="is_pass" property="isPass" jdbcType="VARCHAR" />
-    <result column="skill_type" property="skillType" jdbcType="VARCHAR" />
-    <result column="question_type" property="questionType" jdbcType="VARCHAR" />
-    <result column="jobs_type" property="jobsType" jdbcType="VARCHAR" />
-    <result column="match_level" property="matchLevel" jdbcType="VARCHAR" />
-    <result column="auth_level" property="authLevel" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="operater" property="operater" jdbcType="VARCHAR" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="modifier" property="modifier" jdbcType="VARCHAR" />
-    <result column="verb_filed1" property="verbFiled1" jdbcType="VARCHAR" />
-    <result column="verb_filed2" property="verbFiled2" jdbcType="VARCHAR" />
-    <result column="verb_filed3" property="verbFiled3" jdbcType="VARCHAR" />
-    <result column="verb_filed4" property="verbFiled4" jdbcType="VARCHAR" />
-    <result column="verb_filed5" property="verbFiled5" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List" >
-    id, user_id, user_name, user_card, user_number, theory_score, operate_score, addup_score, 
-    is_pass, skill_type, question_type, jobs_type, match_level, auth_level, create_time, 
-    operater, update_time, modifier, verb_filed1, verb_filed2, verb_filed3, verb_filed4, 
-    verb_filed5
-  </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.metro.model.ScoreExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    'true' as QUERYID,
-    <include refid="Base_Column_List" />
-    from score
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from score
-    where id = #{id,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from score
-    where id = #{id,jdbcType=VARCHAR}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.metro.model.ScoreExample" >
-    delete from score
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.metro.model.Score" >
-    insert into score (id, user_id, user_name, 
-      user_card, user_number, theory_score, 
-      operate_score, addup_score, is_pass, 
-      skill_type, question_type, jobs_type, 
-      match_level, auth_level, create_time, 
-      operater, update_time, modifier, 
-      verb_filed1, verb_filed2, verb_filed3, 
-      verb_filed4, verb_filed5)
-    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
-      #{userCard,jdbcType=VARCHAR}, #{userNumber,jdbcType=VARCHAR}, #{theoryScore,jdbcType=VARCHAR}, 
-      #{operateScore,jdbcType=VARCHAR}, #{addupScore,jdbcType=VARCHAR}, #{isPass,jdbcType=VARCHAR}, 
-      #{skillType,jdbcType=VARCHAR}, #{questionType,jdbcType=VARCHAR}, #{jobsType,jdbcType=VARCHAR}, 
-      #{matchLevel,jdbcType=VARCHAR}, #{authLevel,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{operater,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR}, 
-      #{verbFiled1,jdbcType=VARCHAR}, #{verbFiled2,jdbcType=VARCHAR}, #{verbFiled3,jdbcType=VARCHAR}, 
-      #{verbFiled4,jdbcType=VARCHAR}, #{verbFiled5,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.metro.model.Score" >
-    insert into score
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="userId != null" >
-        user_id,
-      </if>
-      <if test="userName != null" >
-        user_name,
-      </if>
-      <if test="userCard != null" >
-        user_card,
-      </if>
-      <if test="userNumber != null" >
-        user_number,
-      </if>
-      <if test="theoryScore != null" >
-        theory_score,
-      </if>
-      <if test="operateScore != null" >
-        operate_score,
-      </if>
-      <if test="addupScore != null" >
-        addup_score,
-      </if>
-      <if test="isPass != null" >
-        is_pass,
-      </if>
-      <if test="skillType != null" >
-        skill_type,
-      </if>
-      <if test="questionType != null" >
-        question_type,
-      </if>
-      <if test="jobsType != null" >
-        jobs_type,
-      </if>
-      <if test="matchLevel != null" >
-        match_level,
-      </if>
-      <if test="authLevel != null" >
-        auth_level,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="operater != null" >
-        operater,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-      <if test="modifier != null" >
-        modifier,
-      </if>
-      <if test="verbFiled1 != null" >
-        verb_filed1,
-      </if>
-      <if test="verbFiled2 != null" >
-        verb_filed2,
-      </if>
-      <if test="verbFiled3 != null" >
-        verb_filed3,
-      </if>
-      <if test="verbFiled4 != null" >
-        verb_filed4,
-      </if>
-      <if test="verbFiled5 != null" >
-        verb_filed5,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=VARCHAR},
-      </if>
-      <if test="userId != null" >
-        #{userId,jdbcType=VARCHAR},
-      </if>
-      <if test="userName != null" >
-        #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="userCard != null" >
-        #{userCard,jdbcType=VARCHAR},
-      </if>
-      <if test="userNumber != null" >
-        #{userNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="theoryScore != null" >
-        #{theoryScore,jdbcType=VARCHAR},
-      </if>
-      <if test="operateScore != null" >
-        #{operateScore,jdbcType=VARCHAR},
-      </if>
-      <if test="addupScore != null" >
-        #{addupScore,jdbcType=VARCHAR},
-      </if>
-      <if test="isPass != null" >
-        #{isPass,jdbcType=VARCHAR},
-      </if>
-      <if test="skillType != null" >
-        #{skillType,jdbcType=VARCHAR},
-      </if>
-      <if test="questionType != null" >
-        #{questionType,jdbcType=VARCHAR},
-      </if>
-      <if test="jobsType != null" >
-        #{jobsType,jdbcType=VARCHAR},
-      </if>
-      <if test="matchLevel != null" >
-        #{matchLevel,jdbcType=VARCHAR},
-      </if>
-      <if test="authLevel != null" >
-        #{authLevel,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="operater != null" >
-        #{operater,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifier != null" >
-        #{modifier,jdbcType=VARCHAR},
-      </if>
-      <if test="verbFiled1 != null" >
-        #{verbFiled1,jdbcType=VARCHAR},
-      </if>
-      <if test="verbFiled2 != null" >
-        #{verbFiled2,jdbcType=VARCHAR},
-      </if>
-      <if test="verbFiled3 != null" >
-        #{verbFiled3,jdbcType=VARCHAR},
-      </if>
-      <if test="verbFiled4 != null" >
-        #{verbFiled4,jdbcType=VARCHAR},
-      </if>
-      <if test="verbFiled5 != null" >
-        #{verbFiled5,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.metro.model.ScoreExample" resultType="java.lang.Integer" >
-    select count(*) from score
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update score
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=VARCHAR},
-      </if>
-      <if test="record.userId != null" >
-        user_id = #{record.userId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.userName != null" >
-        user_name = #{record.userName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.userCard != null" >
-        user_card = #{record.userCard,jdbcType=VARCHAR},
-      </if>
-      <if test="record.userNumber != null" >
-        user_number = #{record.userNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.theoryScore != null" >
-        theory_score = #{record.theoryScore,jdbcType=VARCHAR},
-      </if>
-      <if test="record.operateScore != null" >
-        operate_score = #{record.operateScore,jdbcType=VARCHAR},
-      </if>
-      <if test="record.addupScore != null" >
-        addup_score = #{record.addupScore,jdbcType=VARCHAR},
-      </if>
-      <if test="record.isPass != null" >
-        is_pass = #{record.isPass,jdbcType=VARCHAR},
-      </if>
-      <if test="record.skillType != null" >
-        skill_type = #{record.skillType,jdbcType=VARCHAR},
-      </if>
-      <if test="record.questionType != null" >
-        question_type = #{record.questionType,jdbcType=VARCHAR},
-      </if>
-      <if test="record.jobsType != null" >
-        jobs_type = #{record.jobsType,jdbcType=VARCHAR},
-      </if>
-      <if test="record.matchLevel != null" >
-        match_level = #{record.matchLevel,jdbcType=VARCHAR},
-      </if>
-      <if test="record.authLevel != null" >
-        auth_level = #{record.authLevel,jdbcType=VARCHAR},
-      </if>
-      <if test="record.createTime != null" >
-        create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.operater != null" >
-        operater = #{record.operater,jdbcType=VARCHAR},
-      </if>
-      <if test="record.updateTime != null" >
-        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.modifier != null" >
-        modifier = #{record.modifier,jdbcType=VARCHAR},
-      </if>
-      <if test="record.verbFiled1 != null" >
-        verb_filed1 = #{record.verbFiled1,jdbcType=VARCHAR},
-      </if>
-      <if test="record.verbFiled2 != null" >
-        verb_filed2 = #{record.verbFiled2,jdbcType=VARCHAR},
-      </if>
-      <if test="record.verbFiled3 != null" >
-        verb_filed3 = #{record.verbFiled3,jdbcType=VARCHAR},
-      </if>
-      <if test="record.verbFiled4 != null" >
-        verb_filed4 = #{record.verbFiled4,jdbcType=VARCHAR},
-      </if>
-      <if test="record.verbFiled5 != null" >
-        verb_filed5 = #{record.verbFiled5,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update score
-    set id = #{record.id,jdbcType=VARCHAR},
-      user_id = #{record.userId,jdbcType=VARCHAR},
-      user_name = #{record.userName,jdbcType=VARCHAR},
-      user_card = #{record.userCard,jdbcType=VARCHAR},
-      user_number = #{record.userNumber,jdbcType=VARCHAR},
-      theory_score = #{record.theoryScore,jdbcType=VARCHAR},
-      operate_score = #{record.operateScore,jdbcType=VARCHAR},
-      addup_score = #{record.addupScore,jdbcType=VARCHAR},
-      is_pass = #{record.isPass,jdbcType=VARCHAR},
-      skill_type = #{record.skillType,jdbcType=VARCHAR},
-      question_type = #{record.questionType,jdbcType=VARCHAR},
-      jobs_type = #{record.jobsType,jdbcType=VARCHAR},
-      match_level = #{record.matchLevel,jdbcType=VARCHAR},
-      auth_level = #{record.authLevel,jdbcType=VARCHAR},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      operater = #{record.operater,jdbcType=VARCHAR},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      modifier = #{record.modifier,jdbcType=VARCHAR},
-      verb_filed1 = #{record.verbFiled1,jdbcType=VARCHAR},
-      verb_filed2 = #{record.verbFiled2,jdbcType=VARCHAR},
-      verb_filed3 = #{record.verbFiled3,jdbcType=VARCHAR},
-      verb_filed4 = #{record.verbFiled4,jdbcType=VARCHAR},
-      verb_filed5 = #{record.verbFiled5,jdbcType=VARCHAR}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.metro.model.Score" >
-    update score
-    <set >
-      <if test="userId != null" >
-        user_id = #{userId,jdbcType=VARCHAR},
-      </if>
-      <if test="userName != null" >
-        user_name = #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="userCard != null" >
-        user_card = #{userCard,jdbcType=VARCHAR},
-      </if>
-      <if test="userNumber != null" >
-        user_number = #{userNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="theoryScore != null" >
-        theory_score = #{theoryScore,jdbcType=VARCHAR},
-      </if>
-      <if test="operateScore != null" >
-        operate_score = #{operateScore,jdbcType=VARCHAR},
-      </if>
-      <if test="addupScore != null" >
-        addup_score = #{addupScore,jdbcType=VARCHAR},
-      </if>
-      <if test="isPass != null" >
-        is_pass = #{isPass,jdbcType=VARCHAR},
-      </if>
-      <if test="skillType != null" >
-        skill_type = #{skillType,jdbcType=VARCHAR},
-      </if>
-      <if test="questionType != null" >
-        question_type = #{questionType,jdbcType=VARCHAR},
-      </if>
-      <if test="jobsType != null" >
-        jobs_type = #{jobsType,jdbcType=VARCHAR},
-      </if>
-      <if test="matchLevel != null" >
-        match_level = #{matchLevel,jdbcType=VARCHAR},
-      </if>
-      <if test="authLevel != null" >
-        auth_level = #{authLevel,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="operater != null" >
-        operater = #{operater,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifier != null" >
-        modifier = #{modifier,jdbcType=VARCHAR},
-      </if>
-      <if test="verbFiled1 != null" >
-        verb_filed1 = #{verbFiled1,jdbcType=VARCHAR},
-      </if>
-      <if test="verbFiled2 != null" >
-        verb_filed2 = #{verbFiled2,jdbcType=VARCHAR},
-      </if>
-      <if test="verbFiled3 != null" >
-        verb_filed3 = #{verbFiled3,jdbcType=VARCHAR},
-      </if>
-      <if test="verbFiled4 != null" >
-        verb_filed4 = #{verbFiled4,jdbcType=VARCHAR},
-      </if>
-      <if test="verbFiled5 != null" >
-        verb_filed5 = #{verbFiled5,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.metro.model.Score" >
-    update score
-    set user_id = #{userId,jdbcType=VARCHAR},
-      user_name = #{userName,jdbcType=VARCHAR},
-      user_card = #{userCard,jdbcType=VARCHAR},
-      user_number = #{userNumber,jdbcType=VARCHAR},
-      theory_score = #{theoryScore,jdbcType=VARCHAR},
-      operate_score = #{operateScore,jdbcType=VARCHAR},
-      addup_score = #{addupScore,jdbcType=VARCHAR},
-      is_pass = #{isPass,jdbcType=VARCHAR},
-      skill_type = #{skillType,jdbcType=VARCHAR},
-      question_type = #{questionType,jdbcType=VARCHAR},
-      jobs_type = #{jobsType,jdbcType=VARCHAR},
-      match_level = #{matchLevel,jdbcType=VARCHAR},
-      auth_level = #{authLevel,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      operater = #{operater,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      modifier = #{modifier,jdbcType=VARCHAR},
-      verb_filed1 = #{verbFiled1,jdbcType=VARCHAR},
-      verb_filed2 = #{verbFiled2,jdbcType=VARCHAR},
-      verb_filed3 = #{verbFiled3,jdbcType=VARCHAR},
-      verb_filed4 = #{verbFiled4,jdbcType=VARCHAR},
-      verb_filed5 = #{verbFiled5,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
+<mapper namespace="com.metro.dao.ScoreMapper">
+	<resultMap id="BaseResultMap" type="com.metro.model.Score">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="user_card" property="userCard" jdbcType="VARCHAR" />
+		<result column="user_number" property="userNumber" jdbcType="VARCHAR" />
+		<result column="theory_score" property="theoryScore" jdbcType="VARCHAR" />
+		<result column="operate_score" property="operateScore"
+			jdbcType="VARCHAR" />
+		<result column="addup_score" property="addupScore" jdbcType="VARCHAR" />
+		<result column="is_pass" property="isPass" jdbcType="VARCHAR" />
+		<result column="skill_type" property="skillType" jdbcType="VARCHAR" />
+		<result column="question_type" property="questionType"
+			jdbcType="VARCHAR" />
+		<result column="jobs_type" property="jobsType" jdbcType="VARCHAR" />
+		<result column="match_level" property="matchLevel" jdbcType="VARCHAR" />
+		<result column="auth_level" property="authLevel" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="operater" property="operater" jdbcType="VARCHAR" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="modifier" property="modifier" jdbcType="VARCHAR" />
+		<result column="verb_filed1" property="verbFiled1" jdbcType="VARCHAR" />
+		<result column="verb_filed2" property="verbFiled2" jdbcType="VARCHAR" />
+		<result column="verb_filed3" property="verbFiled3" jdbcType="VARCHAR" />
+		<result column="verb_filed4" property="verbFiled4" jdbcType="VARCHAR" />
+		<result column="verb_filed5" property="verbFiled5" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, user_id, user_name, user_card, user_number, theory_score,
+		operate_score, addup_score,
+		is_pass, skill_type, question_type, jobs_type, match_level, auth_level,
+		create_time,
+		operater, update_time, modifier, verb_filed1, verb_filed2, verb_filed3,
+		verb_filed4,
+		verb_filed5
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.metro.model.ScoreExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		'true' as QUERYID,
+		<include refid="Base_Column_List" />
+		from score
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+		<if test="startNumber != null">
+			limit #{startNumber} , #{pageSize}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from score
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from score
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.metro.model.ScoreExample">
+		delete from score
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.metro.model.Score">
+		insert into score (id, user_id, user_name,
+		user_card, user_number, theory_score,
+		operate_score, addup_score, is_pass,
+		skill_type, question_type, jobs_type,
+		match_level, auth_level, create_time,
+		operater, update_time, modifier,
+		verb_filed1, verb_filed2, verb_filed3,
+		verb_filed4, verb_filed5)
+		values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
+		#{userName,jdbcType=VARCHAR},
+		#{userCard,jdbcType=VARCHAR}, #{userNumber,jdbcType=VARCHAR}, #{theoryScore,jdbcType=VARCHAR},
+		#{operateScore,jdbcType=VARCHAR}, #{addupScore,jdbcType=VARCHAR},
+		#{isPass,jdbcType=VARCHAR},
+		#{skillType,jdbcType=VARCHAR}, #{questionType,jdbcType=VARCHAR}, #{jobsType,jdbcType=VARCHAR},
+		#{matchLevel,jdbcType=VARCHAR}, #{authLevel,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{operater,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR},
+		#{verbFiled1,jdbcType=VARCHAR}, #{verbFiled2,jdbcType=VARCHAR},
+		#{verbFiled3,jdbcType=VARCHAR},
+		#{verbFiled4,jdbcType=VARCHAR}, #{verbFiled5,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.metro.model.Score">
+		insert into score
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="userName != null">
+				user_name,
+			</if>
+			<if test="userCard != null">
+				user_card,
+			</if>
+			<if test="userNumber != null">
+				user_number,
+			</if>
+			<if test="theoryScore != null">
+				theory_score,
+			</if>
+			<if test="operateScore != null">
+				operate_score,
+			</if>
+			<if test="addupScore != null">
+				addup_score,
+			</if>
+			<if test="isPass != null">
+				is_pass,
+			</if>
+			<if test="skillType != null">
+				skill_type,
+			</if>
+			<if test="questionType != null">
+				question_type,
+			</if>
+			<if test="jobsType != null">
+				jobs_type,
+			</if>
+			<if test="matchLevel != null">
+				match_level,
+			</if>
+			<if test="authLevel != null">
+				auth_level,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="operater != null">
+				operater,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="modifier != null">
+				modifier,
+			</if>
+			<if test="verbFiled1 != null">
+				verb_filed1,
+			</if>
+			<if test="verbFiled2 != null">
+				verb_filed2,
+			</if>
+			<if test="verbFiled3 != null">
+				verb_filed3,
+			</if>
+			<if test="verbFiled4 != null">
+				verb_filed4,
+			</if>
+			<if test="verbFiled5 != null">
+				verb_filed5,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="userCard != null">
+				#{userCard,jdbcType=VARCHAR},
+			</if>
+			<if test="userNumber != null">
+				#{userNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="theoryScore != null">
+				#{theoryScore,jdbcType=VARCHAR},
+			</if>
+			<if test="operateScore != null">
+				#{operateScore,jdbcType=VARCHAR},
+			</if>
+			<if test="addupScore != null">
+				#{addupScore,jdbcType=VARCHAR},
+			</if>
+			<if test="isPass != null">
+				#{isPass,jdbcType=VARCHAR},
+			</if>
+			<if test="skillType != null">
+				#{skillType,jdbcType=VARCHAR},
+			</if>
+			<if test="questionType != null">
+				#{questionType,jdbcType=VARCHAR},
+			</if>
+			<if test="jobsType != null">
+				#{jobsType,jdbcType=VARCHAR},
+			</if>
+			<if test="matchLevel != null">
+				#{matchLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="authLevel != null">
+				#{authLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="operater != null">
+				#{operater,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifier != null">
+				#{modifier,jdbcType=VARCHAR},
+			</if>
+			<if test="verbFiled1 != null">
+				#{verbFiled1,jdbcType=VARCHAR},
+			</if>
+			<if test="verbFiled2 != null">
+				#{verbFiled2,jdbcType=VARCHAR},
+			</if>
+			<if test="verbFiled3 != null">
+				#{verbFiled3,jdbcType=VARCHAR},
+			</if>
+			<if test="verbFiled4 != null">
+				#{verbFiled4,jdbcType=VARCHAR},
+			</if>
+			<if test="verbFiled5 != null">
+				#{verbFiled5,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.metro.model.ScoreExample"
+		resultType="java.lang.Integer">
+		select count(*) from score
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update score
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=VARCHAR},
+			</if>
+			<if test="record.userId != null">
+				user_id = #{record.userId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.userName != null">
+				user_name = #{record.userName,jdbcType=VARCHAR},
+			</if>
+			<if test="record.userCard != null">
+				user_card = #{record.userCard,jdbcType=VARCHAR},
+			</if>
+			<if test="record.userNumber != null">
+				user_number = #{record.userNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="record.theoryScore != null">
+				theory_score = #{record.theoryScore,jdbcType=VARCHAR},
+			</if>
+			<if test="record.operateScore != null">
+				operate_score = #{record.operateScore,jdbcType=VARCHAR},
+			</if>
+			<if test="record.addupScore != null">
+				addup_score = #{record.addupScore,jdbcType=VARCHAR},
+			</if>
+			<if test="record.isPass != null">
+				is_pass = #{record.isPass,jdbcType=VARCHAR},
+			</if>
+			<if test="record.skillType != null">
+				skill_type = #{record.skillType,jdbcType=VARCHAR},
+			</if>
+			<if test="record.questionType != null">
+				question_type = #{record.questionType,jdbcType=VARCHAR},
+			</if>
+			<if test="record.jobsType != null">
+				jobs_type = #{record.jobsType,jdbcType=VARCHAR},
+			</if>
+			<if test="record.matchLevel != null">
+				match_level = #{record.matchLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="record.authLevel != null">
+				auth_level = #{record.authLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="record.createTime != null">
+				create_time = #{record.createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.operater != null">
+				operater = #{record.operater,jdbcType=VARCHAR},
+			</if>
+			<if test="record.updateTime != null">
+				update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.modifier != null">
+				modifier = #{record.modifier,jdbcType=VARCHAR},
+			</if>
+			<if test="record.verbFiled1 != null">
+				verb_filed1 = #{record.verbFiled1,jdbcType=VARCHAR},
+			</if>
+			<if test="record.verbFiled2 != null">
+				verb_filed2 = #{record.verbFiled2,jdbcType=VARCHAR},
+			</if>
+			<if test="record.verbFiled3 != null">
+				verb_filed3 = #{record.verbFiled3,jdbcType=VARCHAR},
+			</if>
+			<if test="record.verbFiled4 != null">
+				verb_filed4 = #{record.verbFiled4,jdbcType=VARCHAR},
+			</if>
+			<if test="record.verbFiled5 != null">
+				verb_filed5 = #{record.verbFiled5,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update score
+		set id = #{record.id,jdbcType=VARCHAR},
+		user_id = #{record.userId,jdbcType=VARCHAR},
+		user_name = #{record.userName,jdbcType=VARCHAR},
+		user_card = #{record.userCard,jdbcType=VARCHAR},
+		user_number = #{record.userNumber,jdbcType=VARCHAR},
+		theory_score = #{record.theoryScore,jdbcType=VARCHAR},
+		operate_score = #{record.operateScore,jdbcType=VARCHAR},
+		addup_score = #{record.addupScore,jdbcType=VARCHAR},
+		is_pass = #{record.isPass,jdbcType=VARCHAR},
+		skill_type = #{record.skillType,jdbcType=VARCHAR},
+		question_type = #{record.questionType,jdbcType=VARCHAR},
+		jobs_type = #{record.jobsType,jdbcType=VARCHAR},
+		match_level = #{record.matchLevel,jdbcType=VARCHAR},
+		auth_level = #{record.authLevel,jdbcType=VARCHAR},
+		create_time = #{record.createTime,jdbcType=TIMESTAMP},
+		operater = #{record.operater,jdbcType=VARCHAR},
+		update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+		modifier = #{record.modifier,jdbcType=VARCHAR},
+		verb_filed1 = #{record.verbFiled1,jdbcType=VARCHAR},
+		verb_filed2 = #{record.verbFiled2,jdbcType=VARCHAR},
+		verb_filed3 = #{record.verbFiled3,jdbcType=VARCHAR},
+		verb_filed4 = #{record.verbFiled4,jdbcType=VARCHAR},
+		verb_filed5 = #{record.verbFiled5,jdbcType=VARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.metro.model.Score">
+		update score
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="userName != null">
+				user_name = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="userCard != null">
+				user_card = #{userCard,jdbcType=VARCHAR},
+			</if>
+			<if test="userNumber != null">
+				user_number = #{userNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="theoryScore != null">
+				theory_score = #{theoryScore,jdbcType=VARCHAR},
+			</if>
+			<if test="operateScore != null">
+				operate_score = #{operateScore,jdbcType=VARCHAR},
+			</if>
+			<if test="addupScore != null">
+				addup_score = #{addupScore,jdbcType=VARCHAR},
+			</if>
+			<if test="isPass != null">
+				is_pass = #{isPass,jdbcType=VARCHAR},
+			</if>
+			<if test="skillType != null">
+				skill_type = #{skillType,jdbcType=VARCHAR},
+			</if>
+			<if test="questionType != null">
+				question_type = #{questionType,jdbcType=VARCHAR},
+			</if>
+			<if test="jobsType != null">
+				jobs_type = #{jobsType,jdbcType=VARCHAR},
+			</if>
+			<if test="matchLevel != null">
+				match_level = #{matchLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="authLevel != null">
+				auth_level = #{authLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="operater != null">
+				operater = #{operater,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifier != null">
+				modifier = #{modifier,jdbcType=VARCHAR},
+			</if>
+			<if test="verbFiled1 != null">
+				verb_filed1 = #{verbFiled1,jdbcType=VARCHAR},
+			</if>
+			<if test="verbFiled2 != null">
+				verb_filed2 = #{verbFiled2,jdbcType=VARCHAR},
+			</if>
+			<if test="verbFiled3 != null">
+				verb_filed3 = #{verbFiled3,jdbcType=VARCHAR},
+			</if>
+			<if test="verbFiled4 != null">
+				verb_filed4 = #{verbFiled4,jdbcType=VARCHAR},
+			</if>
+			<if test="verbFiled5 != null">
+				verb_filed5 = #{verbFiled5,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.metro.model.Score">
+		update score
+		set user_id = #{userId,jdbcType=VARCHAR},
+		user_name = #{userName,jdbcType=VARCHAR},
+		user_card = #{userCard,jdbcType=VARCHAR},
+		user_number = #{userNumber,jdbcType=VARCHAR},
+		theory_score = #{theoryScore,jdbcType=VARCHAR},
+		operate_score = #{operateScore,jdbcType=VARCHAR},
+		addup_score = #{addupScore,jdbcType=VARCHAR},
+		is_pass = #{isPass,jdbcType=VARCHAR},
+		skill_type = #{skillType,jdbcType=VARCHAR},
+		question_type = #{questionType,jdbcType=VARCHAR},
+		jobs_type = #{jobsType,jdbcType=VARCHAR},
+		match_level = #{matchLevel,jdbcType=VARCHAR},
+		auth_level = #{authLevel,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		operater = #{operater,jdbcType=VARCHAR},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		modifier = #{modifier,jdbcType=VARCHAR},
+		verb_filed1 = #{verbFiled1,jdbcType=VARCHAR},
+		verb_filed2 = #{verbFiled2,jdbcType=VARCHAR},
+		verb_filed3 = #{verbFiled3,jdbcType=VARCHAR},
+		verb_filed4 = #{verbFiled4,jdbcType=VARCHAR},
+		verb_filed5 = #{verbFiled5,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
 </mapper>
