@@ -15,6 +15,8 @@ public class QuestionUploadRequest implements Request  {
 	
 	private String jobsId;
 	
+	private String jobsName;
+	
 	private String authLevel;
 	
 	public String getUserId() {
@@ -55,5 +57,13 @@ public class QuestionUploadRequest implements Request  {
 
 	public void setAuthLevel(String authLevel) {
 		this.authLevel = authLevel;
+	}
+
+	public String getJobsName() {
+		return jobsName;
+	}
+
+	public void setJobsName(String jobsName) {
+		this.jobsName = jobsName;
 	}
 }

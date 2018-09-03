@@ -5,6 +5,8 @@ import java.util.Date;
 public class Answer {
     private String id;
 
+    private Integer sortId;
+
     private String questionId;
 
     private String answerDesc;
@@ -29,8 +31,7 @@ public class Answer {
 
     private String verbFiled5;
     
-	//临时变量
-	private String tmp;
+    private String tmp;
 
     public String getId() {
         return id;
@@ -38,6 +39,14 @@ public class Answer {
 
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    public Integer getSortId() {
+        return sortId;
+    }
+
+    public void setSortId(Integer sortId) {
+        this.sortId = sortId;
     }
 
     public String getQuestionId() {

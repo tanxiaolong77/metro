@@ -1,6 +1,8 @@
 package com.metro.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Question {
     private String id;
@@ -46,6 +48,9 @@ public class Question {
     private String verbFiled4;
 
     private String verbFiled5;
+    
+    
+    private List<Answer> answers = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -222,4 +227,12 @@ public class Question {
     public void setVerbFiled5(String verbFiled5) {
         this.verbFiled5 = verbFiled5 == null ? null : verbFiled5.trim();
     }
+
+	public List<Answer> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(List<Answer> answers) {
+		this.answers = answers;
+	}
 }
