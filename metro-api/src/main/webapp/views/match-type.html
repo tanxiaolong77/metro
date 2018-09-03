@@ -127,10 +127,10 @@
 			<div class="index-content">
 				<div class="content-button">
 					
-					<button class="button-max" style="cursor:pointer" >初赛</button>
-					<button class="button-max" style="cursor:pointer" >复赛</button>
-					<button class="button-max" style="cursor:pointer" >决赛</button>
-					<button class="button-max" style="cursor:pointer" >总决赛</button>
+					<button name="levelBtn" class="button-max" style="cursor:pointer" >初赛</button>
+					<button name="levelBtn" class="button-max" style="cursor:pointer" >复赛</button>
+					<button name="levelBtn" class="button-max" style="cursor:pointer" >决赛</button>
+					<button name="levelBtn" class="button-max" style="cursor:pointer" >总决赛</button>
 				</div>
 			</div>
 			
@@ -140,7 +140,17 @@
 		
 		<script src="${ctxPath}/views/js/all.js"></script>
 		<script>
-			$(".button-max").eq(${matchLevel}).addClass('isTrue').attr('onclick',"javascript:window.location.href='${ctxPath}/skip/toMatchType.u'");
+			var matchLevel = "${matchLevel}"-1;
+			var btns = $("button[name='levelBtn']");
+			for(var i=0;i<btns.length;i++){
+				if(matchLevel == i){
+					$(btns[i]).addClass('isTrue').attr('onclick',"javascript:window.location.href='${ctxPath}/skip/toMatchType.u'");
+				}else{
+					$(btns[i]).attr('onclick',"javascript:alert('该赛事还未开始，敬请关注')");
+				}
+				
+			}
+			//$(".button-max").eq().addClass('isTrue').attr('onclick',"javascript:window.location.href='${ctxPath}/skip/toMatchType.u'");
 		</script>
 		
 	</body>
