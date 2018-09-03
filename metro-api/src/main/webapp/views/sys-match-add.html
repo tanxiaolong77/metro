@@ -94,16 +94,8 @@
 	</style>
 
 	<body>
-		<div class="form">
-			<div class="index-header clearfix">
-				<div class="header-left fl">
-					<div class="logo-bg"></div>
-				</div>
-				<div class="header-center fl">
-					<h1 class="header-h1">北京地铁答题系统</h1>
-				</div>
-				
-			</div>
+		<div class="form pageWrap">
+			<header class="clearfix"></header>
 			<div class="nav">
 				<div class="nav-content">
 					<span>导航页:</span>
@@ -125,12 +117,12 @@
 							<div class="am-g">
 								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-r">
 									<div class="ta-l title-fr">
-										<span>赛事名称</span><span class="must">（必填）：</span>
+										<span>赛事名称</span><span class="must">（必选）：</span>
 									</div>
 								</div>
 								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-l">
 									<div class="ta-l title-fl">
-										<input type="text" id="matchName" name="matchName" value="${match.matchName!}" class="width-100" class="userid search-input" />
+										<input type="type" id="matchName" name="matchName" value="${match.matchName!}" class="width-100" class="userid search-input" />
 
 									</div>
 								</div>
@@ -227,11 +219,12 @@
 					</div>
 				</form>
 			</div>
-			<div class="index-footer">
-				<footer class="footer-content">北京地铁有限公司</footer>
-			</div>
+			
+			<footer></footer>
 
 		</div>
+		
+		<script src="${ctxPath}/views/js/all.js"></script>
 		<script>
 		
 			$("#commitForm").on("click",function(){
@@ -299,4 +292,5 @@
 		</script>
 	</body>
 
+>>>>>>> branch 'master' of https://github.com/tanxiaolong77/metro.git
 </html>

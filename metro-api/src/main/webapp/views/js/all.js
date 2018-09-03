@@ -23,3 +23,6 @@ var lang = {
 		"sSortDescending": ": 以降序排列此列"
 	}
 };
+$("header").html('<div class="header-left fl"><div class="logo-bg"></div></div><div class="header-center fl"><h1 class="header-h1">北京地铁答题系统</h1></div><div class="header-right fr"><button class="outline" onclick="${ctxPath}/logout.u">退出</button></div>');
+$("footer").html('<footer class="footer-content">北京地铁有限公司</footer>');
+

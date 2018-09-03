@@ -111,9 +111,12 @@
 				border-radius: 20px;
 				background: lightgray;
 				margin: 0 20px;
-				background: #5eb95e;
 				color: #fff;
 				font-size: 28px;
+				background: red;
+			}
+			.isTrue{
+				background: #5eb95e;
 			}
 		</style>
 	</head>
@@ -123,11 +126,11 @@
 			<header class="clearfix"></header>
 			<div class="index-content">
 				<div class="content-button">
-					<button class="button-max" onclick="javascript:window.location.href='${ctxPath}/match/matchlist.m'">开赛设置</button>
-					<button class="button-max">题库</button>
-					<button class="button-max">出题规则</button>
-					<button class="button-max" onclick="javascript:window.location.href='${ctxPath}/jobs/jobSetInit.m'">岗位开放</button>
-					<button class="button-max">成绩分析</button>
+					
+					<button class="button-max" style="cursor:pointer" >初赛</button>
+					<button class="button-max" style="cursor:pointer" >复赛</button>
+					<button class="button-max" style="cursor:pointer" >决赛</button>
+					<button class="button-max" style="cursor:pointer" >总决赛</button>
 				</div>
 			</div>
 			
@@ -136,6 +139,9 @@
 		</div>
 		
 		<script src="${ctxPath}/views/js/all.js"></script>
+		<script>
+			$(".button-max").eq(${matchLevel}).addClass('isTrue').attr('onclick',"javascript:window.location.href='${ctxPath}/skip/toMatchType.u'");
+		</script>
 		
 	</body>
 

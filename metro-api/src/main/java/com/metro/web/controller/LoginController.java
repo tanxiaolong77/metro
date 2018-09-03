@@ -1,8 +1,6 @@
 package com.metro.web.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,11 +20,8 @@ import com.metro.model.User;
 import com.metro.model.UserExample;
 import com.metro.service.EmployeeService;
 import com.metro.service.UserService;
-import com.metro.util.BeanUtils;
 import com.metro.util.EncryptUtils;
 import com.metro.vo.DataTransObj;
-import com.metro.vo.EmployeeVO;
-import com.metro.vo.UserVO;
 
 
 @Controller
@@ -53,16 +48,16 @@ public class LoginController  extends BaseController{
 //		return "WEB-INF/article.html";
 //	}
 	/**
-	 * 跳转到用户登录页面
+	 * 跳转到员工登录页面
 	 * 
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String toLogin() {
-		return "login.html";
+		return "views/login.html";
 	}
 	
 	/**
-	 * 跳转到员工登录页面
+	 * 跳转到管理员登录页面
 	 * 
 	 */
 	@RequestMapping(value = "m", method = RequestMethod.GET)
@@ -102,30 +97,29 @@ public class LoginController  extends BaseController{
 	}
 
 	/**
-	 * 普通用户登录
+	 * 员工登录
 	 * 
 	 * @param username
-	 * @param password
+	 * @param usercard
 	 * @param code
 	 * @return
 	 */
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public @ResponseBody DataTransObj login(String realName,
-			String usercard, HttpServletRequest request) {
+			String userCard, HttpServletRequest request) {
 
-		Map<String, Object> msg = new HashMap<String, Object>();
 		HttpSession session = request.getSession();
 		realName = StringUtils.trim(realName);
-		usercard = StringUtils.trim(usercard);
+		userCard = StringUtils.trim(userCard);
 
 		EmployeeExample example = new EmployeeExample();
 		EmployeeExample.Criteria c = example.createCriteria();
-		c.andUserCardEqualTo(usercard);
+		c.andUserCardEqualTo(userCard);
 		c.andRealNameEqualTo(realName);
 		List<Employee> user = employeeService.selectByExample(example);
 		
 		if (user != null && user.size() > 0) {
-			session.setAttribute(Constant.SESSION_LOGIN_MANAGER, user.get(0));
+			session.setAttribute(Constant.SESSION_LOGIN_USER, user.get(0));
 		} else {
 			return DataTransObj.onFailure(null, "用户名或密码错误");
 		}
@@ -134,7 +128,7 @@ public class LoginController  extends BaseController{
 	
 	
 	/**
-	 * 用户退出
+	 * 员工退出
 	 * 
 	 * @return 跳转到登录页面
 	 */

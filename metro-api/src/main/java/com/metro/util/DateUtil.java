@@ -428,6 +428,18 @@ public class DateUtil {
         c.add(Calendar.MINUTE, minutes);
         return c.getTime();
     }
+    
+    /**
+	 * 在日期上加小时月，得到新的日期
+	 * 
+	 * @return
+	 */
+	public final static Date addMinutesToDate(Date date, int minutes) {
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.MINUTE, minutes); // 目前世间加小時
+		return c.getTime();
+	}
+	
 	/**
 	 * 在日期上加小时月，得到新的日期
 	 * 

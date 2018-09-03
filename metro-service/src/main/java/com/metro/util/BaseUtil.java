@@ -287,8 +287,11 @@ public class BaseUtil {
    
 	
 	public static void main(String[] args) throws Exception {
-		
-		System.out.println(getDateStringMdHm(new Date()));
+		String count = "15";
+		Double i = Double.valueOf(count).doubleValue();
+		Double j = Double.valueOf(count).doubleValue() / 100;
+		int k = (int) (100 * (Double.valueOf(count).doubleValue() / 100 ));
+		System.out.println(k);
 		
 	}
 }
