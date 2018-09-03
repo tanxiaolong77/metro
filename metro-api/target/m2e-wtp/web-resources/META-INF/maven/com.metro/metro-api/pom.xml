@@ -28,6 +28,9 @@
 
 
 	<dependencies>
+	
+		
+	
 		<dependency>
 			<groupId>org.beetl</groupId>
 			<artifactId>beetl-core</artifactId>
