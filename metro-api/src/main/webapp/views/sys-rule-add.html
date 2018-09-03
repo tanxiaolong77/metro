@@ -99,15 +99,12 @@
 			<div class="nav">
 				<div class="nav-content">
 					<span>导航页:</span>
-					<span>首页 - 出题规则- 新建</span>
+					<span><a href="${ctxPath!}/index.m">首页 </a> - <a href="${ctxPath!}/rule/rulelist.m">出题规则</a> - 新建</span>
 				</div>
 			</div>
 			<div class="table-content">
 				<form id="form">
 				<input id="rules" name="rules" type="hidden">
-				@if(rule! != null){
-					<input name="id" type="hidden" value="${match.id}"/>
-				@}
 					<ul class="clearfix">
 						<li class=" creditwe-search-li">
 							<div class="am-g">
@@ -299,6 +296,7 @@
 							success: function (data) {
 								if (data.rstFlag) {
 									alert(data.rstDesc);
+									window.location.href = '${ctxPath!}/rule/rulelist.m';
 								} else {
 									alert(data.rstDesc);
 								}

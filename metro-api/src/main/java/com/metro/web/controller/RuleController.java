@@ -20,8 +20,10 @@ import com.metro.model.Rule;
 import com.metro.model.RuleExample;
 import com.metro.service.JobsService;
 import com.metro.service.RuleService;
+import com.metro.util.BeanUtils;
 import com.metro.util.SessionUtils;
 import com.metro.vo.DataTransObj;
+import com.metro.vo.RuleVO;
 
 /***
  * 岗位控制
@@ -57,31 +59,35 @@ public class RuleController extends BaseController {
 	 * 
 	 */
 	@RequestMapping(value = "ruleSearch.m", method = RequestMethod.GET)
-	public @ResponseBody DataTransObj ruleSearch(String skillType, String jobsId, Integer startNumber,
+	public @ResponseBody DataTransObj ruleSearch(String contentType, String jobsId, Integer startNumber,
 			Integer pageSize) {
 
 		RuleExample example = new RuleExample();
 		RuleExample.Criteria c = example.createCriteria();
 
-		if (StringUtils.isNotBlank(skillType)) {
-			c.andSkillTypeEqualTo(skillType);
+		if (StringUtils.isNotBlank(contentType)) {
+			c.andContentTypeLike("%"+contentType+"%");
 		}
 
-		if (StringUtils.isNotBlank(jobsId)) {
+		if (StringUtils.isNotBlank(jobsId) && !"#".equals(jobsId)) {
 			c.andJobIdEqualTo(jobsId);
 		}
 
 		int totalNum = ruleService.countByExample(example);
 
 		// 分页
-		if(startNumber != null && pageSize != null){
+		if(startNumber != null){
 			example.setStartNumber(startNumber);
-			example.setPageSize(pageSize);
 		}
+		example.setOrderByClause("create_time desc");
 		
 		List<Rule> list = ruleService.selectByExample(example);
+		List<RuleVO> result = BeanUtils.transfersB(list, RuleVO.class);
+		for (RuleVO vo : result) {
+			vo.setJobsName(jobsService.getById(vo.getJobId()).getJobsName());
+		}
 
-		return DataTransObj.onSuccess(list, "查询成功", totalNum);
+		return DataTransObj.onSuccess(result, "查询成功", totalNum);
 	}
 
 	/**

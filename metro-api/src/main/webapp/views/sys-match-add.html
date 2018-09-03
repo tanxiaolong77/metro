@@ -99,7 +99,7 @@
 			<div class="nav">
 				<div class="nav-content">
 					<span>导航页:</span>
-					<span>首页 - 开赛设置</span>
+					<span><a href="${ctxPath!}/index.m">首页 </a> - <a href="${ctxPath!}/match/matchlist.m">开赛设置</a></span>
 					@if(match! == null){
 					<span>- 新建</span>
 					@}else{
@@ -164,7 +164,7 @@
 									<div class="ta-l title-fl">
 										
 										<input id="startDate" name="startDate" value="${match.startDate!,'yyyy-MM-dd'}" type="text" class="am-form-field data-input search-input" placeholder="开始日期" data-am-datepicker readonly required /> --
-										<input id="endDate"   name="endDate" value="${match.startDate!,'yyyy-MM-dd'}" type="text" class="am-form-field data-input search-input" placeholder="结束日期" data-am-datepicker readonly required />
+										<input id="endDate"   name="endDate" value="${match.endDate!,'yyyy-MM-dd'}" type="text" class="am-form-field data-input search-input" placeholder="结束日期" data-am-datepicker readonly required />
 									</div>
 								</div>
 							</div>
@@ -262,6 +262,7 @@
 						success: function (data) {
 							if (data.rstFlag) {
 								alert(data.rstDesc);
+								window.location.href = '${ctxPath!}/match/matchlist.m';
 							} else {
 								alert(data.rstDesc);
 							}

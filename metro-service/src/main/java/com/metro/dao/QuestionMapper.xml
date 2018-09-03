@@ -297,7 +297,7 @@
 		</trim>
 	</insert>
 	<select id="countByExample" parameterType="com.metro.model.QuestionExample"
-		resultType="java.lang.Integer">
+		resultType="java.lang.Long">
 		select count(*) from question
 		<if test="_parameter != null">
 			<include refid="Example_Where_Clause" />
