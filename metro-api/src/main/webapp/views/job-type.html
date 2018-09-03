@@ -115,6 +115,14 @@
 				color: #fff;
 				font-size: 20px;
 			}
+			
+			.isTrue{
+				background: #5eb95e;
+			}
+			.isFalse{
+				background: #FF0000;
+			}
+			
 		</style>
 	</head>
 
@@ -128,10 +136,10 @@
 						 	<br>
 						 @}
 						 @if(job.isShow == "0"){
-						 	<button class="button-max" style="cursor:pointer" onclick="javascript:window.location.href='${ctxPath}/skip/toMatchType.u?jobId=${job.id}'">${job.jobsName}</button>
-						@}else{
-							<button class="button-max">${job.jobsName}</button>
-						@}
+						 	<button class="button-max isTrue" style="cursor:pointer" onclick="javascript:window.location.href='${ctxPath}/skip/toMatchType.u?jobId=${job.id}'">${job.jobsName}</button>
+						 @}else{
+							<button class="button-max isFalse" onclick="javascript:alert('该赛事还未开始，敬请关注')">${job.jobsName}</button>
+						 @}
 					@}
 				</div>
 			</div>
