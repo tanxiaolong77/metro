@@ -139,17 +139,18 @@
 					}],
 					bLengthChange: false,
 					ajax: function(data, callback, settings) {
-						var getData={"pageTotal":1,"rstDesc":"查询成功","rstFlag":true,"rstObj":[{"createTime":1535872769000,"endDate":1538496000000,"id":"583da175-5192-4112-9189-203ef75c0ce8","jobId":"7f167b43-ad05-11e8-9ce3-525400d685c9","jobsName":"车站站务员","matchLevel":"1","matchName":"123","operater":"de0f43cc-ad03-11e8-9ce3-525400d685c9","startDate":1535731200000}]}
+						/*var getData={"pageTotal":1,"rstDesc":"查询成功","rstFlag":true,"rstObj":[{"createTime":1535872769000,"endDate":1538496000000,"id":"583da175-5192-4112-9189-203ef75c0ce8","jobId":"7f167b43-ad05-11e8-9ce3-525400d685c9","jobsName":"车站站务员","matchLevel":"1","matchName":"123","operater":"de0f43cc-ad03-11e8-9ce3-525400d685c9","startDate":1535731200000}]}
 						var returnData = {};
 						returnData.data = getData.rstObj;
 						returnData.recordsTotal = getData.pageTotal; //返回数据全部记录
 						returnData.recordsFiltered = getData.pageTotal;
-						callback(returnData); 
+						callback(returnData); */
+						
 						var postData = $('#table-search').serialize();
 						var startNumber = data.start;
 						postData = postData + "&startNumber="+startNumber;
 						console.log({'postData':postData});
-						/*$.ajax({
+						$.ajax({
 							type: "get",
 							url: "${ctxPath}/match/matchSearch.m",
 							async: false,
@@ -170,7 +171,7 @@
 							error: function() {
 								console.log('ajaxError')
 							}
-						})*/
+						})
 
 					},
 					"aoColumns": [{
