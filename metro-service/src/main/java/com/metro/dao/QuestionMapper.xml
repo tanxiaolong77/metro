@@ -500,16 +500,33 @@
 		where id = #{id,jdbcType=VARCHAR}
 	</update>
 
-	<select id="selectByQuestionVo" parameterType="com.metro.vo.QuestionVo"
-		resultMap="BaseResultMap">
+	<select id="selectByQuestionVo" parameterType="com.metro.vo.QuestionVo" resultType="com.metro.vo.QuestionVo">
 		SELECT
-		<include refid="Base_Column_List" />
-		from question
-		where skill_type = #{skillType,jdbcType=VARCHAR}
-		and test_type = #{testType,jdbcType=VARCHAR}
-		and jobs_id = #{jobsId,jdbcType=VARCHAR}
-		and match_level = #{matchLevel,jdbcType=VARCHAR}
-		order by RAND() limit #{count}
+			q.question_desc,
+			q.question_image,
+			q.content_type,
+			q.question_type,
+			q.answer_id,
+			(
+			SELECT
+				GROUP_CONCAT(
+					concat(
+						ifnull( a.id, '' ),
+						'#',
+						ifnull( a.answer_desc, '' ),
+						'#',
+						ifnull( a.answer_image, '' ) 
+					) 
+				) 
+			FROM
+				answer a 
+			WHERE
+				a.question_id = q.id order by a.sort_id
+			) answerObj 
+		FROM
+			question q 
+		WHERE
+			q.jobs_id = #{jobsId,jdbcType=VARCHAR}
 	</select>
 
 </mapper>

@@ -8,6 +8,6 @@ import com.metro.vo.QuestionVo;
 
 public interface QuestionMapper extends EntityDao<Question,String>{
 
-	List<Question> selectByQuestionVo(QuestionVo questionVo);
+	List<QuestionVo> selectByQuestionVo(QuestionVo questionVo);
 
 }

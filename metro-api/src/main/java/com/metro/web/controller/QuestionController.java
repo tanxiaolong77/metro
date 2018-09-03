@@ -15,8 +15,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.metro.model.Answer;
-import com.metro.model.AnswerExample;
 import com.metro.model.Employee;
 import com.metro.model.Match;
 import com.metro.model.MatchExample;
@@ -28,7 +26,6 @@ import com.metro.model.Rule;
 import com.metro.model.RuleExample;
 import com.metro.model.UserQuestion;
 import com.metro.model.UserQuestionExample;
-import com.metro.service.AnswerService;
 import com.metro.service.MatchService;
 import com.metro.service.MatchUserPassService;
 import com.metro.service.QuestionService;
@@ -63,9 +60,6 @@ public class QuestionController extends BaseController{
 	@Autowired
 	private RuleService ruleService;
 	
-	@Autowired
-	private AnswerService answerService;
-
 	/***
 	 * 出题目
 	 * 1、技能类型，1:大赛；2:鉴定
@@ -89,68 +83,152 @@ public class QuestionController extends BaseController{
 		
 		Date date = new Date();
 		
-		if (skillType.equals("1")) {
+		if ("1".equals(skillType)) {
 			logger.info("技能类型：技能大赛！！！");
-			MatchExample matchExample = new MatchExample();
-			MatchExample.Criteria matchCriteria = matchExample.createCriteria();
-			if(StringUtils.isNotBlank(jobId)){
-				matchCriteria.andJobIdEqualTo(jobId);
-			}
-			matchCriteria.andStartDateLessThanOrEqualTo(date);
-			matchCriteria.andEndDateGreaterThan(date);
-			List<Match> matchList = matchService.selectByExample(matchExample);
-			
-			if (matchList!=null && !matchList.isEmpty()) {
-				logger.info("存在有效比赛！！！");
-				Match match = matchList.get(0);
-				
-				// 判断用户是否有资格参加比赛
-				MatchUserPassExample matchUserPassExample = new MatchUserPassExample();
-				MatchUserPassExample.Criteria matchUserPassCriteria = matchUserPassExample.createCriteria();
-				if(StringUtils.isNotBlank(userId)){
-					matchUserPassCriteria.andUserIdEqualTo(userId);
-				}
-				if(StringUtils.isNotBlank(jobId)){
-					matchUserPassCriteria.andJobIdEqualTo(jobId);
-				}
-				matchUserPassCriteria.andMatchIdEqualTo(match.getId());
-				List<MatchUserPass> matchUserPassList = matchUserPassService.selectByExample(matchUserPassExample);
-				
-				if (matchUserPassList.size() == 0 && match.getMatchLevel().equals("1")) {
-					logger.info("初次参赛，有资格参赛。");
-					// 出题逻辑
-					model = doQuestion(model,userId,date,skillType,testType,jobId,match.getId(),match.getMatchLevel());
-					return "views/test.html";
-				} else if (matchUserPassList.size() > 0 && !match.getMatchLevel().equals("1")
-						&& (matchUserPassList.get(0).getMatchLevel() + 1).equals(match.getMatchLevel()) 
-						&& matchUserPassList.get(0).getIsPass().equals("1")) {
-					logger.info("上次比赛通过，此次比赛有资格。");
-					// 出题逻辑
-					model = doQuestion(model,userId,date,skillType,testType,jobId,match.getId(),match.getMatchLevel());
-					return "views/test.html";
-				} else {
-					logger.info("没有资格参加比赛！！！");
-					return error();
-				}
+			if ("1".equals(testType)) {
+				logger.info("考试类型：模拟！！！");
+				// 出题逻辑
+				model = doSeemQuestion(model,userId,date,skillType,testType,jobId);
+				return "views/test.html";
 				
 			} else {
-				logger.info("没有有效比赛！！！");
-				return error();
+				logger.info("考试类型：考试！！！");
+				MatchExample matchExample = new MatchExample();
+				MatchExample.Criteria matchCriteria = matchExample.createCriteria();
+				if(StringUtils.isNotBlank(jobId)){
+					matchCriteria.andJobIdEqualTo(jobId);
+				}
+				matchCriteria.andStartDateLessThanOrEqualTo(date);
+				matchCriteria.andEndDateGreaterThan(date);
+				List<Match> matchList = matchService.selectByExample(matchExample);
+				
+				if (matchList!=null && !matchList.isEmpty()) {
+					logger.info("存在有效比赛！！！");
+					Match match = matchList.get(0);
+					
+					// 判断用户是否有资格参加比赛
+					MatchUserPassExample matchUserPassExample = new MatchUserPassExample();
+					MatchUserPassExample.Criteria matchUserPassCriteria = matchUserPassExample.createCriteria();
+					if(StringUtils.isNotBlank(userId)){
+						matchUserPassCriteria.andUserIdEqualTo(userId);
+					}
+					if(StringUtils.isNotBlank(jobId)){
+						matchUserPassCriteria.andJobIdEqualTo(jobId);
+					}
+					matchUserPassCriteria.andMatchIdEqualTo(match.getId());
+					List<MatchUserPass> matchUserPassList = matchUserPassService.selectByExample(matchUserPassExample);
+					
+					if (matchUserPassList.size() == 0 && match.getMatchLevel().equals("1")) {
+						logger.info("初次参赛，有资格参赛。");
+						// 出题逻辑
+						model = doTestQuestion(model,userId,date,skillType,testType,jobId,match.getId(),match.getMatchLevel());
+						return "views/test.html";
+					} else if (matchUserPassList.size() > 0 && !match.getMatchLevel().equals("1")
+							&& (matchUserPassList.get(0).getMatchLevel() + 1).equals(match.getMatchLevel()) 
+							&& matchUserPassList.get(0).getIsPass().equals("1")) {
+						logger.info("上次比赛通过，此次比赛有资格。");
+						// 出题逻辑
+						model = doTestQuestion(model,userId,date,skillType,testType,jobId,match.getId(),match.getMatchLevel());
+						return "views/test.html";
+					} else {
+						logger.info("没有资格参加比赛！！！");
+						return error();
+					}
+					
+				} else {
+					logger.info("没有有效比赛！！！");
+					return error();
+				}
 			}
 		}
 		
 		return "toskillType.u";
 	}
 
-	private ModelMap doQuestion(ModelMap model,String userId,Date date,String skillType,String testType,String jobId,
+	private ModelMap doSeemQuestion(ModelMap model, String userId, Date date, String skillType, String testType,
+			String jobId) {
+		logger.info("开始出题！！！");
+		
+		List<QuestionVo>  questionList1 = new ArrayList<QuestionVo>();// 单选题
+		List<QuestionVo>  questionList2 = new ArrayList<QuestionVo>();// 多选题
+		List<QuestionVo>  questionList3 = new ArrayList<QuestionVo>();// 判断题
+		
+		// 出题规则（岗位、知识点、题型、题量）
+		QuestionVo questionVo = new QuestionVo();
+		if(StringUtils.isNotBlank(jobId)){
+			questionVo.setJobsId(jobId);
+		}
+		// 查出某一岗位、某一知识点的全部题目及答案
+		List<QuestionVo> questionList = questionService.selectByQuestionVo(questionVo);
+		Collections.shuffle(questionList);
+		 
+		logger.info("根据岗位，查看出题规则，岗位类型：" + jobId);
+		RuleExample ruleExample = new RuleExample();
+		RuleExample.Criteria ruleCriteria = ruleExample.createCriteria();
+		if(StringUtils.isNotBlank(jobId)){
+			ruleCriteria.andJobIdEqualTo(jobId);
+		}
+		List<Rule> ruleList = ruleService.selectByExample(ruleExample);
+		for (int i = 0; i < ruleList.size(); i++ ) {
+			Rule rule = ruleList.get(0);
+			// 出题规则：某一知识点题量
+			int count = Integer.parseInt(rule.getContentRate());
+			// 出题规则：某一知识点单选题量
+			int oneChoose = (int) (count * (Double.valueOf(rule.getOneChoose()).doubleValue() / 100));
+			// 出题规则：某一知识点多选题量
+			int manyChoose = (int) (count * (Double.valueOf(rule.getManyChoose()).doubleValue() / 100));
+			// 出题规则：某一知识点判断题量
+			int judge = (int) (count * (Double.valueOf(rule.getJudge()).doubleValue() / 100));
+			
+			for (int j = 0; j < count; j++) {
+				QuestionVo question = questionList.get(j);
+				String questionType = questionVo.getContentType();
+				if ("1".equals(questionType)) {
+					for (int x = 0; x < oneChoose; x++) {
+						questionList1.add(question);
+					}
+				}
+				if ("2".equals(questionType)) {
+					for (int y = 0; y < manyChoose; y++) {
+						questionList2.add(question);
+					}
+				}
+				if ("3".equals(questionType)) {
+					for (int z = 0; z < judge; z++) {
+						questionList3.add(question);
+					}
+				}
+			}
+		
+		}
+		
+		// 打乱不同知识点题目顺序
+		Collections.shuffle(questionList1);
+		Collections.shuffle(questionList2);
+		Collections.shuffle(questionList3);
+		
+		model.put("questionList1", questionList1);// 单选
+		model.put("questionList2", questionList2);// 多选
+		model.put("questionList3", questionList3);// 判断
+		
+		// 模拟考试时间：45分钟
+		String time = "";
+		time = DateUtil.formatDate(DateUtil.addMinutesToDate(date, 45));
+		logger.info("模拟考试结束时间：" + time);
+		
+		model.put("time", time);
+		return model;
+	}
+
+	private ModelMap doTestQuestion(ModelMap model,String userId,Date date,String skillType,String testType,String jobId,
 			String matchId,String matchLevel) {
 		logger.info("开始出题！！！");
 		
-		List<Question>  questionList = new ArrayList<Question>();// 整套题
+		List<Question>  questionListbefore = new ArrayList<Question>();// 整套题
 		
-		List<Question>  questionList1 = new ArrayList<Question>();// 单选题
-		List<Question>  questionList2 = new ArrayList<Question>();// 多选题
-		List<Question>  questionList3 = new ArrayList<Question>();// 判断题
+		List<QuestionVo>  questionList1 = new ArrayList<QuestionVo>();// 单选题
+		List<QuestionVo>  questionList2 = new ArrayList<QuestionVo>();// 多选题
+		List<QuestionVo>  questionList3 = new ArrayList<QuestionVo>();// 判断题
 		
 		// 查用户题目表
 		UserQuestionExample userQuestionExample = new UserQuestionExample();
@@ -182,8 +260,8 @@ public class QuestionController extends BaseController{
 			QuestionExample questionExample = new QuestionExample();
 			QuestionExample.Criteria questionCriteria = questionExample.createCriteria();
 			questionCriteria.andIdIn(questionIdList);
-			questionList = questionService.selectByExample(questionExample);
-			model.put("questionList", questionList);
+			questionListbefore = questionService.selectByExample(questionExample);
+			model.put("questionList", questionListbefore);
 			
 			// 结束时间
 			UserQuestionExample userQuestionExample1 = new UserQuestionExample();
@@ -206,6 +284,10 @@ public class QuestionController extends BaseController{
 				questionVo.setJobsId(jobId);
 			}
 			 
+			// 查出某一岗位、某一知识点的全部题目及答案
+			List<QuestionVo> questionList = questionService.selectByQuestionVo(questionVo);
+			Collections.shuffle(questionList);
+			 
 			logger.info("根据岗位，查看出题规则，岗位类型：" + jobId);
 			RuleExample ruleExample = new RuleExample();
 			RuleExample.Criteria ruleCriteria = ruleExample.createCriteria();
@@ -213,73 +295,38 @@ public class QuestionController extends BaseController{
 				ruleCriteria.andJobIdEqualTo(jobId);
 			}
 			List<Rule> ruleList = ruleService.selectByExample(ruleExample);
-			Rule rule = ruleList.get(0);
-			String contentType = rule.getContentType();
-			questionVo.setContentType(contentType);
+			for (int i = 0; i < ruleList.size(); i++ ) {
+				Rule rule = ruleList.get(0);
+				// 出题规则：某一知识点题量
+				int count = Integer.parseInt(rule.getContentRate());
+				// 出题规则：某一知识点单选题量
+				int oneChoose = (int) (count * (Double.valueOf(rule.getOneChoose()).doubleValue() / 100));
+				// 出题规则：某一知识点多选题量
+				int manyChoose = (int) (count * (Double.valueOf(rule.getManyChoose()).doubleValue() / 100));
+				// 出题规则：某一知识点判断题量
+				int judge = (int) (count * (Double.valueOf(rule.getJudge()).doubleValue() / 100));
+				
+				for (int j = 0; j < count; j++) {
+					QuestionVo question = questionList.get(j);
+					String questionType = questionVo.getContentType();
+					if ("1".equals(questionType)) {
+						for (int x = 0; x < oneChoose; x++) {
+							questionList1.add(question);
+						}
+					}
+					if ("2".equals(questionType)) {
+						for (int y = 0; y < manyChoose; y++) {
+							questionList2.add(question);
+						}
+					}
+					if ("3".equals(questionType)) {
+						for (int z = 0; z < judge; z++) {
+							questionList3.add(question);
+						}
+					}
+				}
 			
-			// 每一个知识点题量
-			int count = Integer.parseInt(rule.getContentRate());
-			
-			// 单选题量
-			int oneChoose = (int) (count * (Double.valueOf(rule.getOneChoose()).doubleValue() / 100));
-			questionVo.setQuestionType("1");
-			questionVo.setCount(oneChoose);
-			// 单选出题
-			// 题目
-			List<Question> questionOneList = questionService.selectByQuestionVo(questionVo);
-			for (int i = 0; i < questionOneList.size(); i++) {
-				Question questionOne = questionOneList.get(i);
-				String questionId = questionOne.getId();
-				AnswerExample answerExample = new AnswerExample();
-				AnswerExample.Criteria answerCriteria = answerExample.createCriteria();
-				answerCriteria.andQuestionIdEqualTo(questionId);
-				// 答案
-				List<Answer> answerList = answerService.selectByExample(answerExample);
-				questionOne.setAnswers(answerList);
-				questionOneList.add(questionOne);
 			}
-			questionList1.addAll(questionOneList);
-			
-			
-			// 多选题量
-			int manyChoose = (int) (count * (Double.valueOf(rule.getManyChoose()).doubleValue() / 100));
-			questionVo.setQuestionType("2");
-			questionVo.setCount(manyChoose);
-			// 多选出题
-			// 题目
-			List<Question> questionManyList = questionService.selectByQuestionVo(questionVo);
-			for (int i = 0; i < questionManyList.size(); i++) {
-				Question questionMany = questionManyList.get(i);
-				String questionId = questionMany.getId();
-				AnswerExample answerExample = new AnswerExample();
-				AnswerExample.Criteria answerCriteria = answerExample.createCriteria();
-				answerCriteria.andQuestionIdEqualTo(questionId);
-				// 答案
-				List<Answer> answerList = answerService.selectByExample(answerExample);
-				questionMany.setAnswers(answerList);
-				questionManyList.add(questionMany);
-			}
-			questionList2.addAll(questionManyList);
-			
-			// 判断题量
-			int judge = (int) (count * (Double.valueOf(rule.getJudge()).doubleValue() / 100));
-			questionVo.setQuestionType("3");
-			questionVo.setCount(judge);
-			// 判断出题
-			// 题目
-			List<Question> questionJudgeList = questionService.selectByQuestionVo(questionVo);
-			for (int i = 0; i < questionJudgeList.size(); i++) {
-				Question questionJudge = questionJudgeList.get(i);
-				String questionId = questionJudge.getId();
-				AnswerExample answerExample = new AnswerExample();
-				AnswerExample.Criteria answerCriteria = answerExample.createCriteria();
-				answerCriteria.andQuestionIdEqualTo(questionId);
-				// 答案
-				List<Answer> answerList = answerService.selectByExample(answerExample);
-				questionJudge.setAnswers(answerList);
-				questionJudgeList.add(questionJudge);
-			}
-			questionList2.addAll(questionJudgeList);
 			
 			// 打乱不同知识点题目顺序
 			Collections.shuffle(questionList1);

@@ -55,6 +55,16 @@ public class QuestionVo implements java.io.Serializable {
     
     private int count;
     
+    private List<Answer> answerList;
+    
+	public List<Answer> getAnswerList() {
+		return answerList;
+	}
+
+	public void setAnswerList(List<Answer> answerList) {
+		this.answerList = answerList;
+	}
+
 	public int getCount() {
 		return count;
 	}
