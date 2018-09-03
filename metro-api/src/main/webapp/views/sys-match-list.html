@@ -10,12 +10,12 @@
 		<link href="${ctxPath}/views/css/iconfont.min.css" rel="stylesheet" type="text/css" />
 		<link href="${ctxPath}/views/css/amazeui.css" rel="stylesheet" type="text/css">
 		<link href="${ctxPath}/views/css/amazeui.datetimepicker.css" rel="stylesheet" type="text/css/">
+		<link href="https://cdn.bootcss.com/datatables/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
 		<link href="${ctxPath}/views/css/all.css" rel="stylesheet" type="text/css" />
 		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.min.js"></script>
 		<script src="${ctxPath}/views/js/amazeui.min.js"></script>
 		<script src="${ctxPath}/views/js/amazeui.datetimepicker.min.js"></script>
-		<script src="${ctxPath}/views/js/all.js"></script>
 	</head>
 	<style>
 		.table {
@@ -25,16 +25,16 @@
 		.nav {
 			height: 50px;
 			line-height: 50px;
-			margin-bottom:20px;
+			margin-bottom: 20px;
 		}
-		.nav-content{
-			border-bottom:1px solid #eee;
-			
+		
+		.nav-content {
+			border-bottom: 1px solid #eee;
 		}
+		
 		.nav-content {
 			margin-left: 100px;
-			margin-right:50px;
-			
+			margin-right: 50px;
 		}
 		
 		.table-search {
@@ -43,6 +43,9 @@
 		
 		.dataTables-wrap {
 			margin: 50px;
+		}
+		.data-input{
+			width: 40% !important;
 		}
 	</style>
 
@@ -56,18 +59,18 @@
 				</div>
 			</div>
 			<div class="table-content">
-				<div class="table-search">
+				<form class="table-search" id="table-search">
 					<ul class="clearfix">
 						<li class="fl creditwe-search-li">
 							<div class="fl mr10">查询条件1:</div>
 							<div class="fl ">
-								<input type="type" width="100" class="userid search-input" />
+								<input type="type" width="100" name="userId" class="userId search-input" />
 							</div>
 						</li>
 						<li class="fl creditwe-search-li">
 							<div class="fl mr10">查询条件2:</div>
 							<div class="fl ">
-								<select data-am-selected="{btnWidth: '140px', btnSize: 'sm', btnStyle: 'secondary'}">
+								<select class="search-select" name="select" data-am-selected="{btnWidth: '140px', btnSize: 'sm', btnStyle: 'secondary'}">
 									<option value='0'>请选择</option>
 									<option value="id">商户编码</option>
 									<option value="contact_phone">联系人手机号</option>
@@ -77,19 +80,19 @@
 						</li>
 						<li class="fl creditwe-search-li">
 							<div class="fl mr10">查询条件3:</div>
-							<div class="fl data-input-wrap">
-								<input type="text" class="am-form-field data-input search-input" placeholder="日历组件" data-am-datepicker readonly required /> --
-								<input type="text" class="am-form-field data-input search-input" placeholder="日历组件" data-am-datepicker readonly required />
+							<div class="fl data-input-wrap ">
+								<input type="text" name="timeStart" class="am-form-field data-input data-input-start search-input" placeholder="日历组件" data-am-datepicker readonly required /> --
+								<input type="text" name="timeEnd" class="am-form-field data-input data-input-end search-input" placeholder="日历组件" data-am-datepicker readonly required />
 							</div>
 						</li>
 						<li class="fl creditwe-search-li">
-							<button class="mr10 am-btn am-btn-primary" type="button">查询</button>
+							<button class="mr10 am-btn am-btn-primary" onclick="search()" type="button">查询</button>
 						</li>
 						<li class="fl creditwe-search-li">
 							<button class="mr10 am-btn am-btn-primary" type="button">新增</button>
 						</li>
 					</ul>
-				</div>
+				</form>
 			</div>
 			<div class="dataTables-wrap">
 
@@ -106,15 +109,15 @@
 					</thead>
 				</table>
 			</div>
-			
+
 			<footer></footer>
 
 		</div>
-		
+		<script src="https://cdn.bootcss.com/datatables/1.10.16/js/jquery.dataTables.min.js"></script>
+		<script src="${ctxPath}/views/js/dataTables.responsive.min.js"></script>
 		<script src="${ctxPath}/views/js/all.js"></script>
 		<script>
 			function dataTables() {
-				console.log("abnormalUser is start");
 				//列表初始化
 				var table = $("#dataTables").dataTable({
 					language: lang, //提示信息
@@ -134,77 +137,68 @@
 						"targets": 'nosort', //列的样式名
 						"orderable": false //包含上样式名‘nosort’的禁止排序
 					}],
+					bLengthChange: false,
 					ajax: function(data, callback, settings) {
-						
-						/* var returnData = {};
-						returnData.data = [];
-						returnData.recordsTotal = 50; //返回数据全部记录
-						returnData.recordsFiltered = 50;
-						callback(returnData); */
-						//that.param.pageSize = data.length; //页面显示记录条数，在页面显示每页显示多少项的时候
-						//that.param.startNumber = data.start; //开始的记录序号
-						//that.paramTem.pageSize = (data.start / data.length) + 1; //当前页码
-						$.ajax({
+						var getData={"pageTotal":1,"rstDesc":"查询成功","rstFlag":true,"rstObj":[{"createTime":1535872769000,"endDate":1538496000000,"id":"583da175-5192-4112-9189-203ef75c0ce8","jobId":"7f167b43-ad05-11e8-9ce3-525400d685c9","jobsName":"车站站务员","matchLevel":"1","matchName":"123","operater":"de0f43cc-ad03-11e8-9ce3-525400d685c9","startDate":1535731200000}]}
+						var returnData = {};
+						returnData.data = getData.rstObj;
+						returnData.recordsTotal = getData.pageTotal; //返回数据全部记录
+						returnData.recordsFiltered = getData.pageTotal;
+						callback(returnData); 
+						var postData = $('#table-search').serialize();
+						var startNumber = data.start;
+						postData = postData + "&startNumber="+startNumber;
+						console.log({'postData':postData});
+						/*$.ajax({
 							type: "get",
 							url: "${ctxPath}/match/matchSearch.m",
 							async: false,
-							data: "",
+							data: postData,
 							success: function(data) {
 								console.log(data)
-								return;
-								if(data.error) {
-									//location.href = "/notFound/notFound";
-								} else {
-									if(data.result.status === '1') {
-										var result = data.result.resultData;
-										//封装返回数据
-										var returnData = {};
-										returnData.recordsTotal = result.pageTotal; //返回数据全部记录
-										returnData.recordsFiltered = result.pageTotal; //后台不实现过滤功能，每次查询均视作全部结果
-										returnData.data = result.userInfoList; //返回的数据列表
-										//调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
-										//此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
-										callback(returnData);
-										//列表初始化
-										//customerList.editReset();
-									} else {
-
-									}
-								}
+								//封装返回数据
+								var returnData = {};
+								returnData.recordsTotal = data.pageTotal; //返回数据全部记录
+								returnData.recordsFiltered = data.pageTotal; //后台不实现过滤功能，每次查询均视作全部结果
+								returnData.data = data.rstObj; //返回的数据列表
+								//调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+								//此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+								callback(returnData);
+								//列表初始化
+								//customerList.editReset();
 							},
 							error: function() {
 								console.log('ajaxError')
 							}
-						})
-						
+						})*/
+
 					},
 					"aoColumns": [{
-							"data": "userid", //UserID
-							"className": "userid"
+							"data": "matchName", //UserID
+							"className": "matchName"
 						}, {
-							"data": "truename", //UserID
-							"className": "truename"
+							"data": "jobsName", //UserID
+							"className": "jobsName"
 						}, {
-							"data": "account", //UserID
-							"className": "account"
+							"data": "startDate", //UserID
+							"className": "startDate"
 						}, {
-							"data": "idcard", //UserID
-							"className": "idcard"
+							"data": "endDate", //UserID
+							"className": "endDate"
 						}, {
-							"data": "bankPhone", //UserID
-							"className": "bankPhone"
-						}, {
-							"data": "mycode", //UserID
-							"className": "mycode"
-						},
-						{
-							"data": "invitedcode", //UserID
-							"className": "invitedcode"
-						},
-						{
-							"data": "userid", //UserID
+							"data": "matchLevel", //UserID
+							"className": "matchLevel",
 							"fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
-								$(nTd).html('<button type="button" class="mr10 am-btn am-btn-secondary">编辑</button><button type="button" class="mr10 am-btn am-btn-secondary">删除</button>')
+								var matchLevelArr = ["初赛", "复赛", "决赛", "总决赛"];
+								$(nTd).html(matchLevelArr[sData - 1]);
+							}
+
+						},
+						{
+							"data": "id", //UserID
+							"fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
+								var html = "<a class='am-btn am-btn-secondary am-radius mr10' href='${ctxPath}/match/matchSetInit.m?id=" + sData + "'>编辑</a><a  href='${ctxPath}/match/matchDel.m?id=" + sData + "' class='am-btn am-btn-secondary am-radius'>删除</a>"
+								$(nTd).html(html)
 							}
 						},
 					],
@@ -213,7 +207,19 @@
 					}
 				}).api();
 			}
-			dataTables()
+			//var postData = {};
+			dataTables();
+
+			function search() {
+				/*postData.id = $(".userid").val();
+				postData.timeStart = $(".data-input-start").val();
+				postData.timeEnd = $(".data-input-end").val();
+				postData.selsect =  $(".search-select option:selected").val();
+				var postData = {};*/
+				//dataTables(postData)
+				$('#dataTables').dataTable().api().ajax.reload();
+
+			}
 		</script>
 	</body>
 

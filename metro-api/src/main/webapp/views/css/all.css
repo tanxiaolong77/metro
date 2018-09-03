@@ -158,3 +158,11 @@ footer {
 	text-align: center;
 	width: 100%;
 }
+.am-selected-content{
+	height: 300px;
+	overflow: scroll;
+}
+
+.button-max {
+	width:15% !important;
+}
