@@ -16,6 +16,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.metro.model.Answer;
+import com.metro.model.AnswerExample;
 import com.metro.model.Employee;
 import com.metro.model.Match;
 import com.metro.model.MatchExample;
@@ -27,6 +29,7 @@ import com.metro.model.Rule;
 import com.metro.model.RuleExample;
 import com.metro.model.UserQuestion;
 import com.metro.model.UserQuestionExample;
+import com.metro.service.AnswerService;
 import com.metro.service.MatchService;
 import com.metro.service.MatchUserPassService;
 import com.metro.service.QuestionService;
@@ -60,6 +63,9 @@ public class QuestionController  extends BaseController{
 	
 	@Autowired
 	private RuleService ruleService;
+	
+	@Autowired
+	private AnswerService answerService;
 
 	/***
 	 * 出题目
@@ -220,7 +226,19 @@ public class QuestionController  extends BaseController{
 			question.setQuestionType("1");
 			question.setCount(oneChoose);
 			// 单选出题
-			questionList1.addAll(questionService.selectByQuestionVo(question));
+			// 题目
+			List<Question> questions = questionService.selectByQuestionVo(question);
+			for (int i = 0; i < questions.size(); i++) {
+				String questionId = questions.get(i).getId();
+				AnswerExample answerExample = new AnswerExample();
+				AnswerExample.Criteria answerCriteria = answerExample.createCriteria();
+				answerCriteria.andQuestionIdEqualTo(questionId);
+				List<Answer> answerList = answerService.selectByExample(answerExample);
+			}
+			
+			
+			questionList1.addAll(questions);
+			
 			
 			// 多选题量
 			int manyChoose = (int) (count * (Double.valueOf(rule.getManyChoose()).doubleValue() / 100));
