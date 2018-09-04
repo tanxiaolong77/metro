@@ -2,8 +2,11 @@
 <!-- saved from url=(0306)http://exercise.5any.com/Exercise/WebUI/Exercise/Do?CourseName=%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E5%88%86%E6%9E%90&DoOrShow=1&DoPaperTimestamp=636711381992538949&doType=1&isCorrect=1&ShowStatus=2&StudentPaperId=8658868&ViewPaperId=T_19_7420&DoPaperSignText=fe627eac3a05c54f64ecf083d0b1e939&sign_type=MD5 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
  <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
-  <title>地铁考试</title> 
+  	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="format-detection" content="telephone=no">
+	<title>北京地铁</title> 
   <link href="./static/css/common.css" rel="stylesheet" type="text/css" /> 
   <link href="./static/css/new_win.css" rel="stylesheet" type="text/css" /> 
   <link href="./static/css/public02.css" rel="stylesheet" type="text/css" /> 
@@ -360,16 +363,18 @@ a,img{border:0;}
          <br /> 
         </div> 
         <div class="word_con02" id="P_6f961f6a-a121-4139-83be-d3b44c68a165"> 
+       @for(question1 in questionList1!){
          <div> 
           <div style=" float:left;">
            1、
           </div>
           <div style=" float:left;">
-           <p>设 m[i, j] 为计算矩阵链A<sub>i…j</sub> 所需的乘法运算次数的最小值，则矩阵链A<sub>1…n</sub>所需的乘法运算次数的最小值为（&nbsp; ）。</p> 
+           <p>${question1.questionDesc}</p> 
           </div>
           <div style=" clear:both;"></div>
          </div> 
-         <ul> 
+         <ul>
+         
           <li class="word_color5"> 
            <div class="dx_word_style_left"> 
             <input name="6f961f6a-a121-4139-83be-d3b44c68a165" id="017b50ea-a822-f4fe-fc2d-7dde293c83c2" type="radio" value="017b50ea-a822-f4fe-fc2d-7dde293c83c2" class="dx_style" /> 
@@ -381,77 +386,29 @@ a,img{border:0;}
                A、
               </div>
               <div style=" float:left;">
-               m[0,n]
+               
               </div>
               <div style=" clear:both;"></div>
              </div> </label>
            </div> 
-           <div style=" clear:both"></div> </li> 
-          <li class="word_color5"> 
-           <div class="dx_word_style_left"> 
-            <input name="6f961f6a-a121-4139-83be-d3b44c68a165" id="c0b4203f-65be-9bd3-175c-bb60e60a8864" type="radio" value="c0b4203f-65be-9bd3-175c-bb60e60a8864" class="dx_style" /> 
-           </div> 
-           <div class="dx_word_style">
-            <label for="c0b4203f-65be-9bd3-175c-bb60e60a8864">
-             <div> 
-              <div style=" float:left;">
-               B、
-              </div>
-              <div style=" float:left;">
-               m[1,n-1]
-              </div>
-              <div style=" clear:both;"></div>
-             </div> </label>
-           </div> 
-           <div style=" clear:both"></div> </li> 
-          <li class="word_color5"> 
-           <div class="dx_word_style_left"> 
-            <input name="6f961f6a-a121-4139-83be-d3b44c68a165" id="7635df4f-e610-c2ac-a778-cac4e8ae98fa" type="radio" value="7635df4f-e610-c2ac-a778-cac4e8ae98fa" class="dx_style" /> 
-           </div> 
-           <div class="dx_word_style">
-            <label for="7635df4f-e610-c2ac-a778-cac4e8ae98fa">
-             <div> 
-              <div style=" float:left;">
-               C、
-              </div>
-              <div style=" float:left;">
-               m[1,n+1]
-              </div>
-              <div style=" clear:both;"></div>
-             </div> </label>
-           </div> 
-           <div style=" clear:both"></div> </li> 
-          <li class="word_color5"> 
-           <div class="dx_word_style_left"> 
-            <input name="6f961f6a-a121-4139-83be-d3b44c68a165" id="2cdd29f6-ae61-dc77-abe5-84e126080461" type="radio" value="2cdd29f6-ae61-dc77-abe5-84e126080461" class="dx_style" /> 
-           </div> 
-           <div class="dx_word_style">
-            <label for="2cdd29f6-ae61-dc77-abe5-84e126080461">
-             <div> 
-              <div style=" float:left;">
-               D、
-              </div>
-              <div style=" float:left;">
-               m[1,n]
-              </div>
-              <div style=" clear:both;"></div>
-             </div> </label>
-           </div> 
-           <div style=" clear:both"></div> </li> 
+           <div style=" clear:both"></div> </li>
+        
           <li>&nbsp;</li> 
          </ul> 
-        </div> 
+       @}
+        </div>
         <div class="word_con" id="303"> 
          <p>二 、 多选题 <font class="word_color5">(共 30 题、0 / 30 分 )</font> </p> 
          <br /> 
         </div> 
         <div class="word_con02" id="P_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> 
+        @for(question2 in questionList2!){
          <div> 
           <div style=" float:left;">
            1、
           </div>
           <div style=" float:left;">
-           <p>下列属于蔬菜的有。（&nbsp;&nbsp; ）<br /></p> 
+           <p>${question2.questionDesc}<br /></p> 
           </div>
           <div style=" clear:both;"></div>
          </div> 
@@ -461,7 +418,7 @@ a,img{border:0;}
             <input name="2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" id="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" type="checkbox" value="id" class="dx_style" /> 
            </div> 
            <div class="dx_word_style">
-            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> 菠菜</label>
+            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> </label>
            </div> 
            <div style=" clear:both"></div> </li> 
           <li class="word_color5"> 
@@ -469,7 +426,7 @@ a,img{border:0;}
             <input name="2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" id="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" type="checkbox" value="id" class="dx_style" /> 
            </div> 
            <div class="dx_word_style">
-            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> 生菜</label>
+            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> </label>
            </div> 
            <div style=" clear:both"></div> </li> 
           <li class="word_color5"> 
@@ -477,7 +434,7 @@ a,img{border:0;}
             <input name="2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" id="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" type="checkbox" value="id" class="dx_style" /> 
            </div> 
            <div class="dx_word_style">
-            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> 大白菜</label>
+            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> </label>
            </div> 
            <div style=" clear:both"></div> </li> 
           <li class="word_color5"> 
@@ -485,22 +442,24 @@ a,img{border:0;}
             <input name="2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" id="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" type="checkbox" value="id" class="dx_style" /> 
            </div> 
            <div class="dx_word_style">
-            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> 芒果</label>
+            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> </label>
            </div> 
            <div style=" clear:both"></div> </li> 
-         </ul> 
+         </ul>
+      @}
         </div> 
         <div class="word_con" id="303"> 
          <p>三 、 判断题 <font class="word_color5">(共 30 题、0 / 30 分 )</font> </p> 
          <br /> 
         </div> 
         <div class="word_con02" id="P_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> 
+       @for(question3 in questionList3!){
          <div> 
           <div style=" float:left;">
            1、
           </div>
           <div style=" float:left;">
-           <p>应用Huffmann编码的目的是用更少的比特流表达更多的信息。（&nbsp;&nbsp; ）<br /></p> 
+           <p>${question3.questionDesc}<br /></p> 
           </div>
           <div style=" clear:both;"></div>
          </div> 
@@ -522,7 +481,8 @@ a,img{border:0;}
            </div> 
            <div style=" clear:both"></div> </li> 
           <li>&nbsp;</li> 
-         </ul> 
+         </ul>
+        @}
         </div> 
         <!-- 试卷正文结束 --> 
         <div> 
@@ -540,7 +500,7 @@ a,img{border:0;}
          </div> 
         </div> 
         <!----> 
-       </div> 
+       </div>
        <div class="zj_btn_layout3"> 
         <span> <input name="" type="submit" value="保存答案" onclick="SavePaper();" class="zj_sub_btn" /> <input name="" type="submit" value="保存答案" onclick="AutoSavePaper();" id="savebtn" class="zj_sub_btn" style=" display:none;" /> </span> 
         <span> <input name="submitBtn" type="submit" value="提交作业" onclick="CheckComplete();" id="submitBtn" class="zj_sub_btn" /> </span> 

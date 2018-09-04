@@ -4,7 +4,7 @@
 	<resultMap id="BaseResultMap" type="com.metro.model.Rule">
 		<id column="id" jdbcType="VARCHAR" property="id" />
 		<result column="skill_type" jdbcType="VARCHAR" property="skillType" />
-		<result column="question_type" jdbcType="VARCHAR" property="questionType" />
+		<result column="test_type" jdbcType="VARCHAR" property="testType" />
 		<result column="job_id" jdbcType="VARCHAR" property="jobId" />
 		<result column="match_level" jdbcType="VARCHAR" property="matchLevel" />
 		<result column="auth_level" jdbcType="VARCHAR" property="authLevel" />
@@ -87,7 +87,7 @@
 		</where>
 	</sql>
 	<sql id="Base_Column_List">
-		id, skill_type, question_type, job_id, match_level, auth_level,
+		id, skill_type, test_type, job_id, match_level, auth_level,
 		content_rate, content_type,
 		one_choose, many_choose, judge, create_time, operater, update_time, modifier,
 		verb_filed1,
@@ -130,7 +130,7 @@
 		</if>
 	</delete>
 	<insert id="insert" parameterType="com.metro.model.Rule">
-		insert into rule (id, skill_type, question_type,
+		insert into rule (id, skill_type, test_type,
 		job_id, match_level, auth_level,
 		content_rate, content_type, one_choose,
 		many_choose, judge, create_time,
@@ -138,7 +138,7 @@
 		verb_filed1, verb_filed2, verb_filed3,
 		verb_filed4, verb_filed5)
 		values (#{id,jdbcType=VARCHAR}, #{skillType,jdbcType=VARCHAR},
-		#{questionType,jdbcType=VARCHAR},
+		#{testType,jdbcType=VARCHAR},
 		#{jobId,jdbcType=VARCHAR}, #{matchLevel,jdbcType=VARCHAR}, #{authLevel,jdbcType=VARCHAR},
 		#{contentRate,jdbcType=VARCHAR}, #{contentType,jdbcType=VARCHAR},
 		#{oneChoose,jdbcType=VARCHAR},
@@ -157,8 +157,8 @@
 			<if test="skillType != null">
 				skill_type,
 			</if>
-			<if test="questionType != null">
-				question_type,
+			<if test="testType != null">
+				test_type,
 			</if>
 			<if test="jobId != null">
 				job_id,
@@ -219,8 +219,8 @@
 			<if test="skillType != null">
 				#{skillType,jdbcType=VARCHAR},
 			</if>
-			<if test="questionType != null">
-				#{questionType,jdbcType=VARCHAR},
+			<if test="testType != null">
+				#{testType,jdbcType=VARCHAR},
 			</if>
 			<if test="jobId != null">
 				#{jobId,jdbcType=VARCHAR},
@@ -291,8 +291,8 @@
 			<if test="record.skillType != null">
 				skill_type = #{record.skillType,jdbcType=VARCHAR},
 			</if>
-			<if test="record.questionType != null">
-				question_type = #{record.questionType,jdbcType=VARCHAR},
+			<if test="record.testType != null">
+				test_type = #{record.testType,jdbcType=VARCHAR},
 			</if>
 			<if test="record.jobId != null">
 				job_id = #{record.jobId,jdbcType=VARCHAR},
@@ -354,7 +354,7 @@
 		update rule
 		set id = #{record.id,jdbcType=VARCHAR},
 		skill_type = #{record.skillType,jdbcType=VARCHAR},
-		question_type = #{record.questionType,jdbcType=VARCHAR},
+		test_type = #{record.testType,jdbcType=VARCHAR},
 		job_id = #{record.jobId,jdbcType=VARCHAR},
 		match_level = #{record.matchLevel,jdbcType=VARCHAR},
 		auth_level = #{record.authLevel,jdbcType=VARCHAR},
@@ -382,8 +382,8 @@
 			<if test="skillType != null">
 				skill_type = #{skillType,jdbcType=VARCHAR},
 			</if>
-			<if test="questionType != null">
-				question_type = #{questionType,jdbcType=VARCHAR},
+			<if test="testType != null">
+				test_type = #{testType,jdbcType=VARCHAR},
 			</if>
 			<if test="jobId != null">
 				job_id = #{jobId,jdbcType=VARCHAR},
@@ -442,7 +442,7 @@
 	<update id="updateByPrimaryKey" parameterType="com.metro.model.Rule">
 		update rule
 		set skill_type = #{skillType,jdbcType=VARCHAR},
-		question_type = #{questionType,jdbcType=VARCHAR},
+		test_type = #{testType,jdbcType=VARCHAR},
 		job_id = #{jobId,jdbcType=VARCHAR},
 		match_level = #{matchLevel,jdbcType=VARCHAR},
 		auth_level = #{authLevel,jdbcType=VARCHAR},
