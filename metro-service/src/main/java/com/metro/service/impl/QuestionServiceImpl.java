@@ -25,7 +25,7 @@ public class QuestionServiceImpl extends BaseService<Question,String> implements
 	}
 
 	@Override
-	public List<Question> selectByQuestionVo(QuestionVo questionVo) {
+	public List<QuestionVo> selectByQuestionVo(QuestionVo questionVo) {
 		return questionMapper.selectByQuestionVo(questionVo);
 	}
 }
