@@ -233,7 +233,7 @@ public class QuestionExcelServiceImpl  implements QuestionExcelService{
 			
 			//doc会存在读取不到图片的情况，如果读取不到图片则不保存
 			boolean isSave = true;
-			if(!"3".equalsIgnoreCase(question.getQuestionType())){
+			if(!"3".equals(question.getQuestionType())){
 				for (Answer answerEntity : answers) {
 					if(StringUtils.isBlank(answerEntity.getAnswerDesc())
 							&& StringUtils.isBlank(answerEntity.getAnswerImage())){
@@ -246,10 +246,12 @@ public class QuestionExcelServiceImpl  implements QuestionExcelService{
 				//题目保存
 				questionService.insert(question);
 				question.setAnswers(answers);
-				//选项保存
-				for (Answer answerEntity : answers) {
-					answerEntity.setSortId(increment());//用于答案排序
-					answerService.insert(answerEntity);//选项
+				if(!"3".equals(question.getQuestionType())){
+					//选项保存
+					for (Answer answerEntity : answers) {
+						answerEntity.setSortId(increment());//用于答案排序
+						answerService.insert(answerEntity);//选项
+					}
 				}
 			
 			}
