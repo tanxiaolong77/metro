@@ -362,8 +362,8 @@ a,img{border:0;}
          <p>一 、 单项选择题 <font class="word_color5">(共 40 题、0 / 40 分 )</font> </p> 
          <br /> 
         </div> 
-     @for(question1 in questionList1!){
         <div class="word_con02" id="P_6f961f6a-a121-4139-83be-d3b44c68a165"> 
+       @for(question1 in questionList1!){
          <div> 
           <div style=" float:left;">
            1、
@@ -373,7 +373,8 @@ a,img{border:0;}
           </div>
           <div style=" clear:both;"></div>
          </div> 
-         <ul> 
+         <ul>
+         
           <li class="word_color5"> 
            <div class="dx_word_style_left"> 
             <input name="6f961f6a-a121-4139-83be-d3b44c68a165" id="017b50ea-a822-f4fe-fc2d-7dde293c83c2" type="radio" value="017b50ea-a822-f4fe-fc2d-7dde293c83c2" class="dx_style" /> 
@@ -385,73 +386,23 @@ a,img{border:0;}
                A、
               </div>
               <div style=" float:left;">
-               ${question1.answerList.get(0).answerDesc}
+               
               </div>
               <div style=" clear:both;"></div>
              </div> </label>
            </div> 
-           <div style=" clear:both"></div> </li> 
-          <li class="word_color5"> 
-           <div class="dx_word_style_left"> 
-            <input name="6f961f6a-a121-4139-83be-d3b44c68a165" id="c0b4203f-65be-9bd3-175c-bb60e60a8864" type="radio" value="c0b4203f-65be-9bd3-175c-bb60e60a8864" class="dx_style" /> 
-           </div> 
-           <div class="dx_word_style">
-            <label for="c0b4203f-65be-9bd3-175c-bb60e60a8864">
-             <div> 
-              <div style=" float:left;">
-               B、
-              </div>
-              <div style=" float:left;">
-               ${question1.answerList.get(1).answerDesc}
-              </div>
-              <div style=" clear:both;"></div>
-             </div> </label>
-           </div> 
-           <div style=" clear:both"></div> </li> 
-          <li class="word_color5"> 
-           <div class="dx_word_style_left"> 
-            <input name="6f961f6a-a121-4139-83be-d3b44c68a165" id="7635df4f-e610-c2ac-a778-cac4e8ae98fa" type="radio" value="7635df4f-e610-c2ac-a778-cac4e8ae98fa" class="dx_style" /> 
-           </div> 
-           <div class="dx_word_style">
-            <label for="7635df4f-e610-c2ac-a778-cac4e8ae98fa">
-             <div> 
-              <div style=" float:left;">
-               C、
-              </div>
-              <div style=" float:left;">
-               ${question1.answerList.get(2).answerDesc}
-              </div>
-              <div style=" clear:both;"></div>
-             </div> </label>
-           </div> 
-           <div style=" clear:both"></div> </li> 
-          <li class="word_color5"> 
-           <div class="dx_word_style_left"> 
-            <input name="6f961f6a-a121-4139-83be-d3b44c68a165" id="2cdd29f6-ae61-dc77-abe5-84e126080461" type="radio" value="2cdd29f6-ae61-dc77-abe5-84e126080461" class="dx_style" /> 
-           </div> 
-           <div class="dx_word_style">
-            <label for="2cdd29f6-ae61-dc77-abe5-84e126080461">
-             <div> 
-              <div style=" float:left;">
-               D、
-              </div>
-              <div style=" float:left;">
-               ${question1.answerList.get(3).answerDesc}
-              </div>
-              <div style=" clear:both;"></div>
-             </div> </label>
-           </div> 
-           <div style=" clear:both"></div> </li> 
+           <div style=" clear:both"></div> </li>
+        
           <li>&nbsp;</li> 
          </ul> 
+       @}
         </div>
-      @}
         <div class="word_con" id="303"> 
          <p>二 、 多选题 <font class="word_color5">(共 30 题、0 / 30 分 )</font> </p> 
          <br /> 
         </div> 
-      @for(question2 in questionList2!){
         <div class="word_con02" id="P_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> 
+        @for(question2 in questionList2!){
          <div> 
           <div style=" float:left;">
            1、
@@ -467,7 +418,7 @@ a,img{border:0;}
             <input name="2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" id="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" type="checkbox" value="id" class="dx_style" /> 
            </div> 
            <div class="dx_word_style">
-            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4">${question2.answerList.get(0).answerDesc}</label>
+            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> </label>
            </div> 
            <div style=" clear:both"></div> </li> 
           <li class="word_color5"> 
@@ -475,7 +426,7 @@ a,img{border:0;}
             <input name="2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" id="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" type="checkbox" value="id" class="dx_style" /> 
            </div> 
            <div class="dx_word_style">
-            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4">${question2.answerList.get(1).answerDesc}</label>
+            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> </label>
            </div> 
            <div style=" clear:both"></div> </li> 
           <li class="word_color5"> 
@@ -483,7 +434,7 @@ a,img{border:0;}
             <input name="2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" id="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" type="checkbox" value="id" class="dx_style" /> 
            </div> 
            <div class="dx_word_style">
-            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4">${question2.answerList.get(2).answerDesc}</label>
+            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> </label>
            </div> 
            <div style=" clear:both"></div> </li> 
           <li class="word_color5"> 
@@ -491,25 +442,24 @@ a,img{border:0;}
             <input name="2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" id="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4" type="checkbox" value="id" class="dx_style" /> 
            </div> 
            <div class="dx_word_style">
-            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4">${question2.answerList.get(3).answerDesc}</label>
+            <label for="true_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> </label>
            </div> 
            <div style=" clear:both"></div> </li> 
          </ul>
-        </div> 
       @}
+        </div> 
         <div class="word_con" id="303"> 
          <p>三 、 判断题 <font class="word_color5">(共 30 题、0 / 30 分 )</font> </p> 
          <br /> 
         </div> 
         <div class="word_con02" id="P_2837b1a0-4e64-4e7e-a9ed-526c8d9f07e4"> 
+       @for(question3 in questionList3!){
          <div> 
           <div style=" float:left;">
            1、
           </div>
           <div style=" float:left;">
-          @for(question3 in questionList3!){
            <p>${question3.questionDesc}<br /></p> 
-          @}
           </div>
           <div style=" clear:both;"></div>
          </div> 
@@ -532,6 +482,7 @@ a,img{border:0;}
            <div style=" clear:both"></div> </li> 
           <li>&nbsp;</li> 
          </ul>
+        @}
         </div> 
         <!-- 试卷正文结束 --> 
         <div> 
