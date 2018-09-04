@@ -123,7 +123,7 @@ public class UserAnswerController extends BaseController{
 					score.setAuthLevel(SessionUtils.getAuthLevel());
 				}
 				score.setTestType(SessionUtils.getTestType());
-				score.setJobsType(SessionUtils.getJobType());
+//				score.setJobsType(SessionUtils.getJobType());
 				score.setCreateTime(new Date());
 				scoreService.insert(score);
 				

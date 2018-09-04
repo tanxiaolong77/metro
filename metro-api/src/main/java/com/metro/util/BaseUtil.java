@@ -1,5 +1,5 @@
-package com.metro.util;
-
+﻿package com.metro.util;
+    
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
