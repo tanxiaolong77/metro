@@ -5,7 +5,6 @@
 	<projects>
 		<project>qj-util</project>
 		<project>metro-util</project>
-		<project>metro-model</project>
 		<project>metro-service</project>
 	</projects>
 	<buildSpec>
