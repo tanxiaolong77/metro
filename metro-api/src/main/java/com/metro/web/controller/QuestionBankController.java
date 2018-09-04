@@ -170,7 +170,7 @@ public class QuestionBankController  extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value="/upload.m")
-	public DataTransObj upload(HttpServletRequest request,HttpServletResponse response,
+	public String upload(HttpServletRequest request,HttpServletResponse response,
 			@RequestParam("file") CommonsMultipartFile file,
 			@RequestParam("jobsId") String jobsId,
 			@RequestParam("jobsName") String jobsName) {
@@ -182,19 +182,22 @@ public class QuestionBankController  extends BaseController{
     		dir.mkdirs();
     	}
         File newFile = new File(path+fileName);
+        ModelMap model = new ModelMap();
         try {
-
         	file.transferTo(newFile);
         	QuestionUploadRequest bizRequest = new QuestionUploadRequest();
         	bizRequest.setPicturePath(ResourceUtil.getPropertyValue("picturePath"));
         	bizRequest.setJobsId(jobsId);
         	bizRequest.setJobsName(jobsName);
         	bizRequest.setUserId(SessionUtils.getLoginManager().getId());
-			return questionExcelService.parse(newFile,bizRequest);
+        	questionExcelService.parse(newFile,bizRequest);
+        	model.put("result","上传成功");
+			
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
+			model.put("result","上传失败");
 		}
-        return DataTransObj.onFailure(null,"上传失败");
+        return questionUploadInt(model);
 	}
 	
 	
