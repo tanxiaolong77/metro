@@ -99,119 +99,28 @@
 			<div class="nav">
 				<div class="nav-content">
 					<span>导航页:</span>
-					<span><a href="${ctxPath!}/index.m">首页 </a> - <a href="${ctxPath!}/match/matchlist.m">开赛设置</a></span>
-					@if(match! == null){
-					<span>- 新建</span>
-					@}else{
-					<span> - 编辑</span>
-					@}
+					<span><a href="${ctxPath!}/index.m">首页 </a> - <a href="${ctxPath!}/score/scorelist.m">成绩分析</a></span>
+					<span> - 补录操作分</span>
 				</div>
 			</div>
 			<div class="table-content">
 				<form id="form">
-				@if(match! != null){
-					<input name="id" type="hidden" value="${match.id}"/>
-				@}
+					<input name="id" type="hidden" value="${score.id}">
 					<ul class="clearfix">
 						<li class=" creditwe-search-li">
 							<div class="am-g">
 								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-r">
 									<div class="ta-l title-fr">
-										<span>赛事名称</span><span class="must">（必选）：</span>
+										<span>操作分</span><span class="must">（必填）：</span>
 									</div>
 								</div>
 								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-l">
 									<div class="ta-l title-fl">
-										<input type="type" id="matchName" name="matchName" value="${match.matchName!}" class="width-100" class="userid search-input" />
-
+										<input type="text" id="operateScore" name="operateScore" value="${score.operateScore!}" class="width-100" class="userid search-input" />
 									</div>
 								</div>
 							</div>
 						</li>
-						<li class=" creditwe-search-li">
-							<div class="am-g">
-								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-r">
-									<div class="ta-l title-fr">
-										<span>岗位</span><span class="must">（必选）：</span>
-									</div>
-								</div>
-								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-l">
-									<div class="ta-l title-fl">
-										<select class="width-100" id="jobsId" name="jobsId" data-am-selected="{btnWidth: '140px', btnSize: 'sm', btnStyle: 'secondary'}">
-											 @for(job in jobs!){
-												@if(match! != null && match.jobId==job.id){      		 
-													<option value='${job.id}' selected="selected">${job.jobsName}</option>
-												@}else{
-													<option value='${job.id}'>${job.jobsName}</option>
-												@}
-											@}
-											
-										</select>
-									</div>
-								</div>
-							</div>
-						</li>
-
-						<li class=" creditwe-search-li">
-							<div class="am-g">
-								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-r">
-									<div class="ta-l title-fr">
-										<span>比赛时间</span><span class="must">（必选）：</span>
-									</div>
-
-								</div>
-								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-l">
-									<div class="ta-l title-fl">
-										
-										<input id="startDate" name="startDate" value="${match.startDate!,'yyyy-MM-dd'}" type="text" class="am-form-field data-input search-input" placeholder="开始日期" data-am-datepicker readonly required /> --
-										<input id="endDate"   name="endDate" value="${match.endDate!,'yyyy-MM-dd'}" type="text" class="am-form-field data-input search-input" placeholder="结束日期" data-am-datepicker readonly required />
-									</div>
-								</div>
-							</div>
-						</li>
-					
-					</ul>
-					
-						<li class=" creditwe-search-li">
-							<div class="am-g">
-								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-r">
-									<div class="ta-l title-fr">
-										<span>开放阶段</span><span class="must">（必选）：</span>
-									</div>
-
-								</div>
-								<div class="am-u-sm-6 am-u-lg-6 am-u-md-6 ta-l">
-									<div class="ta-l title-fl">
-										@if(match! != null && match.matchLevel=="1"){
-											<input name="matchLevel" type="radio" value="1" checked="checked"/> 初赛&nbsp;&nbsp;&nbsp;
-										@}else{
-											<input name="matchLevel" value="1" type="radio"/> 初赛&nbsp;&nbsp;&nbsp;
-										@}		
-										
-										@if(match! != null && match.matchLevel=="2"){
-											<input name="matchLevel" type="radio" value="2" checked="checked"/> 复赛&nbsp;&nbsp;&nbsp;
-										@}else{
-											<input name="matchLevel" value="2" type="radio"/> 复赛&nbsp;&nbsp;&nbsp;
-										@}	
-										
-										@if(match! != null && match.matchLevel=="3"){
-											<input name="matchLevel" type="radio" value="3" checked="checked"/> 决赛nbsp;&nbsp;&nbsp;
-										@}else{
-											<input name="matchLevel" value="3" type="radio"/> 决赛&nbsp;&nbsp;&nbsp;
-										@}	
-										
-										@if(match! != null && match.matchLevel=="4"){
-											<input name="matchLevel" type="radio" value="4" checked="checked"/> 总决赛&nbsp;&nbsp;&nbsp;
-										@}else{
-											<input name="matchLevel" value="4" type="radio"/> 总决赛&nbsp;&nbsp;&nbsp;
-										@}	
-										
-										
-									</div>
-								</div>
-							</div>
-						</li>
-					
 					</ul>
 
 					<div class="submit-div">
@@ -230,39 +139,21 @@
 			$("#commitForm").on("click",function(){
 			  var data = $("#form").serialize();
 			  //岗位不能为空
-			  if($("#jobsId").val() == null || $("#jobsId").val() == ""){
-				  alert("岗位不能为空");
+			  if($("#operateScore").val() == null || $("#operateScore").val() == ""){
+				  alert("操作分不能为空");
 				  return;
 			  }
-			  //比赛时间不能为空
-			  if($("#startDate").val() == null || $("#startDate").val() == ""){
-				  alert("开始时间不能为空");
-				  return;
-			  }
-			  if($("#endDate").val() == null || $("#endDate").val() == ""){
-				  alert("结束时间不能为空");
-				  return;
-			  }
-			  var startDate = new Date($("#startDate").val());
-			  var endDate = new Date($("#endDate").val());
-			  if(startDate.getTime() > endDate.getTime()){
-				  alert("开始时间不能大于结束时间");
-				  return;
-			  }
-			  if($("input[name='matchLevel']:checked").val() == undefined){
-				  alert("必须勾选开放阶段");
-				  return;
-			  }
+
 		       $.ajax(
 					{
-						url: '${ctxPath!}/match/matchSet.m',
+						url: '${ctxPath!}/score/scoreSet.m',
 						type: 'post',
 						data: data,
 						dataType: 'json',
 						success: function (data) {
 							if (data.rstFlag) {
 								alert(data.rstDesc);
-								window.location.href = '${ctxPath!}/match/matchlist.m';
+								window.location.href = '${ctxPath!}/score/scorelist.m';
 							} else {
 								alert(data.rstDesc);
 							}

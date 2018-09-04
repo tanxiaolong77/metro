@@ -7,6 +7,8 @@ public class Score {
 
     private String userId;
 
+    private String realName;
+
     private String userName;
 
     private String userCard;
@@ -25,7 +27,9 @@ public class Score {
 
     private String testType;
 
-    private String jobsType;
+    private String jobsId;
+
+    private String jobsName;
 
     private String matchLevel;
 
@@ -63,6 +67,14 @@ public class Score {
 
     public void setUserId(String userId) {
         this.userId = userId == null ? null : userId.trim();
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName == null ? null : realName.trim();
     }
 
     public String getUserName() {
@@ -137,12 +149,20 @@ public class Score {
         this.testType = testType == null ? null : testType.trim();
     }
 
-    public String getJobsType() {
-        return jobsType;
+    public String getJobsId() {
+        return jobsId;
     }
 
-    public void setJobsType(String jobsType) {
-        this.jobsType = jobsType == null ? null : jobsType.trim();
+    public void setJobsId(String jobsId) {
+        this.jobsId = jobsId == null ? null : jobsId.trim();
+    }
+
+    public String getJobsName() {
+        return jobsName;
+    }
+
+    public void setJobsName(String jobsName) {
+        this.jobsName = jobsName == null ? null : jobsName.trim();
     }
 
     public String getMatchLevel() {
