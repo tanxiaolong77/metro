@@ -502,11 +502,11 @@
 
 	<select id="selectByQuestionVo" parameterType="com.metro.vo.QuestionVo" resultType="com.metro.vo.QuestionVo">
 		SELECT
-			q.question_desc,
-			q.question_image,
-			q.content_type,
-			q.question_type,
-			q.answer_id,
+			q.question_desc questionDesc,
+			q.question_image questionImage,
+			q.content_type contentType,
+			q.question_type questionType,
+			q.answer_id answerId,
 			(
 			SELECT
 				GROUP_CONCAT(

@@ -55,6 +55,8 @@ public class QuestionVo implements java.io.Serializable {
     
     private int count;
     
+    private String answerObj;
+    
     private List<Answer> answerList;
     
 	public List<Answer> getAnswerList() {
@@ -63,6 +65,14 @@ public class QuestionVo implements java.io.Serializable {
 
 	public void setAnswerList(List<Answer> answerList) {
 		this.answerList = answerList;
+	}
+
+	public String getAnswerObj() {
+		return answerObj;
+	}
+
+	public void setAnswerObj(String answerObj) {
+		this.answerObj = answerObj;
 	}
 
 	public int getCount() {

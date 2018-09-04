@@ -15,6 +15,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.alibaba.fastjson.JSON;
+import com.metro.model.Answer;
 import com.metro.model.Employee;
 import com.metro.model.Match;
 import com.metro.model.MatchExample;
@@ -153,13 +155,13 @@ public class QuestionController extends BaseController{
 		List<QuestionVo>  questionList2 = new ArrayList<QuestionVo>();// 多选题
 		List<QuestionVo>  questionList3 = new ArrayList<QuestionVo>();// 判断题
 		
-		// 出题规则（岗位、知识点、题型、题量）
+		logger.info("查出某一岗位、某一知识点的全部题目及答案，岗位类型：" + jobId);
 		QuestionVo questionVo = new QuestionVo();
 		if(StringUtils.isNotBlank(jobId)){
 			questionVo.setJobsId(jobId);
 		}
-		// 查出某一岗位、某一知识点的全部题目及答案
 		List<QuestionVo> questionList = questionService.selectByQuestionVo(questionVo);
+		// 打乱顺序
 		Collections.shuffle(questionList);
 		 
 		logger.info("根据岗位，查看出题规则，岗位类型：" + jobId);
@@ -169,43 +171,88 @@ public class QuestionController extends BaseController{
 			ruleCriteria.andJobIdEqualTo(jobId);
 		}
 		List<Rule> ruleList = ruleService.selectByExample(ruleExample);
+		// 出题规则：某一知识点题量
+		int count = 0;
+		// 出题规则：某一知识点单选题量
+		int oneChoose = 0;
+		// 出题规则：某一知识点多选题量
+		int manyChoose = 0;
+		// 出题规则：某一知识点判断题量
+		int judge = 0;
+		// 遍历出题规则，计算知识点、题型的题量
 		for (int i = 0; i < ruleList.size(); i++ ) {
-			Rule rule = ruleList.get(0);
-			// 出题规则：某一知识点题量
-			int count = Integer.parseInt(rule.getContentRate());
-			// 出题规则：某一知识点单选题量
-			int oneChoose = (int) (count * (Double.valueOf(rule.getOneChoose()).doubleValue() / 100));
-			// 出题规则：某一知识点多选题量
-			int manyChoose = (int) (count * (Double.valueOf(rule.getManyChoose()).doubleValue() / 100));
-			// 出题规则：某一知识点判断题量
-			int judge = (int) (count * (Double.valueOf(rule.getJudge()).doubleValue() / 100));
+			Rule rule = ruleList.get(i);
+			count = Integer.parseInt(rule.getContentRate());
+			oneChoose = (int) (count * (Double.valueOf(rule.getOneChoose()).doubleValue() / 100));
+			manyChoose = (int) (count * (Double.valueOf(rule.getManyChoose()).doubleValue() / 100));
+			judge = (int) (count * (Double.valueOf(rule.getJudge()).doubleValue() / 100));
 			
-			for (int j = 0; j < count; j++) {
-				QuestionVo question = questionList.get(j);
-				String questionType = questionVo.getContentType();
-				if ("1".equals(questionType)) {
-					for (int x = 0; x < oneChoose; x++) {
-						questionList1.add(question);
+			if (questionList1.size() + questionList2.size() + questionList3.size() == count 
+					|| questionList1.size() + questionList2.size() + questionList3.size() > count ) {
+				break;// 出题全部完成
+				
+			} else {
+				// 遍历题目集合
+				for (int j = 0; j < questionList.size(); j++) {
+					QuestionVo question = questionList.get(j);
+					String contentType = question.getContentType();
+					String questionType = question.getQuestionType();
+					
+					// 从题目集合中取出某一知识点的试题
+					if (contentType.equals(rule.getContentType())) {
+						
+						// 设置试题的题目、答案
+						if (!"3".equals(questionType)) {
+							List<Answer> answerList = new ArrayList<Answer>();
+							Answer answer = new Answer();
+							String[] answerObj = question.getAnswerObj().split(",");
+							if (answerObj!=null || (answerObj==null && answerObj.length!=0)) {
+								for (int k = 0; k < answerObj.length; k++) {
+									String[] answers = answerObj[i].split("#");
+									String answerId = answers[0];
+									String answerDesc = answers[1];
+									answer.setId(answerId);
+									answer.setAnswerDesc(answerDesc);
+									if (answers.length > 2) {
+										answer.setAnswerImage(answers[2]);
+									}
+									answerList.add(answer);
+								}
+							}
+							question.setAnswerList(answerList);
+						}
+						
+						// 从题目集合中取出某一知识点单选的试题
+						if ("1".equals(questionType)) {
+							if (questionList1.size() == oneChoose || questionList1.size() > oneChoose) {
+								break;// 单选题出题完成
+							} else {
+								questionList1.add(question);
+							}
+						}
+						// 从题目集合中取出某一知识点多选的试题
+						if ("2".equals(questionType)) {
+							if (questionList2.size() == manyChoose || questionList2.size() > manyChoose) {
+								break;// 多选题出题完成
+							} else {
+								questionList2.add(question);
+							}
+						}
+						// 从题目集合中取出某一知识点判断的试题
+						if ("3".equals(questionType)) {
+							if (questionList3.size() == judge || questionList3.size() > judge) {
+								break;// 判断题出题完成
+							} else {
+								questionList3.add(question);
+							}
+						}
 					}
+					
 				}
-				if ("2".equals(questionType)) {
-					for (int y = 0; y < manyChoose; y++) {
-						questionList2.add(question);
-					}
-				}
-				if ("3".equals(questionType)) {
-					for (int z = 0; z < judge; z++) {
-						questionList3.add(question);
-					}
-				}
+				
 			}
-		
+			
 		}
-		
-		// 打乱不同知识点题目顺序
-		Collections.shuffle(questionList1);
-		Collections.shuffle(questionList2);
-		Collections.shuffle(questionList3);
 		
 		model.put("questionList1", questionList1);// 单选
 		model.put("questionList2", questionList2);// 多选
@@ -217,6 +264,7 @@ public class QuestionController extends BaseController{
 		logger.info("模拟考试结束时间：" + time);
 		
 		model.put("time", time);
+		
 		return model;
 	}
 
@@ -278,14 +326,13 @@ public class QuestionController extends BaseController{
 		
 		} else {
 			logger.info("45分钟之内没出过题！！！");
-			// 出题规则（岗位、知识点、题型、题量）
+			logger.info("查出某一岗位、某一知识点的全部题目及答案，岗位类型：" + jobId);
 			QuestionVo questionVo = new QuestionVo();
 			if(StringUtils.isNotBlank(jobId)){
 				questionVo.setJobsId(jobId);
 			}
-			 
-			// 查出某一岗位、某一知识点的全部题目及答案
 			List<QuestionVo> questionList = questionService.selectByQuestionVo(questionVo);
+			// 打乱顺序
 			Collections.shuffle(questionList);
 			 
 			logger.info("根据岗位，查看出题规则，岗位类型：" + jobId);
@@ -295,43 +342,88 @@ public class QuestionController extends BaseController{
 				ruleCriteria.andJobIdEqualTo(jobId);
 			}
 			List<Rule> ruleList = ruleService.selectByExample(ruleExample);
+			// 出题规则：某一知识点题量
+			int count = 0;
+			// 出题规则：某一知识点单选题量
+			int oneChoose = 0;
+			// 出题规则：某一知识点多选题量
+			int manyChoose = 0;
+			// 出题规则：某一知识点判断题量
+			int judge = 0;
+			// 遍历出题规则，计算知识点、题型的题量
 			for (int i = 0; i < ruleList.size(); i++ ) {
-				Rule rule = ruleList.get(0);
-				// 出题规则：某一知识点题量
-				int count = Integer.parseInt(rule.getContentRate());
-				// 出题规则：某一知识点单选题量
-				int oneChoose = (int) (count * (Double.valueOf(rule.getOneChoose()).doubleValue() / 100));
-				// 出题规则：某一知识点多选题量
-				int manyChoose = (int) (count * (Double.valueOf(rule.getManyChoose()).doubleValue() / 100));
-				// 出题规则：某一知识点判断题量
-				int judge = (int) (count * (Double.valueOf(rule.getJudge()).doubleValue() / 100));
+				Rule rule = ruleList.get(i);
+				count = Integer.parseInt(rule.getContentRate());
+				oneChoose = (int) (count * (Double.valueOf(rule.getOneChoose()).doubleValue() / 100));
+				manyChoose = (int) (count * (Double.valueOf(rule.getManyChoose()).doubleValue() / 100));
+				judge = (int) (count * (Double.valueOf(rule.getJudge()).doubleValue() / 100));
 				
-				for (int j = 0; j < count; j++) {
-					QuestionVo question = questionList.get(j);
-					String questionType = questionVo.getContentType();
-					if ("1".equals(questionType)) {
-						for (int x = 0; x < oneChoose; x++) {
-							questionList1.add(question);
+				if (questionList1.size() + questionList2.size() + questionList3.size() == count 
+						|| questionList1.size() + questionList2.size() + questionList3.size() > count ) {
+					break;// 出题全部完成
+					
+				} else {
+					// 遍历题目集合
+					for (int j = 0; j < questionList.size(); j++) {
+						QuestionVo question = questionList.get(j);
+						String contentType = question.getContentType();
+						String questionType = question.getQuestionType();
+						
+						// 从题目集合中取出某一知识点的试题
+						if (contentType.equals(rule.getContentType())) {
+							
+							// 设置试题的题目、答案
+							if (!"3".equals(questionType)) {
+								List<Answer> answerList = new ArrayList<Answer>();
+								Answer answer = new Answer();
+								String[] answerObj = question.getAnswerObj().split(",");
+								if (answerObj!=null || (answerObj==null && answerObj.length!=0)) {
+									for (int k = 0; k < answerObj.length; k++) {
+										String[] answers = answerObj[i].split("#");
+										String answerId = answers[0];
+										String answerDesc = answers[1];
+										answer.setId(answerId);
+										answer.setAnswerDesc(answerDesc);
+										if (answers.length > 2) {
+											answer.setAnswerImage(answers[2]);
+										}
+										answerList.add(answer);
+									}
+								}
+								question.setAnswerList(answerList);
+							}
+							
+							// 从题目集合中取出某一知识点单选的试题
+							if ("1".equals(questionType)) {
+								if (questionList1.size() == oneChoose || questionList1.size() > oneChoose) {
+									break;// 单选题出题完成
+								} else {
+									questionList1.add(question);
+								}
+							}
+							// 从题目集合中取出某一知识点多选的试题
+							if ("2".equals(questionType)) {
+								if (questionList2.size() == manyChoose || questionList2.size() > manyChoose) {
+									break;// 多选题出题完成
+								} else {
+									questionList2.add(question);
+								}
+							}
+							// 从题目集合中取出某一知识点判断的试题
+							if ("3".equals(questionType)) {
+								if (questionList3.size() == judge || questionList3.size() > judge) {
+									break;// 判断题出题完成
+								} else {
+									questionList3.add(question);
+								}
+							}
 						}
+						
 					}
-					if ("2".equals(questionType)) {
-						for (int y = 0; y < manyChoose; y++) {
-							questionList2.add(question);
-						}
-					}
-					if ("3".equals(questionType)) {
-						for (int z = 0; z < judge; z++) {
-							questionList3.add(question);
-						}
-					}
+					
 				}
-			
+				
 			}
-			
-			// 打乱不同知识点题目顺序
-			Collections.shuffle(questionList1);
-			Collections.shuffle(questionList2);
-			Collections.shuffle(questionList3);
 			
 			model.put("questionList1", questionList1);// 单选
 			model.put("questionList2", questionList2);// 多选
