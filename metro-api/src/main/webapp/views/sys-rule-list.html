@@ -62,6 +62,12 @@
 				<form class="table-search" id="table-search">
 					<ul class="clearfix">
 						<li class="fl creditwe-search-li">
+							<div class="fl mr10">知识点:</div>
+							<div class="fl ">
+								<input type="text" width="100" id="contentType" name="contentType" class="userId search-input" />
+							</div>
+						</li>
+						<li class="fl creditwe-search-li">
 							<div class="fl mr10">岗位:</div>
 							<div class="fl ">
 								<select class="width-100" id="jobsId" name="jobsId" data-am-selected="{btnWidth: '140px', btnSize: 'sm', btnStyle: 'secondary'}">
@@ -84,7 +90,7 @@
 							<button class="mr10 am-btn am-btn-primary" onclick="search()" type="button">查询</button>
 						</li>
 						<li class="fl creditwe-search-li">
-							<button class="mr10 am-btn am-btn-primary" type="button" onclick="javascript:window.location.href='${ctxPath}/match/matchSetInit.m'">新增</button>
+							<button class="mr10 am-btn am-btn-primary" type="button" onclick="javascript:window.location.href='${ctxPath}/rule/ruleSetInit.m'">新增</button>
 						</li>
 					</ul>
 				</form>
@@ -94,11 +100,12 @@
 				<table id="dataTables" class="am-table-centered am-table am-table-bordered am-table-radius am-text-nowrap">
 					<thead class="text-c">
 						<tr class="am-primary">
-							<th>赛事名称</th>
 							<th>岗位</th>
-							<th>开始时间</th>
-							<th>结束时间</th>
-							<th>当前阶段</th>
+							<th>知识点</th>
+							<th>出题占比（%）</th>
+							<th>单选占比（%）</th>
+							<th>多选占比（%）</th>
+							<th>判断占比（%）</th>
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -134,12 +141,6 @@
 					}],
 					bLengthChange: false,
 					ajax: function(data, callback, settings) {
-						/*var getData={"pageTotal":1,"rstDesc":"查询成功","rstFlag":true,"rstObj":[{"createTime":1535872769000,"endDate":1538496000000,"id":"583da175-5192-4112-9189-203ef75c0ce8","jobId":"7f167b43-ad05-11e8-9ce3-525400d685c9","jobsName":"车站站务员","matchLevel":"1","matchName":"123","operater":"de0f43cc-ad03-11e8-9ce3-525400d685c9","startDate":1535731200000}]}
-						var returnData = {};
-						returnData.data = getData.rstObj;
-						returnData.recordsTotal = getData.pageTotal; //返回数据全部记录
-						returnData.recordsFiltered = getData.pageTotal;
-						callback(returnData); */
 						
 						var postData = $('#table-search').serialize();
 						var startNumber = data.start;
@@ -147,7 +148,7 @@
 						console.log({'postData':postData});
 						$.ajax({
 							type: "get",
-							url: "${ctxPath}/match/matchSearch.m",
+							url: "${ctxPath}/rule/ruleSearch.m",
 							async: false,
 							data: postData,
 							success: function(data) {
@@ -170,31 +171,29 @@
 
 					},
 					"aoColumns": [{
-							"data": "matchName", //UserID
-							"className": "matchName"
-						}, {
 							"data": "jobsName", //UserID
 							"className": "jobsName"
 						}, {
-							"data": "startDate", //UserID
-							"className": "startDate"
+							"data": "contentType", //UserID
+							"className": "contentType"
 						}, {
-							"data": "endDate", //UserID
-							"className": "endDate"
+							"data": "contentRate", //UserID
+							"className": "contentRate"
 						}, {
-							"data": "matchLevel", //UserID
-							"className": "matchLevel",
-							"fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
-								var matchLevelArr = ["初赛", "复赛", "决赛", "总决赛"];
-								$(nTd).html(matchLevelArr[sData - 1]);
-							}
-
+							"data": "oneChoose", //UserID
+							"className": "oneChoose"
+						}, {
+							"data": "manyChoose", //UserID
+							"className": "manyChoose"
+						}, {
+							"data": "judge", //UserID
+							"className": "judge"
 						},
 						{
 							"data": "id", //UserID
 							"fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
-								var html = "<a class='am-btn am-btn-secondary am-radius mr10' href='${ctxPath}/match/matchSetInit.m?id=" + sData + "'>编辑</a><a  href='${ctxPath}/match/matchDel.m?id=" + sData + "' class='am-btn am-btn-secondary am-radius'>删除</a>"
-								$(nTd).html(html)
+								var html = "<a href='${ctxPath}/rule/ruleDel.m?id=" + sData + "' class='am-btn am-btn-secondary am-radius'>删除</a>"
+								$(nTd).html(html);
 							}
 						},
 					],

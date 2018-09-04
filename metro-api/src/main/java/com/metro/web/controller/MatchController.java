@@ -21,9 +21,11 @@ import com.metro.model.MatchExample;
 import com.metro.service.JobsService;
 import com.metro.service.MatchService;
 import com.metro.util.BaseUtil;
+import com.metro.util.BeanUtils;
 import com.metro.util.DateUtil;
 import com.metro.util.SessionUtils;
 import com.metro.vo.DataTransObj;
+import com.metro.vo.MatchVO;
 
 /***
  * 赛事控制
@@ -68,23 +70,23 @@ public class MatchController  extends BaseController{
 		MatchExample example = new MatchExample();
 		MatchExample.Criteria c = example.createCriteria();
 		
-		if(StringUtils.isNotBlank(jobsId)){
+		if(StringUtils.isNotBlank(jobsId) && !"#".equals(jobsId)){
 			c.andJobIdEqualTo(jobsId);
 		}
 		
 		int totalNum = matchService.countByExample(example);
 		
 		//分页
-		if(startNumber != null && pageSize != null){
+		if(startNumber != null){
 			example.setStartNumber(startNumber);
-			example.setPageSize(pageSize);
 		}
-		
+		example.setOrderByClause("create_time desc");
 		List<Match> list = matchService.selectByExample(example);
 		for (Match match : list) {
 			match.setJobsName(jobsService.getById(match.getJobId()).getJobsName());
 		}
-		return DataTransObj.onSuccess(list, "查询成功", totalNum);
+		
+		return DataTransObj.onSuccess(BeanUtils.transfersB(list, MatchVO.class), "查询成功", totalNum);
 	}
 	
 	/**
@@ -148,7 +150,6 @@ public class MatchController  extends BaseController{
 	@RequestMapping(value = "matchDel.m", method = RequestMethod.GET)
 	public @ResponseBody DataTransObj matchDel(ModelMap model,
 			@RequestParam(value="id", required = true) String id) {
-		
 		matchService.deleteById(id);
 		return DataTransObj.onSuccess(null,"操作成功");
 	}

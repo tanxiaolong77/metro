@@ -11,7 +11,7 @@ public class BaseExample {
 
     protected Integer startNumber = 0;
 
-    protected Integer pageSize = 50;
+    protected Integer pageSize = 20;
 
 	public Integer getStartNumber() {
 		return startNumber;

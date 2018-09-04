@@ -55,12 +55,20 @@
 			<div class="nav">
 				<div class="nav-content">
 					<span>导航页:</span>
-					<span><a href="${ctxPath}/index.m">首页</a> - 开赛设置 - 查询</span>
+					<span><a href="${ctxPath}/index.m">首页</a> - 题库 - 查询</span>
 				</div>
 			</div>
 			<div class="table-content">
 				<form class="table-search" id="table-search">
 					<ul class="clearfix">
+					
+						<li class="fl creditwe-search-li">
+							<div class="fl mr10">题目:</div>
+							<div class="fl ">
+								<input type="text" width="100" id="questionDesc" name="questionDesc" class="userId search-input" />
+							</div>
+						</li>
+								
 						<li class="fl creditwe-search-li">
 							<div class="fl mr10">岗位:</div>
 							<div class="fl ">
@@ -84,7 +92,7 @@
 							<button class="mr10 am-btn am-btn-primary" onclick="search()" type="button">查询</button>
 						</li>
 						<li class="fl creditwe-search-li">
-							<button class="mr10 am-btn am-btn-primary" type="button" onclick="javascript:window.location.href='${ctxPath}/match/matchSetInit.m'">新增</button>
+							<button class="mr10 am-btn am-btn-primary" type="button" onclick="javascript:window.location.href='${ctxPath}/qabank/questionUploadInt.m'">题目导入</button>
 						</li>
 					</ul>
 				</form>
@@ -94,11 +102,14 @@
 				<table id="dataTables" class="am-table-centered am-table am-table-bordered am-table-radius am-text-nowrap">
 					<thead class="text-c">
 						<tr class="am-primary">
-							<th>赛事名称</th>
-							<th>岗位</th>
-							<th>开始时间</th>
-							<th>结束时间</th>
-							<th>当前阶段</th>
+							<th>题目</th>
+							<th>出题岗位</th>
+							<th>出题类型</th>
+							<th>A</th>
+							<th>B</th>
+							<th>C</th>
+							<th>D</th>
+							<th>正确答案</th>
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -147,7 +158,7 @@
 						console.log({'postData':postData});
 						$.ajax({
 							type: "get",
-							url: "${ctxPath}/match/matchSearch.m",
+							url: "${ctxPath}/qabank/qaSearch.m",
 							async: false,
 							data: postData,
 							success: function(data) {
@@ -170,30 +181,38 @@
 
 					},
 					"aoColumns": [{
-							"data": "matchName", //UserID
-							"className": "matchName"
-						}, {
+							"data": "questionDesc", //UserID
+							"className": "questionDesc"
+						},{
 							"data": "jobsName", //UserID
 							"className": "jobsName"
-						}, {
-							"data": "startDate", //UserID
-							"className": "startDate"
-						}, {
-							"data": "endDate", //UserID
-							"className": "endDate"
-						}, {
-							"data": "matchLevel", //UserID
-							"className": "matchLevel",
+						},{
+							"data": "questionType", //UserID
+							"className": "questionType",
 							"fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
-								var matchLevelArr = ["初赛", "复赛", "决赛", "总决赛"];
+								var matchLevelArr = ["单选", "多选", "判断"];
 								$(nTd).html(matchLevelArr[sData - 1]);
 							}
-
+						}, {
+							"data": "a", //UserID
+							"className": "a"
+						}, {
+							"data": "b", //UserID
+							"className": "b"
+						}, {
+							"data": "b", //UserID
+							"className": "c"
+						}, {
+							"data": "b", //UserID
+							"className": "d"
+						},{
+							"data": "answerDesc", //UserID
+							"className": "answerDesc"
 						},
 						{
 							"data": "id", //UserID
 							"fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
-								var html = "<a class='am-btn am-btn-secondary am-radius mr10' href='${ctxPath}/match/matchSetInit.m?id=" + sData + "'>编辑</a><a  href='${ctxPath}/match/matchDel.m?id=" + sData + "' class='am-btn am-btn-secondary am-radius'>删除</a>"
+								var html = "<a  href='${ctxPath}/qabank/qaDel.m?id=" + sData + "' class='am-btn am-btn-secondary am-radius'>删除</a>"
 								$(nTd).html(html)
 							}
 						},

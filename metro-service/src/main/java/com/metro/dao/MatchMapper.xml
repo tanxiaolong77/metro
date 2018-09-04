@@ -107,6 +107,10 @@
 			limit #{startNumber} , #{pageSize}
 		</if>
 	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from match_conf
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
 	<delete id="deleteByExample" parameterType="com.metro.model.MatchExample">
 		delete from match_conf
 		<if test="_parameter != null">
