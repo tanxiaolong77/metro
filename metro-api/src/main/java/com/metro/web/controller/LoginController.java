@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,7 @@ import com.metro.model.UserExample;
 import com.metro.service.EmployeeService;
 import com.metro.service.UserService;
 import com.metro.util.EncryptUtils;
+import com.metro.util.SessionUtils;
 import com.metro.vo.DataTransObj;
 
 
@@ -127,26 +129,16 @@ public class LoginController  extends BaseController{
 	}
 	
 	
-	/**
-	 * 员工退出
-	 * 
-	 * @return 跳转到登录页面
-	 */
-	@RequestMapping("logout.u")
+	@RequestMapping("logout")
 	public String logoutU(HttpServletRequest request) {
-		request.getSession().invalidate();
+		if(SessionUtils.getLoginUser() != null){
+			request.getSession().invalidate();
+			return "redirect:/";
+		}else if(SessionUtils.getLoginManager() != null){
+			request.getSession().invalidate();
+			return "redirect:/m";
+		}
 		return "redirect:/";
-	}
-	
-	/**
-	 * 管理员退出
-	 * 
-	 * @return 跳转到登录页面
-	 */
-	@RequestMapping("logout.m")
-	public String logoutM(HttpServletRequest request) {
-		request.getSession().invalidate();
-		return "redirect:/m";
 	}
 	
 	/**
@@ -155,8 +147,13 @@ public class LoginController  extends BaseController{
 	 * @return 跳转到登录页面
 	 */
 	@RequestMapping("error")
-	public String error(HttpServletRequest request) {
-		return "redirect:/error";
+	public String error(HttpServletRequest request,ModelMap map) {
+		if(SessionUtils.getLoginManager() != null){
+			map.put("source","m");
+		}else{
+			map.put("source","u");
+		}
+		return "views/error.html";
 	}
 
 }
