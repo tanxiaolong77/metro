@@ -1196,6 +1196,22 @@ public class DateUtil {
 		return 0;
 	}
 	
+	public static String getEndTime(Date startTime, Date endTime) {
+		try {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(startTime);
+			long time1 = cal.getTimeInMillis();
+			cal.setTime(endTime);
+			long time2 = cal.getTimeInMillis();
+			long between_days = (time2 - time1) / (1000 * 3600 * 24 * 60 * 60);
+
+			return String.valueOf(between_days);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+	
 	public static void main(String[] args) {
 //		System.out.println("============1>: " + getNextDay(DateUtil.getStringDateShort(),"1"));
 //		System.out.println("============1>: " + getAddDay(DateUtil.getStringDateShort(),1));

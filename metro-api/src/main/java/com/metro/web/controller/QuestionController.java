@@ -251,7 +251,6 @@ public class QuestionController extends BaseController{
 		}
 		
 		// 模拟考试时间：45分钟
-
 		logger.info("模拟考试结束时间：" + expire);
 		
 		model.put("expire", expire);
@@ -278,7 +277,7 @@ public class QuestionController extends BaseController{
 			String matchId,String matchLevel) {
 		logger.info("开始出题！！！");
 		
-		List<Question>  questionListbefore = new ArrayList<Question>();// 整套题
+		List<QuestionVo>  questionListbefore = new ArrayList<QuestionVo>();// 整套题
 		
 		List<QuestionVo>  questionList1 = new ArrayList<QuestionVo>();// 单选题
 		List<QuestionVo>  questionList2 = new ArrayList<QuestionVo>();// 多选题
@@ -311,11 +310,67 @@ public class QuestionController extends BaseController{
 			String questionId = userQuestionList.get(0).getQuestionId();
 			String[] questions = questionId.split(",");
 			ArrayList<String> questionIdList = (ArrayList<String>) Arrays.asList(questions);
-			QuestionExample questionExample = new QuestionExample();
-			QuestionExample.Criteria questionCriteria = questionExample.createCriteria();
-			questionCriteria.andIdIn(questionIdList);
-			questionListbefore = questionService.selectByExample(questionExample);
-			model.put("questionList", questionListbefore);
+			questionListbefore = questionService.selectByQuestionId(questionIdList);
+			model.put("jobsName", questionListbefore.get(0).getJobsName());
+			Map<String,List<QuestionVo>> questionMap = new HashMap<>();
+			//根据contentType封装
+			for (QuestionVo q : questionListbefore) {
+				
+				if(questionMap.get(q.getContentType()) == null){
+					List<QuestionVo> tmpList = new ArrayList<>();
+					questionMap.put(q.getContentType(),tmpList);
+				}
+				
+				if (!"3".equals(q.getQuestionType())) {
+					List<Answer> answerList = new ArrayList<Answer>();
+					
+					String[] answerObj = q.getAnswerObj().split("#row#");
+					if (answerObj != null && answerObj.length > 0) {
+						for (int k = 0; k < answerObj.length; k++) {
+							Answer answer = new Answer();
+							String[] answers = answerObj[k].split("#col#");
+							String answerId = answers[0];
+							if(StringUtils.isNotBlank(answerId) && answerId.startsWith(",")){
+								answerId = answerId.substring(1);
+							}
+							String answerDesc = answers[1];
+							answer.setId(answerId);
+							answer.setAnswerDesc(answerDesc);
+							if (answers.length > 2) {
+								answer.setAnswerImage(answers[2].substring(1));
+							}
+							answerList.add(answer);
+						}
+					}
+					q.setAnswerList(answerList);
+				}
+				
+				questionMap.get(q.getContentType()).add(q);
+			}
+			
+			logger.info("根据岗位，查看出题规则，岗位类型：" + jobId);
+			RuleExample ruleExample = new RuleExample();
+			RuleExample.Criteria ruleCriteria = ruleExample.createCriteria();
+			if(StringUtils.isNotBlank(jobId)){
+				ruleCriteria.andJobIdEqualTo(jobId);
+			}
+			List<Rule> ruleList = ruleService.selectByExample(ruleExample);
+			for (int i = 0; i < ruleList.size(); i++ ) {
+				Rule rule = ruleList.get(i);
+				int count = Integer.parseInt(rule.getContentRate());
+				int oneChoose = (int) (count * (Double.valueOf(rule.getOneChoose()).doubleValue() / 100));
+				int manyChoose = (int) (count * (Double.valueOf(rule.getManyChoose()).doubleValue() / 100));
+				int judge = (int) (count * (Double.valueOf(rule.getJudge()).doubleValue() / 100));
+				
+				List<QuestionVo> contentTypeDatas = questionMap.get(rule.getContentType());
+				questionList1.addAll(findQuestion(contentTypeDatas, oneChoose,"1"));
+				questionList2.addAll(findQuestion(contentTypeDatas, manyChoose,"2"));
+				questionList3.addAll(findQuestion(contentTypeDatas, judge,"3"));
+			}
+			
+			model.put("questionList1", questionList1);// 单选
+			model.put("questionList2", questionList2);// 多选
+			model.put("questionList3", questionList3);// 判断
 			
 			// 结束时间
 			UserQuestionExample userQuestionExample1 = new UserQuestionExample();
@@ -326,7 +381,8 @@ public class QuestionController extends BaseController{
 			userQuestionCriteria.andCreateTimeEqualTo(date);
 			List<UserQuestion> userQuestionList1 = userQuestionService.selectByExample(userQuestionExample);
 			UserQuestion userQuestion = userQuestionList1.get(0);
-			String time = DateUtil.formatDate(userQuestion.getEndTime());
+			
+			String time = DateUtil.getEndTime(new Date(),userQuestion.getEndTime());
 			logger.info("考试结束时间：" + time);
 			model.put("time", time);
 		
@@ -338,9 +394,46 @@ public class QuestionController extends BaseController{
 				questionVo.setJobsId(jobId);
 			}
 			List<QuestionVo> questionList = questionService.selectByQuestionVo(questionVo);
+			model.put("jobsName", questionList.get(0).getJobsName());
+			Map<String,List<QuestionVo>> questionMap = new HashMap<>();
 			// 打乱顺序
 			Collections.shuffle(questionList);
-			 
+			
+			//根据contentType封装
+			for (QuestionVo q : questionList) {
+				
+				if(questionMap.get(q.getContentType()) == null){
+					List<QuestionVo> tmpList = new ArrayList<>();
+					questionMap.put(q.getContentType(),tmpList);
+				}
+				
+				if (!"3".equals(q.getQuestionType())) {
+					List<Answer> answerList = new ArrayList<Answer>();
+					
+					String[] answerObj = q.getAnswerObj().split("#row#");
+					if (answerObj != null && answerObj.length > 0) {
+						for (int k = 0; k < answerObj.length; k++) {
+							Answer answer = new Answer();
+							String[] answers = answerObj[k].split("#col#");
+							String answerId = answers[0];
+							if(StringUtils.isNotBlank(answerId) && answerId.startsWith(",")){
+								answerId = answerId.substring(1);
+							}
+							String answerDesc = answers[1];
+							answer.setId(answerId);
+							answer.setAnswerDesc(answerDesc);
+							if (answers.length > 2) {
+								answer.setAnswerImage(answers[2].substring(1));
+							}
+							answerList.add(answer);
+						}
+					}
+					q.setAnswerList(answerList);
+				}
+				
+				questionMap.get(q.getContentType()).add(q);
+			}
+			
 			logger.info("根据岗位，查看出题规则，岗位类型：" + jobId);
 			RuleExample ruleExample = new RuleExample();
 			RuleExample.Criteria ruleCriteria = ruleExample.createCriteria();
@@ -348,113 +441,65 @@ public class QuestionController extends BaseController{
 				ruleCriteria.andJobIdEqualTo(jobId);
 			}
 			List<Rule> ruleList = ruleService.selectByExample(ruleExample);
-			// 出题规则：某一知识点题量
-			int count = 0;
-			// 出题规则：某一知识点单选题量
-			int oneChoose = 0;
-			// 出题规则：某一知识点多选题量
-			int manyChoose = 0;
-			// 出题规则：某一知识点判断题量
-			int judge = 0;
-			// 遍历出题规则，计算知识点、题型的题量
 			for (int i = 0; i < ruleList.size(); i++ ) {
 				Rule rule = ruleList.get(i);
-				count = Integer.parseInt(rule.getContentRate());
-				oneChoose = (int) (count * (Double.valueOf(rule.getOneChoose()).doubleValue() / 100));
-				manyChoose = (int) (count * (Double.valueOf(rule.getManyChoose()).doubleValue() / 100));
-				judge = (int) (count * (Double.valueOf(rule.getJudge()).doubleValue() / 100));
+				int count = Integer.parseInt(rule.getContentRate());
+				int oneChoose = (int) (count * (Double.valueOf(rule.getOneChoose()).doubleValue() / 100));
+				int manyChoose = (int) (count * (Double.valueOf(rule.getManyChoose()).doubleValue() / 100));
+				int judge = (int) (count * (Double.valueOf(rule.getJudge()).doubleValue() / 100));
 				
-				if (questionList1.size() + questionList2.size() + questionList3.size() == count 
-						|| questionList1.size() + questionList2.size() + questionList3.size() > count ) {
-					break;// 出题全部完成
-					
-				} else {
-					// 遍历题目集合
-					for (int j = 0; j < questionList.size(); j++) {
-						QuestionVo question = questionList.get(j);
-						String contentType = question.getContentType();
-						String questionType = question.getQuestionType();
-						
-						// 从题目集合中取出某一知识点的试题
-						if (contentType.equals(rule.getContentType())) {
-							
-							// 设置试题的题目、答案
-							if (!"3".equals(questionType)) {
-								List<Answer> answerList = new ArrayList<Answer>();
-								Answer answer = new Answer();
-								String[] answerObj = question.getAnswerObj().split(",");
-								if (answerObj!=null || (answerObj==null && answerObj.length!=0)) {
-									for (int k = 0; k < answerObj.length; k++) {
-										String[] answers = answerObj[i].split("#");
-										String answerId = answers[0];
-										String answerDesc = answers[1];
-										answer.setId(answerId);
-										answer.setAnswerDesc(answerDesc);
-										if (answers.length > 2) {
-											answer.setAnswerImage(answers[2]);
-										}
-										answerList.add(answer);
-									}
-								}
-								question.setAnswerList(answerList);
-							}
-							
-							// 从题目集合中取出某一知识点单选的试题
-							if ("1".equals(questionType)) {
-								if (questionList1.size() == oneChoose || questionList1.size() > oneChoose) {
-									break;// 单选题出题完成
-								} else {
-									questionList1.add(question);
-								}
-							}
-							// 从题目集合中取出某一知识点多选的试题
-							if ("2".equals(questionType)) {
-								if (questionList2.size() == manyChoose || questionList2.size() > manyChoose) {
-									break;// 多选题出题完成
-								} else {
-									questionList2.add(question);
-								}
-							}
-							// 从题目集合中取出某一知识点判断的试题
-							if ("3".equals(questionType)) {
-								if (questionList3.size() == judge || questionList3.size() > judge) {
-									break;// 判断题出题完成
-								} else {
-									questionList3.add(question);
-								}
-							}
-						}
-						
-					}
-					
-				}
-				
+				List<QuestionVo> contentTypeDatas = questionMap.get(rule.getContentType());
+				questionList1.addAll(findQuestion(contentTypeDatas, oneChoose,"1"));
+				questionList2.addAll(findQuestion(contentTypeDatas, manyChoose,"2"));
+				questionList3.addAll(findQuestion(contentTypeDatas, judge,"3"));
 			}
 			
 			model.put("questionList1", questionList1);// 单选
 			model.put("questionList2", questionList2);// 多选
 			model.put("questionList3", questionList3);// 判断
 			
-			// 考试时间：45分钟
-			String time = "";
-			time = DateUtil.formatDate(DateUtil.addMinutesToDate(date, 45));
-			logger.info("考试结束时间：" + time);
-			model.put("time", time);
+			int order = 0;
+			String[] abcdefghijk = {"A","B","C","D","E","F","G","H","I","J","K"};
+			// 单选
+			String questions = "";
+			for (QuestionVo q : questionList1) {
+				List<Answer> answers = q.getAnswerList();
+				for (int i = 0; i < answers.size(); i++) {
+					answers.get(i).setTmp(abcdefghijk[i]);
+				}
+				q.setOrder(++order);
+				questions += ","+q.getId();
+			}
+			// 多选
+			for (QuestionVo q : questionList2) {
+				List<Answer> answers = q.getAnswerList();
+				for (int i = 0; i < answers.size(); i++) {
+					answers.get(i).setTmp(abcdefghijk[i]);
+				}
+				q.setOrder(++order);
+				questions += ","+q.getId();
+			}
+			// 判断
+			for (QuestionVo q : questionList3) {
+				q.setOrder(++order);
+				questions += ","+q.getId();
+			}
 			
-			// 入用户题目表
 			String questionId = "";
-			//单选
+			// 单选
 			for (int i = 0; i < questionList1.size(); i++) {
 				questionId += questionList1.get(i).getId() + ",";
 			}
-			//多选
+			// 多选
 			for (int j = 0; j < questionList2.size(); j++) {
 				questionId += questionList2.get(j).getId() + ",";
 			}
-			//判断
+			// 判断
 			for (int k = 0; k < questionList3.size(); k++) {
 				questionId += questionList3.get(k).getId() + ",";
 			}
+			
+			// 入用户题目表
 			UserQuestion userQuestion = new UserQuestion();
 			userQuestion.setId(BaseUtil.getUUID());
 			userQuestion.setUserId(userId);
@@ -465,6 +510,11 @@ public class QuestionController extends BaseController{
 			userQuestion.setQuestionId(questionId);
 			userQuestion.setCreateTime(date);
 			userQuestion.setStartTime(date);
+			// 考试时间：45分钟
+			String time = "";
+			time = DateUtil.formatDate(DateUtil.addMinutesToDate(date, 45));
+			logger.info("考试结束时间：" + time);
+			model.put("time", time);
 			userQuestion.setEndTime(DateUtil.formatDateStr(time));
 			userQuestionService.insert(userQuestion);
 			

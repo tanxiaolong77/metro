@@ -1,5 +1,6 @@
 package com.metro.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.metro.basic.EntityService;
@@ -13,5 +14,7 @@ public interface QuestionService extends EntityService<Question,String>{
 	 * @param question
 	 */
 	List<QuestionVo> selectByQuestionVo(QuestionVo question);
+
+	List<QuestionVo> selectByQuestionId(ArrayList<String> questionIdList);
 
 }

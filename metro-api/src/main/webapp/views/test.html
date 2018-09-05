@@ -613,28 +613,28 @@
 		      });
 		  }
 		  if(answers != ""){
+			  answers = answers.substring(1,answers.length);
 			  alert(answers.substring(1,answers.length));
 		  }
-		  return;
-		  $("#answers").val(rules.substring(1,rules.length));
+		  
+		  $("#answers").val(answers);
 		  var data = $("#form").serialize();
-/* 	       $.ajax(
+ 	       $.ajax(
 				{
-					url: '${ctxPath!}/rule/ruleSet.m',
+					url: '${ctxPath!}/userAnswer/getScore.u',
 					type: 'post',
 					data: data,
 					dataType: 'json',
 					success: function (data) {
 						if (data.rstFlag) {
 							alert(data.rstDesc);
-							window.location.href = '${ctxPath!}/rule/rulelist.m';
 						} else {
 							alert(data.rstDesc);
 						}
 					},
 					clearForm: false,//禁止清楚表单
 					resetForm: false //禁止重置表单
-				})	 */
+				});	 
 	});
 	
 	var expire = parseInt("${expire}");
@@ -654,7 +654,7 @@
 		}
 		show = "考试时间还剩<span "+sty+">"+min+"分"+sec+"秒</span>,请考生安排好答题时间";
 		$("#expire").html(show);
-		setTimeout("timeout()","10");
+		setTimeout("timeout()","1000");
 	}
 	
 	$(function(){

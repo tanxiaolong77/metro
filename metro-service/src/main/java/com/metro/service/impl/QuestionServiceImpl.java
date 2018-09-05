@@ -1,5 +1,6 @@
 package com.metro.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,10 @@ public class QuestionServiceImpl extends BaseService<Question,String> implements
 	@Override
 	public List<QuestionVo> selectByQuestionVo(QuestionVo questionVo) {
 		return questionMapper.selectByQuestionVo(questionVo);
+	}
+
+	@Override
+	public List<QuestionVo> selectByQuestionId(ArrayList<String> questionIdList) {
+		return questionMapper.selectByQuestionId(questionIdList);
 	}
 }

@@ -530,5 +530,38 @@
 		WHERE
 			q.jobs_id = #{jobsId,jdbcType=VARCHAR}
 	</select>
+	
+	<select id="selectByQuestionId" parameterType="java.util.List" resultType="com.metro.vo.QuestionVo">
+		SELECT
+			q.id,
+			q.question_desc questionDesc,
+			q.question_image questionImage,
+			q.content_type contentType,
+			q.question_type questionType,
+			q.answer_id answerId,
+			q.jobs_name jobsName,
+			(
+			SELECT
+				GROUP_CONCAT(
+					concat(
+						ifnull( a.id, '' ) ,
+						'#col#',
+						ifnull( a.answer_desc, '' ),
+						'#col#',
+						ifnull( a.answer_image, '' ),'#row#'
+					) 
+				) 
+			FROM
+				answer a 
+			WHERE
+				a.question_id = q.id order by a.sort_id
+			) answerObj 
+		FROM
+			question q 
+		WHERE
+			q.id in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">  
+			            #{questionIdList}  
+			        </foreach>
+	</select>
 
 </mapper>
