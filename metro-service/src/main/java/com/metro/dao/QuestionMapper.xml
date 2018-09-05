@@ -531,7 +531,7 @@
 			q.jobs_id = #{jobsId,jdbcType=VARCHAR}
 	</select>
 	
-	<select id="selectByQuestionId" parameterType="java.util.List" resultType="com.metro.vo.QuestionVo">
+	<select id="selectByQuestionId" parameterType="java.lang.String" resultType="com.metro.vo.QuestionVo">
 		SELECT
 			q.id,
 			q.question_desc questionDesc,
@@ -559,9 +559,18 @@
 		FROM
 			question q 
 		WHERE
-			q.id in <foreach collection="list" index="index" item="item" open="(" separator="," close=")">  
-			            #{questionIdList}  
-			        </foreach>
+			q.id in (${questionIdList} ) 
+	</select>
+
+	<select id="selectByIds" resultMap="BaseResultMap"
+		parameterType="com.metro.model.QuestionExample">
+		select
+		id,answer_id,question_type
+		<include refid="Base_Column_List" />
+		from question
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
 	</select>
 
 </mapper>

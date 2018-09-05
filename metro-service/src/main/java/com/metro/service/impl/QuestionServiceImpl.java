@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.metro.basic.BaseService;
 import com.metro.basic.EntityDao;
 import com.metro.dao.QuestionMapper;
+import com.metro.model.BaseExample;
 import com.metro.model.Question;
 import com.metro.service.QuestionService;
 import com.metro.vo.QuestionVo;
@@ -31,7 +32,12 @@ public class QuestionServiceImpl extends BaseService<Question,String> implements
 	}
 
 	@Override
-	public List<QuestionVo> selectByQuestionId(ArrayList<String> questionIdList) {
-		return questionMapper.selectByQuestionId(questionIdList);
+	public List<QuestionVo> selectByQuestionId(String questionConditions) {
+		return questionMapper.selectByQuestionId(questionConditions);
+	}
+	
+	@Override
+	public List<Question> selectByIds(BaseExample example){
+		return questionMapper.selectByIds(example);
 	}
 }

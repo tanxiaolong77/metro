@@ -1,7 +1,9 @@
 package com.metro.web.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.metro.common.constant.Constant;
@@ -57,8 +58,8 @@ public class UserAnswerController extends BaseController{
 			String questionId = "";// 用户答案的题目id
 			String answerId = "";// 用户答案的答案id
 			
-			ArrayList<String> questionIdList = new ArrayList<String>();// 存放用户答案的题目id，用于查看正确答案
-			List<QuestionVo> userQuestionAnswerList = new ArrayList<QuestionVo>();// 存放用户答案的答案id，用于计算得分
+			Map<String,List<String>> qaMap = new HashMap<>();
+			ArrayList<QuestionVo> qvos = new ArrayList<>();// 存放用户答案的题目id，用于查看正确答案
 			
 			answers = StringUtils.trim(answers);
 			String[] answersObj = answers.split(",");
@@ -66,28 +67,24 @@ public class UserAnswerController extends BaseController{
 			if (answersObj != null && answersObj.length > 0) {
 				logger.info("答题有效，开始计算分数");
 				for (int i = 0; i < answersObj.length; i++) {
+					List<String> userAnswers = new ArrayList<>();//用户答案
 					String[] questionIdAndAnswerId = answersObj[i].split("#");
-					questionId = questionIdAndAnswerId[0];
-					questionIdList.add(questionId);
-					if (questionIdAndAnswerId.length > 2) {
-						for (int j = 1; j < questionIdAndAnswerId.length; j++) {
-							answerId = questionIdAndAnswerId[j] + ",";
-						}
-					} else {
-						answerId = questionIdAndAnswerId[1];
-					}
 					
-					QuestionVo questionVo = new QuestionVo();
-					questionVo.setId(questionId);
-					questionVo.setAnswerId(answerId);
-					userQuestionAnswerList.add(questionVo);
+					for(int j = 0;j < questionIdAndAnswerId.length;j++){
+						if(j > 0){
+							userAnswers.add(questionIdAndAnswerId[j]);
+						}
+					}
+					qaMap.put(questionIdAndAnswerId[0],userAnswers);//封装答案，questionid:answers
 				}
 				
 				// 试题信息
-				List<QuestionVo> questionVoList = questionService.selectByQuestionId(questionIdList);
+				QuestionExample example = new QuestionExample();
+				example.createCriteria().andIdIn(new ArrayList(qaMap.keySet()));
+				List<Question> questionList = questionService.selectByIds(example);
 				
 				// 计算得分
-				userScore = calculateScore(questionVoList,userQuestionAnswerList);
+				userScore = calculateScore(questionList,qaMap);
 				
 			// 答题无效	
 			} else {
@@ -127,7 +124,7 @@ public class UserAnswerController extends BaseController{
 		
 	}
 
-	private double calculateScore(List<QuestionVo> questionList, List<QuestionVo> questionAnswerIdList) {
+	private double calculateScore(List<Question> questionList, Map<String,List<String>> qas) {
 		
 		// 最终得分
 		double userScore = 0;
@@ -139,28 +136,17 @@ public class UserAnswerController extends BaseController{
 		double judgeScore = 0;
 		
 		for (int i = 0; i < questionList.size(); i++) {
-			for (int j = 0; j < questionAnswerIdList.size(); j++) {
+			Question q = questionList.get(i);
+			
+			if ("1".equals(q.getQuestionType())) {
 				// 单选题答对得1分
-				if ("1".equals(questionList.get(i).getQuestionType())) {
-					if (questionAnswerIdList.get(j).getId().equals(questionList.get(i).getId()) 
-						&& questionAnswerIdList.get(j).getAnswerId().equals(questionList.get(i).getAnswerId())) {
-						oneScore = oneScore + 1;
-					}
-				}
+				oneScore += calculate(qas.get(q.getId()),q.getAnswerId()) == true ? 1 : 0;//打分
+			} else if ("2".equals(questionList.get(i).getQuestionType())) {
 				// 多选题答对得1.5分
-				if ("2".equals(questionList.get(i).getQuestionType())) {
-					if (questionAnswerIdList.get(j).getId().equals(questionList.get(i).getId()) 
-							&& questionAnswerIdList.get(j).getAnswerId().equals(questionList.get(i).getAnswerId())) {
-						manyScore = manyScore + 1.5;
-					}
-				}
+				manyScore += calculate(qas.get(q.getId()),q.getAnswerId()) == true ? 1.5 : 0;//打分
+			} else if ("3".equals(questionList.get(i).getQuestionType())) {
 				// 判断题答对得0.5分
-				if ("3".equals(questionList.get(i).getQuestionType())) {
-					if (questionAnswerIdList.get(j).getId().equals(questionList.get(i).getId()) 
-							&& questionAnswerIdList.get(j).getAnswerId().equals(questionList.get(i).getAnswerId())) {
-						judgeScore = judgeScore + 0.5;
-					}
-				}
+				judgeScore += calculate(qas.get(q.getId()),q.getAnswerId()) == true ? 0.5 : 0;//打分
 			}
 		}
 		userScore = oneScore + manyScore + judgeScore;
@@ -172,5 +158,25 @@ public class UserAnswerController extends BaseController{
 		
 		return userScore;
 	}
+	
+	private boolean calculate(List<String> userAnswers,String systemAnswers){
+		List<String> sysQas = Arrays.asList(systemAnswers.split(","));
+		if(sysQas.size() != userAnswers.size()){
+			return false;//答案数不相等
+		}
+		//循环用户的答案和系统正确答案对比
+		int total = 0;
+		for (String answer : userAnswers) {
+			if(sysQas.contains(answer)){
+				total++;
+			}
+		}
+		if(total != sysQas.size()){
+			return false;//答少或者错误都为错误
+		}
+		return true;
+	}
+	
+	
 
 }

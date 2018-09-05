@@ -8,7 +8,7 @@
 		name="viewport" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="format-detection" content="telephone=no">
-		<title>北京地铁111</title>
+		<title>北京地铁</title>
 	<link href="${ctxPath}/views/static/css/common.css" rel="stylesheet"
 		type="text/css" />
 	<link href="${ctxPath}/views/static/css/new_win.css" rel="stylesheet"
@@ -467,7 +467,7 @@
 
 									<li class="word_color5">
 										<div class="dx_word_style_left">
-											<input name="${question1.id!}" id="dx_${question1.id!}_${answerLP.index}" value="${answer.id!}" type="radio" value="true"
+											<input name="${question1.id!}" id="dx_${question1.id!}_${answerLP.index}" value="${answer.id!}" type="radio"
 												class="dx_style" />
 										</div>
 										<div class="dx_word_style">
@@ -540,7 +540,7 @@
 								<ul>
 									<li class="word_color5">
 										<div class="dx_word_style_left">
-											<input name="${question3.id!}" id="pd_${question3.id}" value="0" type="radio" value="true"
+											<input name="${question3.id!}" id="pd_${question3.id}" value="0" type="radio"
 												class="dx_style" />
 										</div>
 										<div class="dx_word_style">
@@ -551,7 +551,7 @@
 
 									<li class="word_color5">
 										<div class="dx_word_style_left">
-											<input name="${question3.id!}" id="pd_${question3.id}" value="1" type="radio" value="false"
+											<input name="${question3.id!}" id="pd_${question3.id}" value="1" type="radio"
 												class="dx_style" />
 										</div>
 										<div class="dx_word_style">
@@ -601,22 +601,25 @@
 		  var answers = "";
 		  var as = "#";
 		  var qs = ",";
+		  debugger;
 		  for(var i = 0; i < questions.length;i++){
-
-			  $("[name="+questions[i]+"]").each(function (i,e) {
-		        	if($(this).is(':checked')){
-		        		if(i == 0){
+			  var c = $("[name="+questions[i]+"]");
+			  var ps = true;
+			  for(var j = 0;j<c.length;j++){
+				  if($(c[j]).attr('checked')){
+					  if(ps){
 		        			answers += qs + questions[i];
+		        			ps = false;
 		        		}
-		        		answers += as + $(this).val();
-		        	}
-		      });
-		  }
-		  if(answers != ""){
-			  answers = answers.substring(1,answers.length);
-			  alert(answers.substring(1,answers.length));
+		        		answers += as + $(c[j]).val();
+				  }
+			  }
 		  }
 		  
+		  if(answers != ""){
+			  answers = answers.substring(1,answers.length);
+			  alert(answers.split(",").length);
+		  }
 		  $("#answers").val(answers);
 		  var data = $("#form").serialize();
  	       $.ajax(

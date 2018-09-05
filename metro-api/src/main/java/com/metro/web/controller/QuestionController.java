@@ -309,8 +309,12 @@ public class QuestionController extends BaseController{
 			logger.info("45分钟之内出过题！！！");
 			String questionId = userQuestionList.get(0).getQuestionId();
 			String[] questions = questionId.split(",");
-			ArrayList<String> questionIdList = (ArrayList<String>) Arrays.asList(questions);
-			questionListbefore = questionService.selectByQuestionId(questionIdList);
+			String questionConditions = StringUtils.EMPTY;
+			for(int i = 0;i < questions.length;i++){
+				questionConditions = StringUtils.isBlank(questionConditions) 
+						? "'"+questions[i]+"'" : ",'"+questions[i]+"'";
+			}
+			questionListbefore = questionService.selectByQuestionId(questionConditions);
 			model.put("jobsName", questionListbefore.get(0).getJobsName());
 			Map<String,List<QuestionVo>> questionMap = new HashMap<>();
 			//根据contentType封装
