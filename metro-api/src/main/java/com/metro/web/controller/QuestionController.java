@@ -190,7 +190,7 @@ public class QuestionController extends BaseController{
 						answer.setId(answerId);
 						answer.setAnswerDesc(answerDesc);
 						if (answers.length > 2) {
-							answer.setAnswerImage(answers[2].substring(1));
+							answer.setAnswerImage(answers[2]);
 						}
 						answerList.add(answer);
 					}

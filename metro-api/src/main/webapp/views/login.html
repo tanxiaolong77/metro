@@ -96,11 +96,11 @@ html, body {
 			<h2 class="login-title">北京地铁答题系统-员工登录</h2>
 			<div class="password">
 				<i class="Hui-iconfont">姓&emsp;&emsp;名</i> <input class="userName"
-					name="realName" />
+					name="realName" id="realName"/>
 			</div>
 			<div class="user">
 				<i class="Hui-iconfont">身份证号</i> <input class="userName"
-					name="userCard" />
+					name="userCard" id="userCard" onkeydown="enterIn(event)"/>
 			</div>
 			<div class="login">
 				<button id="login" type="button" class="login-button">登录</button>
@@ -109,6 +109,21 @@ html, body {
 	</div>
 	<script>
 		$("#login").on("click", function() {
+			
+			if($("#realName").val() == ""){
+				alert("请输入姓名");
+				return;
+			}
+			if($("#userCard").val() == ""){
+				alert("请输入身份证号");
+				return;
+			}
+			var card_pattern = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;//身份证
+			if(!card_pattern.test($("#userCard").val())){
+				alert("身份证格式有误");
+				return;
+			}
+			
 			var data = $("#form").serialize();
 			$.ajax({
 				url : '${ctxPath!}/login',
@@ -130,6 +145,13 @@ html, body {
 			//禁止重置表单
 			})
 		});
+		
+		function enterIn(evt){
+		  var evt=evt?evt:(window.event?window.event:null);//兼容IE和FF
+		  if (evt.keyCode==13){
+			  $("#login").click();
+		  }
+		}
 	</script>
 </body>
 

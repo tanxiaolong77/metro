@@ -173,10 +173,6 @@
 
 		</div>
 		<script>
-			if("${result!}" != ""){
-				alert("${result!}");
-			}
-		
 			$("#commitForm").on("click",function(){
 			  //岗位不能为空
 			  if($("#jobsId").val() == null || $("#jobsId").val() == ""){
@@ -192,6 +188,7 @@
 				  alert("请选择要上传的题目excel文件");
 				  return;
 			  }
+			  alert("上传成功，请稍后在题库页面查询。");
 			  $("#form").submit();
 			});
 		

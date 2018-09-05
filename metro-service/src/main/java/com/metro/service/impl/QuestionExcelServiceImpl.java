@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.POIXMLDocument;
@@ -54,42 +56,46 @@ public class QuestionExcelServiceImpl  implements QuestionExcelService{
 	
 	private int sortIndex = 0;
 	
+	private Executor pool = Executors.newFixedThreadPool(5);
+	
 
-	public  DataTransObj parse(File file,QuestionUploadRequest request) throws Exception {
+	public  DataTransObj parse(final File file,final QuestionUploadRequest request) throws Exception {
+		//上传使用异步执行
+		pool.execute(new Runnable() {
+			public void run() {
+				try {
+					//用于答案排序
+					setSortIndex(answerService.countByExample(new AnswerExample())); 
+					// 循环行Row
+					List<String> contextTypes = new ArrayList<>();//解决合并单元格问题
+					
+					OPCPackage oPCPackage = POIXMLDocument.openPackage(file.getPath());
+					XWPFDocument xwpfDocument = new XWPFDocument(oPCPackage);
 
-		//用于答案排序
-		setSortIndex(answerService.countByExample(new AnswerExample())); 
-		// 循环行Row
-		List<String> contextTypes = new ArrayList<>();//解决合并单元格问题
-		
-		OPCPackage oPCPackage = POIXMLDocument.openPackage(file.getPath());
-		XWPFDocument xwpfDocument = new XWPFDocument(oPCPackage);
-		
-		try {
-			
-			// 保存word中的图片
-			Map<String,String> picMap = new HashMap<String,String>();
-			saveImage(request.getPicturePath(), picMap,xwpfDocument);
-			
-			// 获取页面中的表格
-			Iterator<XWPFTable> it = xwpfDocument.getTablesIterator();
-			while (it.hasNext()) {
-				// 循环页面中的表格
-				XWPFTable table = (XWPFTable) it.next();
-				for(int i = 2;i < table.getRows().size();i++){
-					// 获取表格中的行
-					XWPFTableRow row = table.getRow(i);
-					// 获取行中共有多少列
-					List<XWPFTableCell> cells = row.getTableCells();
-					//将cell插入数据库
-					parseAdd(request, cells, contextTypes,picMap,sortIndex);
+					// 保存word中的图片
+					Map<String,String> picMap = new HashMap<String,String>();
+					saveImage(request.getPicturePath(), picMap,xwpfDocument);
+					
+					// 获取页面中的表格
+					Iterator<XWPFTable> it = xwpfDocument.getTablesIterator();
+					while (it.hasNext()) {
+						// 循环页面中的表格
+						XWPFTable table = (XWPFTable) it.next();
+						for(int i = 2;i < table.getRows().size();i++){
+							// 获取表格中的行
+							XWPFTableRow row = table.getRow(i);
+							// 获取行中共有多少列
+							List<XWPFTableCell> cells = row.getTableCells();
+							//将cell插入数据库
+							parseAdd(request, cells, contextTypes,picMap,sortIndex);
 
+						}
+					}
+				} catch (Exception e) {
+					logger.error(e.getMessage(),e);
 				}
 			}
-		} catch (Exception e) {
-			logger.error(e.getMessage(),e);
-		}
-		
+		});
 		return DataTransObj.onSuccess(null,"上传成功");
 	}
 	
@@ -124,7 +130,7 @@ public class QuestionExcelServiceImpl  implements QuestionExcelService{
 				}
 				
 			}
-            map.put(id, saveFile.getName());
+            map.put(id,newName);
 		}
 	}
 	

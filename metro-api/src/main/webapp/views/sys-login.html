@@ -96,7 +96,7 @@
 				</div>
 				<div class="password">
 					<i class="Hui-iconfont">&#xe60e;</i>
-					<input class="password-input" type="password" name="password"/>
+					<input class="password-input" type="password" name="password" onkeydown="enterIn(event)"/>
 				</div>
 				<div class="login">
 					<button id="login" type="button" class="login-button">登录</button>
@@ -125,7 +125,12 @@
 				resetForm: false //禁止重置表单
 			})});
 
-	
+		function enterIn(evt){
+		  var evt=evt?evt:(window.event?window.event:null);//兼容IE和FF
+		  if (evt.keyCode==13){
+			  $("#login").click();
+		  }
+		}
 	</script>
 	</body>
 

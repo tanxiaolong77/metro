@@ -1,5 +1,6 @@
 package com.metro.web.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import com.metro.model.User;
 import com.metro.model.UserExample;
 import com.metro.service.EmployeeService;
 import com.metro.service.UserService;
+import com.metro.util.BaseUtil;
 import com.metro.util.EncryptUtils;
 import com.metro.util.SessionUtils;
 import com.metro.vo.DataTransObj;
@@ -109,7 +111,6 @@ public class LoginController  extends BaseController{
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public @ResponseBody DataTransObj login(String realName,
 			String userCard, HttpServletRequest request) {
-
 		HttpSession session = request.getSession();
 		realName = StringUtils.trim(realName);
 		userCard = StringUtils.trim(userCard);
@@ -117,13 +118,21 @@ public class LoginController  extends BaseController{
 		EmployeeExample example = new EmployeeExample();
 		EmployeeExample.Criteria c = example.createCriteria();
 		c.andUserCardEqualTo(userCard);
-		c.andRealNameEqualTo(realName);
+//		c.andRealNameEqualTo(realName);
 		List<Employee> user = employeeService.selectByExample(example);
 		
 		if (user != null && user.size() > 0) {
 			session.setAttribute(Constant.SESSION_LOGIN_USER, user.get(0));
 		} else {
-			return DataTransObj.onFailure(null, "用户名或密码错误");
+			//当前版本因为没有员工信息，所以登录时判断是否有身份证号存在，如果存在的话可以登录，反之新增一条
+			Employee e = new Employee();
+			e.setId(BaseUtil.getUUID());
+			e.setRealName(realName);
+			e.setUserCard(userCard);
+			e.setCreateTime(new Date());
+			employeeService.insert(e);
+			session.setAttribute(Constant.SESSION_LOGIN_USER, e);
+//			return DataTransObj.onFailure(null, "用户名或密码错误");
 		}
 		return DataTransObj.onSuccess(null, "登录成功");
 	}

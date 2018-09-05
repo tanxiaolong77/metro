@@ -387,8 +387,8 @@
 
 </head>
 <body>
-	<div>
-		<div><img src="${ctxPath}/views/img/time.jpg" width="60" height="60"/></div>
+	<div style="position:fixed;left:20px;top:10px;">
+		<div><img src="${ctxPath}/views/img/time.jpg" style="margin:0 auto; display:block;" width="60" height="60"/></div>
 		<div id="expire"></div>
 	</div>
 	<div style="background-color: #fafafa;">
@@ -412,7 +412,7 @@
 				<div class="con_content_bg">
 					<div class="top_word">
 						<p class="lx_title01">北京地铁</p>
-						<p class="lx_title02">${jobsName}</p>
+						<p class="lx_title02">${jobsName} 专业考试</p>
 					</div>
 					<div>
 						<table width="916" border="0" cellpadding="0" cellspacing="1"
@@ -458,7 +458,11 @@
 								<div>
 									<div style="float: left;">${question1.order}、</div>
 									<div style="float: left;">
-										<p>${question1.questionDesc}</p>
+										<p>${question1.questionDesc}
+										@if(question1.questionImage != null && question1.questionImage != ""){
+											&nbsp;&nbsp;&nbsp;<img src="http://127.0.0.1/pic/${question1.questionImage}" />
+										@}
+										</p>
 									</div>
 									<div style="clear: both;"></div>
 								</div>
@@ -471,7 +475,11 @@
 												class="dx_style" />
 										</div>
 										<div class="dx_word_style">
-											<label for=""> ${answer.tmp!}、${answer.answerDesc!}</label>
+											<label for=""> ${answer.tmp!}、${answer.answerDesc!}
+											@if(answer.answerImage != null && answer.answerImage != ""){
+												<img src="http://127.0.0.1/pic/${answer.answerImage}" />
+											@}
+											</label>
 										</div>
 										<div style="clear: both"></div>
 									</li>
@@ -483,7 +491,7 @@
 							<div class="word_con" id="303">
 								<p>
 									二 、 多选题 <font class="word_color5">(共
-										${questionList2.~size} 题、0 / ${questionList2.~size} 分 )</font>
+										${questionList2.~size} 题、0 / ${(questionList2.~size)*1.5} 分 )</font>
 								</p>
 								<br />
 							</div>
@@ -494,7 +502,11 @@
 									<div style="float: left;">${question2.order}、</div>
 									<div style="float: left;">
 										<p>
-											${question2.questionDesc}<br />
+											${question2.questionDesc}
+											@if(question2.questionImage != null && question2.questionImage != ""){
+												&nbsp;&nbsp;&nbsp;<img src="http://127.0.0.1/pic/${question2.questionImage}" />
+											@}
+											<br />
 										</p>
 									</div>
 									<div style="clear: both;"></div>
@@ -510,7 +522,11 @@
 										</div>
 										<div class="dx_word_style">
 											<label for="">
-												${answer.tmp!}、${answer.answerDesc!} </label>
+												${answer.tmp!}、${answer.answerDesc!} 
+												@if(answer.answerImage != null && answer.answerImage != ""){
+													<img src="http://127.0.0.1/pic/${answer.answerImage}" />
+												@}
+												</label>
 										</div>
 										<div style="clear: both"></div>
 									</li> @}
@@ -521,7 +537,7 @@
 							<div class="word_con" id="303">
 								<p>
 									三 、 判断题 <font class="word_color5">(共
-										${questionList3.~size} 题、0 / ${questionList3.~size} 分 )</font>
+										${questionList3.~size} 题、0 / ${(questionList3.~size)*0.5} 分 )</font>
 								</p>
 								<br />
 							</div>
@@ -532,7 +548,11 @@
 									<div style="float: left;">${question3.order}、</div>
 									<div style="float: left;">
 										<p>
-											${question3.questionDesc}<br />
+											${question3.questionDesc}
+											@if(question3.questionImage != null && question3.questionImage != ""){
+												&nbsp;&nbsp;&nbsp;<img src="http://127.0.0.1/pic/${question3.questionImage}" />
+											@}
+											<br />
 										</p>
 									</div>
 									<div style="clear: both;"></div>
@@ -570,7 +590,7 @@
 										<span style="line-height: 36px;">特别提醒：</span>
 									</div>
 									<div class="lx_llook_02">
-										<p>1、本试卷共有各类试题总数（100）题；</p>
+										<p>1、本试卷共有各类试题总数（${(questionList1.~size)+(questionList2.~size)+(questionList3.~size)}）题；</p>
 										<p>2、题目由系统自动判卷。</p>
 										<p>3、请认真回答所有试题后及时提交试卷。</p>
 									</div>
@@ -581,7 +601,7 @@
 						</div>
 						<div class="zj_btn_layout3">
 
-							<span> <input name="commitForm" type="submit" value="交卷" id="commitForm" class="zj_sub_btn" />
+							<span> <input name="commitForm" type="button" value="交卷" id="commitForm" class="zj_sub_btn" />
 							</span> <br /> <br /> <br />
 						</div>
 					</form>
@@ -621,23 +641,27 @@
 			  alert(answers.split(",").length);
 		  }
 		  $("#answers").val(answers);
-		  var data = $("#form").serialize();
- 	       $.ajax(
-				{
-					url: '${ctxPath!}/userAnswer/getScore.u',
-					type: 'post',
-					data: data,
-					dataType: 'json',
-					success: function (data) {
-						if (data.rstFlag) {
-							alert(data.rstDesc);
-						} else {
-							alert(data.rstDesc);
-						}
-					},
-					clearForm: false,//禁止清楚表单
-					resetForm: false //禁止重置表单
-				});	 
+		  
+		  var iscommit = confirm("确认提交试卷吗？");
+		  if(iscommit){
+			  var data = $("#form").serialize();
+	 	       $.ajax(
+					{
+						url: '${ctxPath!}/userAnswer/getScore.u',
+						type: 'post',
+						data: data,
+						dataType: 'json',
+						success: function (data) {
+							if (data.rstFlag) {
+								alert(data.rstDesc);
+							} else {
+								alert(data.rstDesc);
+							}
+						},
+						clearForm: false,//禁止清楚表单
+						resetForm: false //禁止重置表单
+					});	
+		  }
 	});
 	
 	var expire = parseInt("${expire}");
@@ -655,7 +679,7 @@
 		if(expire <= 600){
 			sty = "style='color:red;'";
 		}
-		show = "考试时间还剩<span "+sty+">"+min+"分"+sec+"秒</span>,请考生安排好答题时间";
+		show = "考试时间还剩<span "+sty+">"+min+"分"+sec+"秒</span><br>请考生安排好答题时间";
 		$("#expire").html(show);
 		setTimeout("timeout()","1000");
 	}

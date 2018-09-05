@@ -197,7 +197,7 @@ public class QuestionBankController  extends BaseController{
 			logger.error(e.getMessage(),e);
 			model.put("result","上传失败");
 		}
-        return questionUploadInt(model);
+        return "redirect:/qabank/qalist.m";
 	}
 	
 	
