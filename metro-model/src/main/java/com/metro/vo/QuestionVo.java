@@ -59,6 +59,8 @@ public class QuestionVo implements java.io.Serializable {
     
     private List<Answer> answerList;
     
+    private int order;
+    
 	public List<Answer> getAnswerList() {
 		return answerList;
 	}
@@ -258,4 +260,12 @@ public class QuestionVo implements java.io.Serializable {
     public void setVerbFiled5(String verbFiled5) {
         this.verbFiled5 = verbFiled5 == null ? null : verbFiled5.trim();
     }
+
+	public int getOrder() {
+		return order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
+	}
 }

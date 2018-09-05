@@ -502,20 +502,22 @@
 
 	<select id="selectByQuestionVo" parameterType="com.metro.vo.QuestionVo" resultType="com.metro.vo.QuestionVo">
 		SELECT
+			q.id,
 			q.question_desc questionDesc,
 			q.question_image questionImage,
 			q.content_type contentType,
 			q.question_type questionType,
 			q.answer_id answerId,
+			q.jobs_name jobsName,
 			(
 			SELECT
 				GROUP_CONCAT(
 					concat(
-						ifnull( a.id, '' ),
-						'#',
+						ifnull( a.id, '' ) ,
+						'#col#',
 						ifnull( a.answer_desc, '' ),
-						'#',
-						ifnull( a.answer_image, '' ) 
+						'#col#',
+						ifnull( a.answer_image, '' ),'#row#'
 					) 
 				) 
 			FROM
