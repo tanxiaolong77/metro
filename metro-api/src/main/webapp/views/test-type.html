@@ -7,6 +7,9 @@
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="format-detection" content="telephone=no">
 		<title>北京地铁</title>
+		<script>
+			var ctxPath = "${ctxPath!}";
+		</script>
 		<link href="${ctxPath}/views/css/iconfont.min.css" rel="stylesheet" type="text/css" />
 		<link href="${ctxPath}/views/css/amazeui.css" rel="stylesheet" type="text/css">
 		<link href="${ctxPath}/views/css/amazeui.datetimepicker.css" rel="stylesheet" type="text/css/">
@@ -106,7 +109,7 @@
 			
 			.button-max {
 				cursor: pointer;
-				height: 80px;
+				height: 130px;
 				width: 200px;
 				border-radius: 20px;
 				background: lightgray;
@@ -115,12 +118,26 @@
 				color: #fff;
 				font-size: 28px;
 			}
+		.nav-content {
+			margin-left: 10px;
+			border-bottom: 1px solid #cccc;
+			height:45px;
+			line-height:45px;
+		}
 		</style>
 	</head>
 
 	<body>
 		<div class="index pageWrap">
+			
 			<header class="clearfix"></header>
+			<div class="nav-content">
+					<span>导航页:</span>
+					<span><a href="${ctxPath!}/index.u">首页 </a> 
+					-  
+					考试类型
+					</span>
+			</div>
 			<div class="index-content">
 				<div class="content-button">
 					<button class="button-max" onclick="javascript:window.location.href='${ctxPath}/skip/toSeemJobType.u'">模拟</button>

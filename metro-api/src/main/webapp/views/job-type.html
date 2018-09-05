@@ -7,6 +7,9 @@
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="format-detection" content="telephone=no">
 		<title>北京地铁</title>
+		<script>
+			var ctxPath = "${ctxPath!}";
+		</script>
 		<link href="${ctxPath}/views/css/iconfont.min.css" rel="stylesheet" type="text/css" />
 		<link href="${ctxPath}/views/css/amazeui.css" rel="stylesheet" type="text/css">
 		<link href="${ctxPath}/views/css/amazeui.datetimepicker.css" rel="stylesheet" type="text/css/">
@@ -106,7 +109,7 @@
 			
 			.button-max {
 				cursor: pointer;
-				height: 66px;
+				height: 100px;
 				width: 200px;
 				border-radius: 20px;
 				background: lightgray;
@@ -122,13 +125,27 @@
 			.isFalse{
 				background: #FF0000;
 			}
-			
+			.nav-content {
+			margin-left: 10px;
+			border-bottom: 1px solid #cccc;
+			height:45px;
+			line-height:45px;
+		}
 		</style>
 	</head>
 
 	<body>
 		<div class="index pageWrap">
 			<header class="clearfix"></header>
+			<div class="nav-content">
+					<span>导航页:</span>
+					<span><a href="${ctxPath!}/index.u">首页 </a> 
+					-  
+					<a href="${ctxPath!}/skip/toTestType.u">选择考试类型</a>
+					-
+					选择考试岗位
+					</span>
+			</div>
 			<div class="index-content">
 				<div class="content-button">
 					@for(job in jobs!){
@@ -138,7 +155,7 @@
 						 @if(job.isShow == "0"){
 						 	<button class="button-max isTrue" style="cursor:pointer" onclick="javascript:window.location.href='${ctxPath}/skip/toMatchType.u?jobId=${job.id}'">${job.jobsName}</button>
 						 @}else{
-							<button class="button-max isFalse" onclick="javascript:alert('该赛事还未开始，敬请关注')">${job.jobsName}</button>
+							<button class="button-max isFalse" onclick="javascript:alert('该岗位暂未开放，敬请关注')">${job.jobsName}</button>
 						 @}
 					@}
 				</div>
