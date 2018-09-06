@@ -412,7 +412,7 @@
 				<div class="con_content_bg">
 					<div class="top_word">
 						<p class="lx_title01">北京地铁答题系统</p>
-						<p class="lx_title02">${jobsName} 专业考试</p>
+						<p class="lx_title02">${jobsName} 专业考试 http://${server!}/pic/</p>
 					</div>
 					<div>
 						<table width="916" border="0" cellpadding="0" cellspacing="1"
@@ -460,7 +460,7 @@
 									<div style="float: left;">
 										<p>${question1.questionDesc}
 										@if(question1.questionImage != null && question1.questionImage != ""){
-											&nbsp;&nbsp;&nbsp;<img src="http://127.0.0.1/pic/${question1.questionImage}" />
+											&nbsp;&nbsp;&nbsp;<img src="http://${server!}/pic/${question1.questionImage}" />
 										@}
 										</p>
 									</div>
@@ -477,7 +477,7 @@
 										<div class="dx_word_style">
 											<label for=""> ${answer.tmp!}、${answer.answerDesc!}
 											@if(answer.answerImage != null && answer.answerImage != ""){
-												<img src="http://127.0.0.1/pic/${answer.answerImage}" />
+												<img src="http://${server!}/pic/${answer.answerImage}" />
 											@}
 											</label>
 										</div>
@@ -504,7 +504,7 @@
 										<p>
 											${question2.questionDesc}
 											@if(question2.questionImage != null && question2.questionImage != ""){
-												&nbsp;&nbsp;&nbsp;<img src="http://127.0.0.1/pic/${question2.questionImage}" />
+												&nbsp;&nbsp;&nbsp;<img src="http://${server!}/pic/${question2.questionImage}" />
 											@}
 											<br />
 										</p>
@@ -524,7 +524,7 @@
 											<label for="">
 												${answer.tmp!}、${answer.answerDesc!} 
 												@if(answer.answerImage != null && answer.answerImage != ""){
-													<img src="http://127.0.0.1/pic/${answer.answerImage}" />
+													<img src="http://${server!}/pic/${answer.answerImage}" />
 												@}
 												</label>
 										</div>
@@ -550,7 +550,7 @@
 										<p>
 											${question3.questionDesc}
 											@if(question3.questionImage != null && question3.questionImage != ""){
-												&nbsp;&nbsp;&nbsp;<img src="http://127.0.0.1/pic/${question3.questionImage}" />
+												&nbsp;&nbsp;&nbsp;<img src="http://${server!}/pic/${question3.questionImage}" />
 											@}
 											<br />
 										</p>

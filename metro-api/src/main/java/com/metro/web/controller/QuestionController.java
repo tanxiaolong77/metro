@@ -75,6 +75,9 @@ public class QuestionController extends BaseController{
 			}
 			matchCriteria.andStartDateLessThanOrEqualTo(date);
 			matchCriteria.andEndDateGreaterThan(date);
+			
+			matchExample.setOrderByClause(" create_time desc");
+
 			List<Match> matchList = matchService.selectByExample(matchExample);
 			
 			if (matchList!=null && !matchList.isEmpty()) {
@@ -89,13 +92,15 @@ public class QuestionController extends BaseController{
 				if(StringUtils.isNotBlank(jobId)){
 					matchUserPassCriteria.andJobIdEqualTo(jobId);
 				}
-				matchUserPassCriteria.andMatchIdEqualTo(match.getId());
+				
+				matchUserPassExample.setOrderByClause(" create_time desc");
+				
 				List<MatchUserPass> matchUserPassList = matchUserPassService.selectByExample(matchUserPassExample);
 				
 				if (matchUserPassList.size() == 0 && match.getMatchLevel().equals("1")) {
 					return DataTransObj.onSuccess(null,"");
 				} else if (matchUserPassList.size() > 0 && !match.getMatchLevel().equals("1")
-						&& (matchUserPassList.get(0).getMatchLevel() + 1).equals(match.getMatchLevel()) 
+						&& (String.valueOf(Integer.parseInt(matchUserPassList.get(0).getMatchLevel()) + 1)).equals(match.getMatchLevel()) 
 						&& matchUserPassList.get(0).getIsPass().equals("1")) {
 					return DataTransObj.onSuccess(null,"");
 				}
@@ -164,6 +169,7 @@ public class QuestionController extends BaseController{
 					if(StringUtils.isNotBlank(jobId)){
 						matchUserPassCriteria.andJobIdEqualTo(jobId);
 					}
+					matchUserPassExample.setOrderByClause(" create_time desc");
 					matchUserPassCriteria.andMatchIdEqualTo(match.getId());
 					List<MatchUserPass> matchUserPassList = matchUserPassService.selectByExample(matchUserPassExample);
 					
@@ -176,7 +182,7 @@ public class QuestionController extends BaseController{
 						}
 						return "views/test.html";
 					} else if (matchUserPassList.size() > 0 && !match.getMatchLevel().equals("1")
-							&& (matchUserPassList.get(0).getMatchLevel() + 1).equals(match.getMatchLevel()) 
+							&& (String.valueOf(Integer.parseInt(matchUserPassList.get(0).getMatchLevel()) + 1)).equals(match.getMatchLevel()) 
 							&& matchUserPassList.get(0).getIsPass().equals("1")) {
 						logger.info("上次比赛通过，此次比赛有资格。");
 						// 出题逻辑

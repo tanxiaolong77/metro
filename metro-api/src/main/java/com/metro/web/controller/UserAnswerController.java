@@ -77,6 +77,9 @@ public class UserAnswerController extends BaseController{
 				if(StringUtils.isNotBlank(SessionUtils.getJobType())){
 					matchUserPassCriteria.andJobIdEqualTo(SessionUtils.getJobType());
 				}
+				if(StringUtils.isNotBlank(SessionUtils.getMatchLevel())){
+					matchUserPassCriteria.andMatchLevelEqualTo(SessionUtils.getMatchLevel());
+				}
 				matchUserPassCriteria.andMatchIdEqualTo(SessionUtils.getMatchId());
 				List<MatchUserPass> matchUserPassList = matchUserPassService.selectByExample(matchUserPassExample);
 				
@@ -150,22 +153,22 @@ public class UserAnswerController extends BaseController{
 			
 			
 			// 入用户比赛晋级表
-			MatchUserPass matchUserPass = new MatchUserPass();
-			matchUserPass.setId(BaseUtil.getUUID());
-			matchUserPass.setUserId(userId);
-			matchUserPass.setJobId(SessionUtils.getJobType());
-			matchUserPass.setMatchId(SessionUtils.getMatchId());
-			matchUserPass.setMatchLevel(SessionUtils.getMatchLevel());
-			if (userScore >= 60) {
-				matchUserPass.setIsPass("1");// 通过
-			} else {
-				matchUserPass.setIsPass("0");// 不通过
+			if (SessionUtils.getMatchLevel() != null) {
+				MatchUserPass matchUserPass = new MatchUserPass();
+				matchUserPass.setId(BaseUtil.getUUID());
+				matchUserPass.setUserId(userId);
+				matchUserPass.setJobId(SessionUtils.getJobType());
+				matchUserPass.setMatchId(SessionUtils.getMatchId());
+				matchUserPass.setMatchLevel(SessionUtils.getMatchLevel());
+				if (userScore >= 60) {
+					matchUserPass.setIsPass("1");// 通过
+				} else {
+					matchUserPass.setIsPass("0");// 不通过
+				}
+				matchUserPass.setCreateTime(new Date());
+				matchUserPass.setOperater(SessionUtils.getLoginUser().getId());
+				matchUserPassService.insert(matchUserPass);
 			}
-			matchUserPass.setCreateTime(new Date());
-			matchUserPass.setOperater(SessionUtils.getLoginUser().getId());
-			matchUserPassService.insert(matchUserPass);
-			
-			
 			
 			return DataTransObj.onSuccess(userScore,"提交成功！");
 		

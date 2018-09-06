@@ -31,7 +31,7 @@ public class BaseController {
 		return result;
 	}
 
-	public String getServerIp() {
+	public static String getServerIp() {
 		// 获取操作系统类型
 		String sysType = System.getProperties().getProperty("os.name");
 		String ip;
@@ -61,7 +61,7 @@ public class BaseController {
 	 *            网络接口名，Linux下是eth0
 	 * @return
 	 */
-	private String getIpByEthNum(String ethNum) {
+	private static String getIpByEthNum(String ethNum) {
 		try {
 			Enumeration allNetInterfaces = NetworkInterface.getNetworkInterfaces();
 			InetAddress ip;

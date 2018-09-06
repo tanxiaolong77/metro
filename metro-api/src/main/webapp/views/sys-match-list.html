@@ -196,7 +196,7 @@
 						{
 							"data": "id", //UserID
 							"fnCreatedCell": function(nTd, sData, oData, iRow, iCol) {
-								var html = "<a class='am-btn am-btn-secondary am-radius mr10' href='${ctxPath}/match/matchSetInit.m?id=" + sData + "'>编辑</a><a  href='${ctxPath}/match/matchDel.m?id=" + sData + "' class='am-btn am-btn-secondary am-radius'>删除</a>"
+								var html = "<a class='am-btn am-btn-secondary am-radius mr10' href='${ctxPath}/match/matchSetInit.m?id=" + sData + "'>编辑</a><a  onclick=Del('"+sData+"') class='am-btn am-btn-secondary am-radius'>删除</a>"
 								$(nTd).html(html)
 							}
 						},
@@ -208,7 +208,19 @@
 			}
 			//var postData = {};
 			dataTables();
-
+			function Del(id){
+				$.ajax({
+					type:'get',
+					url:'${ctxPath}/match/matchDel.m?id='+id,
+					success:function(data){
+						alert(data.rstDesc);
+						search()
+					},
+					error:function(){
+						alert("删除失败")
+					}
+				})
+			}
 			function search() {
 				/*postData.id = $(".userid").val();
 				postData.timeStart = $(".data-input-start").val();

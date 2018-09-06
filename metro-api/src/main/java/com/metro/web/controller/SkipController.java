@@ -70,7 +70,7 @@ public class SkipController extends BaseController{
 		HttpSession session = request.getSession();
 		String testType = "1";
 		session.setAttribute(Constant.TEST_TYPE, testType);
-		
+		SessionUtils.getSession().setAttribute("matchLevel",null);
 		List<Jobs> jobs = jobsService.selectByExample(new JobsExample());
 		model.put("jobs", jobs);// 岗位
 		
@@ -124,11 +124,10 @@ public class SkipController extends BaseController{
 			if (matchList!=null && !matchList.isEmpty()) {
 				Match match = matchList.get(0);
 				logger.info("正在比赛的级别：" + match.getMatchLevel());
+				session.setAttribute(Constant.MATCH_LEVEL, match.getMatchLevel());
+				session.setAttribute(Constant.MATCH_ID, match.getId());
+				
 				if (match.getMatchLevel() != null) {
-					
-					session.setAttribute(Constant.MATCH_LEVEL, match.getMatchLevel());
-					session.setAttribute(Constant.MATCH_ID, match.getId());
-					
 					model.put("matchLevel", match.getMatchLevel());// 赛程
 				}
 			} else {
