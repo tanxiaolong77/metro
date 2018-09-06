@@ -559,7 +559,7 @@
 		FROM
 			question q 
 		WHERE
-			q.id in (${questionIdList} ) 
+			q.id in (${questionConditions} ) 
 	</select>
 
 	<select id="selectByIds" resultMap="BaseResultMap"

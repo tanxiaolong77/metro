@@ -76,7 +76,7 @@ public class QuestionBankController  extends BaseController{
 	 * 出题规则列表数据
 	 * 
 	 */
-	@RequestMapping(value = "qaSearch.m", method = RequestMethod.GET)
+	@RequestMapping(value = "qaSearch.m")
 	public @ResponseBody DataTransObj ruleSearch(
 			String questionDesc,
 			String contentType, 

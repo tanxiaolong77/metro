@@ -57,14 +57,21 @@ public class SessionUtils {
 	}
 	
 	/**
-	 * session中的岗位类型
+	 * session中的赛程
 	 */
 	public static String getMatchLevel(){
 		return  (String) getSession().getAttribute(Constant.MATCH_LEVEL);
 	}
 	
 	/**
-	 * session中的岗位类型
+	 * session中的赛程ID
+	 */
+	public static String getMatchId(){
+		return  (String) getSession().getAttribute(Constant.MATCH_ID);
+	}
+	
+	/**
+	 * session中的鉴定级别
 	 */
 	public static String getAuthLevel(){
 		return  (String) getSession().getAttribute(Constant.AUTH_LEVEL);

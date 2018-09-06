@@ -1203,7 +1203,7 @@ public class DateUtil {
 			long time1 = cal.getTimeInMillis();
 			cal.setTime(endTime);
 			long time2 = cal.getTimeInMillis();
-			long between_days = (time2 - time1) / (1000 * 3600 * 24 * 60 * 60);
+			long between_days = (time2 - time1) / 1000;
 
 			return String.valueOf(between_days);
 		} catch (Exception e) {

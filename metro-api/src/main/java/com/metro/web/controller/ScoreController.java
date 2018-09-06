@@ -1,6 +1,7 @@
 package com.metro.web.controller;
 
 import java.math.BigDecimal;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class ScoreController  extends BaseController{
 	 * 分数列表数据
 	 * 
 	 */
-	@RequestMapping(value = "scoreSearch.m", method = RequestMethod.GET)
+	@RequestMapping(value = "scoreSearch.m")
 	public @ResponseBody DataTransObj matchSearch(
 			ScoreRequest request) {
 		

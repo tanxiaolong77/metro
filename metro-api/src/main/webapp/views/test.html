@@ -411,7 +411,7 @@
 				</script>
 				<div class="con_content_bg">
 					<div class="top_word">
-						<p class="lx_title01">北京地铁</p>
+						<p class="lx_title01">北京地铁答题系统</p>
 						<p class="lx_title02">${jobsName} 专业考试</p>
 					</div>
 					<div>
@@ -621,7 +621,6 @@
 		  var answers = "";
 		  var as = "#";
 		  var qs = ",";
-		  debugger;
 		  for(var i = 0; i < questions.length;i++){
 			  var c = $("[name="+questions[i]+"]");
 			  var ps = true;
@@ -638,7 +637,6 @@
 		  
 		  if(answers != ""){
 			  answers = answers.substring(1,answers.length);
-			  alert(answers.split(",").length);
 		  }
 		  $("#answers").val(answers);
 		  
@@ -654,8 +652,10 @@
 						success: function (data) {
 							if (data.rstFlag) {
 								alert(data.rstDesc);
+								window.location.href = "${ctxPath!}/userAnswer/result?score="+data.rstObj;
 							} else {
 								alert(data.rstDesc);
+								window.location.href = "${ctxPath!}/error";
 							}
 						},
 						clearForm: false,//禁止清楚表单

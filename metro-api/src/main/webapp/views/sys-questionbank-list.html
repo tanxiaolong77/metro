@@ -160,7 +160,7 @@
 						postData = postData + "&startNumber="+startNumber;
 						console.log({'postData':postData});
 						$.ajax({
-							type: "get",
+							type: "post",
 							url: "${ctxPath}/qabank/qaSearch.m",
 							async: false,
 							data: postData,

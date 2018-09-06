@@ -28,13 +28,16 @@ public class Constant {
 	public static final String SKILL_TYPE = "skillType";
 	
 	// 考试类型
-	public static final String TEST_TYPE = "skillType";
+	public static final String TEST_TYPE = "testType";
 	
 	// 岗位类型
 	public static final String JOB_TYPE = "jobType";
 	
 	// 赛程
 	public static final String MATCH_LEVEL = "matchLevel";
+	
+	// 赛程ID
+	public static final String MATCH_ID = "matchId";
 	
 	// 级别
 	public static final String AUTH_LEVEL  = "authLevel";

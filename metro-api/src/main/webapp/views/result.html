@@ -110,16 +110,12 @@
 			.button-max {
 				cursor: pointer;
 				height: 80px;
-				width: 200px;
 				border-radius: 20px;
 				background: lightgray;
 				margin: 0 20px;
+				background: #5eb95e;
 				color: #fff;
 				font-size: 28px;
-				background: red;
-			}
-			.isTrue{
-				background: #5eb95e;
 			}
 		</style>
 	</head>
@@ -128,13 +124,10 @@
 		<div class="index pageWrap">
 			<header class="clearfix"></header>
 			<div class="index-content">
-				<div class="content-button">
-					
-					<button name="levelBtn" class="button-max" style="cursor:pointer" >初赛</button>
-					<button name="levelBtn" class="button-max" style="cursor:pointer" >复赛</button>
-					<button name="levelBtn" class="button-max" style="cursor:pointer" >决赛</button>
-					<button name="levelBtn" class="button-max" style="cursor:pointer" >总决赛</button>
-				</div>
+				<div><img style="margin: 0 auto;" src="${ctxPath}/views/img/score.png" width="500" height="300"></div>
+				<div style="text-align:center;margin-top:10px;font-size:20px;">本次考试成绩为：<span style="color:red;">${score!} 分</span></div>
+				<div style="text-align:center;margin-top:10px;font-size:20px;"><a href="${ctxPath}/index.u">返回首页</a></div>
+				
 			</div>
 			
 			<footer></footer>
@@ -142,19 +135,6 @@
 		</div>
 		
 		<script src="${ctxPath}/views/js/all.js"></script>
-		<script>
-			var matchLevel = "${matchLevel}"-1;
-			var btns = $("button[name='levelBtn']");
-			for(var i=0;i<btns.length;i++){
-				if(matchLevel == i){
-					$(btns[i]).addClass('isTrue').attr('onclick',"javascript:window.location.href='${ctxPath}/question/toQuestion.u'");
-				}else{
-					$(btns[i]).attr('onclick',"javascript:alert('该赛事还未开始，敬请关注！')");
-				}
-				
-			}
-			//$(".button-max").eq().addClass('isTrue').attr('onclick',"javascript:window.location.href='${ctxPath}/skip/toMatchType.u'");
-		</script>
 		
 	</body>
 

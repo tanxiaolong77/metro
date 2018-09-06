@@ -153,7 +153,7 @@
 						 	<br>
 						 @}
 						 @if(job.isShow == "0"){
-						 	<button class="button-max isTrue" style="cursor:pointer" onclick="javascript:window.location.href='${ctxPath}/skip/toMatchType.u?jobId=${job.id}'">${job.jobsName}</button>
+						 	<button class="button-max isTrue" style="cursor:pointer" onclick="startmatch('${job.id}')">${job.jobsName}</button>
 						 @}else{
 							<button class="button-max isFalse" onclick="javascript:alert('该岗位暂未开放，敬请关注')">${job.jobsName}</button>
 						 @}
@@ -168,5 +168,26 @@
 		<script src="${ctxPath}/views/js/all.js"></script>
 		
 	</body>
+<script>
 
+function startmatch(job){
+    $.ajax(
+			{
+				url: '${ctxPath!}/question/validate?jobId='+job,
+				type: 'get',
+				dataType: 'json',
+				success: function (data) {
+					if (data.rstFlag) {
+						window.location.href = "${ctxPath}/skip/toMatchType.u?jobId="+job;
+					} else {
+						alert(data.rstDesc);
+					}
+				},
+				clearForm: false,//禁止清楚表单
+				resetForm: false //禁止重置表单
+			});
+}
+
+
+</script>
 </html>

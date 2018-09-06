@@ -127,6 +127,7 @@ public class SkipController extends BaseController{
 				if (match.getMatchLevel() != null) {
 					
 					session.setAttribute(Constant.MATCH_LEVEL, match.getMatchLevel());
+					session.setAttribute(Constant.MATCH_ID, match.getId());
 					
 					model.put("matchLevel", match.getMatchLevel());// 赛程
 				}
