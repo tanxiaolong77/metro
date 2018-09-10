@@ -99,6 +99,10 @@ public class LoginController  extends BaseController{
 		}
 		return DataTransObj.onSuccess(null, "登录成功");
 	}
+	
+	public static void main(String[] args) {
+		System.out.println(EncryptUtils.Md5Encode("62293815"));
+	}
 
 	/**
 	 * 员工登录
